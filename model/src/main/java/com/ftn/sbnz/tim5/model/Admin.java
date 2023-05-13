@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Admin extends User{
 
-    public Admin(String email, String password, String name, String surname){
-        super(email, password, name, surname);
+    public Admin(String email, String password, String name, String surname, Role role){
+        super(email, password, name, surname, role);
     }
 }

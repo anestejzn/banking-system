@@ -24,11 +24,15 @@ public abstract class User {
     private String name;
     @Column(name="surname", nullable = false)
     private String surname;
+    @OneToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
 
-    public User(String email, String password, String name, String surname) {
+    public User(String email, String password, String name, String surname, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.role = role;
     }
 }
