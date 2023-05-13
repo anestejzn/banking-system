@@ -42,6 +42,7 @@ public class AuthService implements IAuthService {
     public LoginResponse login(final String email, final String password, final HttpServletResponse response) throws InvalidCredsException {
         Authentication authenticate;
         try {
+            System.out.println("lalal");
             authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (Exception ignored) {
             throw new InvalidCredsException("Invalid creds!");
@@ -51,16 +52,16 @@ public class AuthService implements IAuthService {
         UserPrinciple userPrinciple = (UserPrinciple) authenticate.getPrincipal();
         UserResponse userResponse = userPrinciple.getUser();
 
-//        String rawFingerprint = FingerprintUtils.generateRandomRawFingerprint();
-//
-//        Cookie cookie = new Cookie(FingerprintProperties.FINGERPRINT_COOKIE, rawFingerprint);
-//        cookie.setDomain("localhost");
-//        cookie.setPath("/");
-//        cookie.setMaxAge(3600*4);
-//        response.addCookie(cookie);
+        String rawFingerprint = FingerprintUtils.generateRandomRawFingerprint();
+
+        Cookie cookie = new Cookie(FingerprintProperties.FINGERPRINT_COOKIE, rawFingerprint);
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+        cookie.setMaxAge(3600*4);
+        response.addCookie(cookie);
         System.out.println("lalallal");
 
-        return new LoginResponse(JWTUtils.generateJWT(email), userResponse);
+        return new LoginResponse(JWTUtils.generateJWT(email, rawFingerprint), userResponse);
     }
 
 
