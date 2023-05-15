@@ -1,9 +1,7 @@
 package com.ftn.sbnz.tim5.kjar;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
 public class KjarApplication {
 
 	public static void main(String[] args) {

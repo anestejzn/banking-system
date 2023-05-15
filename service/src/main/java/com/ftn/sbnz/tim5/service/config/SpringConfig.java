@@ -105,6 +105,8 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/users/register")
                 .permitAll()
+                .antMatchers("/users/{email}")
+                .permitAll()
                 .antMatchers("/users/activate-account")
                 .permitAll()
                 .antMatchers("/verify/**")

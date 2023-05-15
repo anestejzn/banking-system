@@ -6,7 +6,9 @@ import org.kie.api.runtime.KieContainer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan(basePackages = { "com.ftn.sbnz.tim5.model", "com.ftn.sbnz.tim5.service.*" })
 @SpringBootApplication(scanBasePackages = { "com.ftn.sbnz.tim5.model", "com.ftn.sbnz.tim5.kjar" })
 public class ServiceApplication {
 
@@ -23,7 +25,6 @@ public class ServiceApplication {
 		kScanner.start(1000);
 		return kContainer;
 	}
-
 }
 
 

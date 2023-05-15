@@ -56,11 +56,13 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
@@ -77,24 +79,27 @@
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
@@ -130,29 +135,7 @@
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-ci</artifactId>
-			<version>${drools.version}</version>
-		</dependency>
 
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-api</artifactId>
-			<version>${drools.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-core</artifactId>
-			<version>${drools.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-compiler</artifactId>
-			<version>${drools.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,5 +1,6 @@
 package com.ftn.sbnz.tim5.service.controller;
 
+import com.ftn.sbnz.tim5.model.User;
 import com.ftn.sbnz.tim5.service.dto.request.VerifyRequest;
 import com.ftn.sbnz.tim5.service.exception.EntityNotFoundException;
 import com.ftn.sbnz.tim5.service.exception.WrongVerifyTryException;
@@ -24,5 +25,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public boolean update(@Valid @RequestBody VerifyRequest verifyRequest) throws EntityNotFoundException, WrongVerifyTryException {
         return userService.activate(verifyRequest.getVerifyId(), verifyRequest.getSecurityCode());
+    }
+
+    @GetMapping("/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    public User getById(@PathVariable String email) throws EntityNotFoundException {
+
+        return userService.getVerifiedUser(email);
     }
 }
