@@ -94,7 +94,7 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 //                .exceptionHandling();
 
         http
-                .csrf().disable().cors().and()
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))

@@ -31,7 +31,7 @@ public class Client extends User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<Account> accounts;
     @OneToOne
-    @JoinColumn(name = "employer", referencedColumnName = "id")
+    @JoinColumn(name = "employer_id", referencedColumnName = "id")
     private Employer employer;
     @Column(name="verified")
     private boolean verified;
