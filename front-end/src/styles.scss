@@ -1,0 +1,19 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-size: 1rem;
+  background-color: var(--white);
+  color: var(--deep-blue);
+  height: 100%;
+}
+
+:root {
+  --gray: #b1b7bbec;
+  --deep-blue: #547a54;
+  --red: #b73e3e;
+  --white: #ffffff;
+  --gray-transparent: rgba(231, 230, 230, 0.47);
+}
