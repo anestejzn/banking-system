@@ -78,21 +78,6 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
-//                .authorizeRequests()
-//                .antMatchers("/auth/**", "/users/register", "/users/activate-account", "/verify/**", "/ws/**")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .httpBasic()
-//                .and()
-//                .exceptionHandling();
-
         http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -103,7 +88,9 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/auth/**")
                 .permitAll()
-                .antMatchers("/users/register")
+                .antMatchers("/clients/register-retired-client")
+                .permitAll()
+                .antMatchers("/clients/register-employed-client")
                 .permitAll()
                 .antMatchers("/users/{email}")
                 .permitAll()

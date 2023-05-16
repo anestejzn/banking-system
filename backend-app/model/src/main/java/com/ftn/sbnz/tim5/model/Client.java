@@ -1,5 +1,6 @@
 package com.ftn.sbnz.tim5.model;
 
+import com.ftn.sbnz.tim5.model.enums.AccountStatus;
 import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,10 +33,16 @@ public class Client extends User{
     @Column(name="date_of_birth", nullable = false)
     private LocalDateTime dateOfBirth;
 
-    @Column(name="employeeStatus", nullable = false)
+    @Column(name="employee_status", nullable = false)
     private EmployeeStatus employeeStatus;
 
-    @OneToOne()
+    @Column(name="verified", nullable = false)
+    private boolean verified = false;
+
+    @Column(name="account_status", nullable = false)
+    private AccountStatus accountStatus;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
@@ -43,11 +50,11 @@ public class Client extends User{
     @JoinColumn(name = "employer_id", referencedColumnName = "id")
     private Employer employer;
 
-    @Column(name="verified")
-    private boolean verified = false;
-
     @Column(name="started_working")
     private LocalDateTime startedWorking;
+
+    @Column(name="monthly_income")
+    private double monthlyIncome;
 
     public Client(
             String email,
@@ -62,7 +69,9 @@ public class Client extends User{
             LocalDateTime dateOfBirth,
             EmployeeStatus employeeStatus,
             Employer employer,
-            Account account
+            Account account,
+            double monthlyIncome,
+            AccountStatus accountStatus
     ) {
         super(email, password, name, surname, role);
         this.streetName = streetName;
@@ -73,6 +82,8 @@ public class Client extends User{
         this.employeeStatus = employeeStatus;
         this.employer = employer;
         this.account = account;
+        this.monthlyIncome = monthlyIncome;
+        this.accountStatus = accountStatus;
     }
 
     //ovde ima startedWorking, gore nema
@@ -90,7 +101,9 @@ public class Client extends User{
             EmployeeStatus employeeStatus,
             Employer employer,
             LocalDateTime startedWorking,
-            Account account
+            Account account,
+            double monthlyIncome,
+            AccountStatus accountStatus
     ) {
         super(email, password, name, surname, role);
         this.streetName = streetName;
@@ -102,5 +115,7 @@ public class Client extends User{
         this.employer = employer;
         this.startedWorking = startedWorking;
         this.account = account;
+        this.monthlyIncome = monthlyIncome;
+        this.accountStatus = accountStatus;
     }
 }

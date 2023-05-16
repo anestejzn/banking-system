@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+import java.time.LocalDateTime;
+
 import static com.ftn.sbnz.tim5.service.util.Constants.*;
 import static com.ftn.sbnz.tim5.service.util.ErrorMessageConstants.EMPTY_EMAIL;
 import static com.ftn.sbnz.tim5.service.util.ErrorMessageConstants.TOO_LONG_EMAIL;
@@ -13,17 +15,15 @@ import static com.ftn.sbnz.tim5.service.util.ErrorMessageConstants.WRONG_PASSWOR
 @Getter
 @Setter
 public class ClientRegistrationRequest {
-    @NotNull
+
     @NotBlank(message = EMPTY_EMAIL)
     @Size(max = 320, message = TOO_LONG_EMAIL)
     private final String email;
 
-    @NotNull
     @NotBlank(message = WRONG_NAME)
     @Pattern(regexp = LEGIT_NAME_REG, message = WRONG_NAME)
     private final String name;
 
-    @NotNull
     @NotBlank(message = WRONG_SURNAME)
     @Pattern(regexp = LEGIT_NAME_REG, message = WRONG_SURNAME)
     private final String surname;
@@ -36,33 +36,54 @@ public class ClientRegistrationRequest {
     @Pattern(regexp = LEGIT_PASSWORD_REG, message = WRONG_PASSWORD)
     private final String confirmPassword;
 
-    @NotNull(message = WRONG_ROLE)
-    private final String role;
+    @NotBlank(message = WRONG_ADDRESS)
+    @Pattern(regexp = LEGIT_NAME_REG, message = WRONG_COUNTRY)
+    private final String streetName;
 
-//    @NotNull
-//    @NotBlank
-//    @Pattern(regexp = LEGIT_COUNTRY_REG, message = WRONG_COUNTRY)
-//    private final String country;
-//
-//    @NotNull
-//    @NotBlank
-//    @Pattern(regexp = LEGIT_COUNTRY_REG, message = WRONG_CITY)
-//    private final String city;
+    @NotBlank(message = WRONG_ADDRESS)
+    private final String streetNumber;
 
-    public ClientRegistrationRequest(
-            String email,
-            String name,
-            String surname,
-//            String country,
-//            String city
-            String password, String confirmPassword, String role) {
+    @NotBlank(message = LEGIT_NAME_REG)
+    private final String postCode;
+
+    @NotBlank(message = WRONG_CITY)
+    @Pattern(regexp = LEGIT_RE_CITY_AND_STREET_REG, message = WRONG_CITY)
+    private final String city;
+
+    @NotNull(message = WRONG_DOB)
+    private final LocalDateTime dateOfBirth;
+
+    @NotNull(message = WRONG_INCOME)
+    @Positive(message = WRONG_INCOME)
+    private final double monthlyIncome;
+
+    @NotBlank(message = WRONG_ACC_TYPE_NAME)
+    private final String accountTypeName;
+
+    public ClientRegistrationRequest(String email,
+                                     String name,
+                                     String surname,
+                                     String password,
+                                     String confirmPassword,
+                                     String streetName,
+                                     String streetNumber,
+                                     String postCode,
+                                     String city,
+                                     LocalDateTime dateOfBirth,
+                                     double monthlyIncome,
+                                     String accountTypeName
+    ) {
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
-//        this.country = country;
-//        this.city = city;
         this.confirmPassword = confirmPassword;
-        this.role = role;
+        this.streetName = streetName;
+        this.streetNumber = streetNumber;
+        this.postCode = postCode;
+        this.city = city;
+        this.dateOfBirth = dateOfBirth;
+        this.monthlyIncome = monthlyIncome;
+        this.accountTypeName = accountTypeName;
     }
 }

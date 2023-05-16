@@ -9,8 +9,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-import static com.ftn.sbnz.tim5.service.util.Constants.MAX_SQ_AREA;
-import static com.ftn.sbnz.tim5.service.util.Constants.MIN_SQ_AREA;
 
 public class Helper {
 
@@ -28,6 +26,10 @@ public class Helper {
 
     public static int generateSecurityCode() {
         return (int)(Math.random() * (Constants.MAX_SECURITY_NUM - Constants.MIN_SECURITY_NUM + 1) + Constants.MIN_SECURITY_NUM);
+    }
+
+    public static long generateRandomNumber(long minNum, long maxNum) {
+        return (long)(Math.random() * (maxNum - minNum + 1) + minNum);
     }
 
     public static String generateRandomString(int length) {
@@ -52,22 +54,6 @@ public class Helper {
         } catch (NoSuchAlgorithmException e) {
             // Handle exception
             return null;
-        }
-    }
-
-    public static List<Integer> extractSqMetersNumbers(String input) {
-        try {
-            String[] extract = input.split(":");
-            List<Integer> nums = new LinkedList<>();
-            nums.add(Integer.parseInt(extract[0]));
-            nums.add(Integer.parseInt(extract[1]));
-
-            return (nums.get(0) < MIN_SQ_AREA || nums.get(1) > MAX_SQ_AREA)
-                ? Arrays.asList(MIN_SQ_AREA, MAX_SQ_AREA)
-                : nums;
-        } catch (Exception e) {
-            
-            return Arrays.asList(MIN_SQ_AREA, MAX_SQ_AREA);
         }
     }
 

@@ -20,7 +20,6 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-
     @PutMapping("/activate-account")
     @ResponseStatus(HttpStatus.OK)
     public boolean update(@Valid @RequestBody VerifyRequest verifyRequest) throws EntityNotFoundException, WrongVerifyTryException {

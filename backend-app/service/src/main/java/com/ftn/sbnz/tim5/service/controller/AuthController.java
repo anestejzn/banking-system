@@ -2,6 +2,7 @@ package com.ftn.sbnz.tim5.service.controller;
 
 
 import com.ftn.sbnz.tim5.service.dto.request.LoginRequest;
+import com.ftn.sbnz.tim5.service.dto.request.RetireeRegistrationRequest;
 import com.ftn.sbnz.tim5.service.dto.response.LoginResponse;
 import com.ftn.sbnz.tim5.service.exception.InvalidCredsException;
 import com.ftn.sbnz.tim5.service.services.interfaces.IAuthService;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 
-//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/auth")
 @Validated

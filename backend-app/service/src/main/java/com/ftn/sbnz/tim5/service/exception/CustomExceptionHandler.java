@@ -65,4 +65,10 @@ public class CustomExceptionHandler {
         return invalidCredsException.getMessage();
     }
 
+
+    @ExceptionHandler(value = InvalidTermsOfAgreementException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String wrongTermsOfAgreementException(InvalidTermsOfAgreementException exception) {
+        return exception.getMessage();
+    }
 }
