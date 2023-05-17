@@ -19,9 +19,7 @@ import { matchPasswordsValidator } from 'src/modules/shared/validators/confirm-p
 export class RegistrationComponent implements OnInit, OnDestroy {
 
   showSpiner: boolean = false;
-  hidePassword = true;
-  hideConfirmPassword = true;
-  regularUserRoles = ['TENANT', 'OWNER'];
+  
   registrationSubscription: Subscription;
   
   filteredCities: Observable<string[]>;
@@ -48,6 +46,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
+  basicInfoForm = new FormGroup({});
+  addressForm = new FormGroup({});
+  accountTypeForm = new FormGroup({});
+  employmentForm = new FormGroup({});
 
   registrationForm = new FormGroup(
     {

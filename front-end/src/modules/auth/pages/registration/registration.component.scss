@@ -1,35 +1,8 @@
 .form-container {
-    padding: 1% 5%;
+    padding: 1% 3%;
     margin-top: 1%;
-}
-
-.colomn {
-    margin-top: 1rem;
-    margin-right: 2rem;
-}
-
-.email-colomn {
-    margin-top: 1rem;
-}
-
-.password-colomn {
-    margin-top: 1rem;
-    margin-right: 2rem;
-    max-width: 46.4%;
-}
-
-.role-colomn {
-    margin-top: 1rem;
-    margin-left: 2rem;
-    max-width: 46.4%;
-}
-
-h1 {
-    margin-bottom: 1px;
-}
-
-button {
-    margin-top: 5%;
+    min-width: 70rem;
+    min-height: 30rem;
 }
 
 .spiner-container {

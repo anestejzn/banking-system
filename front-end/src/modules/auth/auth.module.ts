@@ -9,6 +9,10 @@ import { VerificationComponent } from './pages/verification/verification.compone
 import { SuccessfulVerificationComponent } from './pages/successful-verification/successful-verification/successful-verification.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SharedModule } from '../shared/shared.module';
+import { BasicInfoRegistrationComponent } from './components/basic-info-registration/basic-info-registration.component';
+import { AddressRegistrationComponent } from './components/address-registration/address-registration.component';
+import { AccountTypeRegistrationComponent } from './components/account-type-registration/account-type-registration.component';
+import { EmploymentRegistrationComponent } from './components/employment-registration/employment-registration.component';
 
 
 @NgModule({
@@ -17,6 +21,10 @@ import { SharedModule } from '../shared/shared.module';
     RegistrationComponent,
     VerificationComponent,
     SuccessfulVerificationComponent,
+    BasicInfoRegistrationComponent,
+    AddressRegistrationComponent,
+    AccountTypeRegistrationComponent,
+    EmploymentRegistrationComponent,
   ],
   imports: [
     CommonModule,
