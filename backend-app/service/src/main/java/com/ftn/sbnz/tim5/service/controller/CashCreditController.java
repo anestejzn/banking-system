@@ -1,9 +1,8 @@
 package com.ftn.sbnz.tim5.service.controller;
 
-import com.ftn.sbnz.tim5.model.Account;
-import com.ftn.sbnz.tim5.model.AccountType;
-import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.*;
 import com.ftn.sbnz.tim5.model.enums.DebitType;
+import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
 import com.ftn.sbnz.tim5.model.enums.Status;
 import org.drools.template.DataProvider;
 import org.drools.template.DataProviderCompiler;
@@ -27,13 +26,14 @@ public class CashCreditController {
 
     @GetMapping("/proba")
     public void proba(){
-        InputStream template = CashCreditController.class.getResourceAsStream("/rules/cash_credits/monthly_interest_template.drt");
+        InputStream template = CashCreditController.class.getResourceAsStream("/rules/cash_credits/reject_cash_credit_request_employee.drt");
 
         DataProvider dataProvider = new ArrayDataProvider(new String[][]{
-                new String[]{"0", "12", "0", "0", "2"},
-                new String[]{"13", "23", "0", "0", "2.5"},
-                new String[]{"24", "36", "0", "2", "3"},
-                new String[]{"37", "72", "3", "5", "4"},
+                new String[]{"0", "25000", "15"},
+                new String[]{"25001", "30000", "35"},
+                new String[]{"30001", "40000", "50"},
+                new String[]{"40001", "60000", "55"},
+                new String[]{"60001", "500000", "60"},
         });
 
         DataProviderCompiler converter = new DataProviderCompiler();
@@ -42,16 +42,24 @@ public class CashCreditController {
         System.out.println(drl);
 
         KieSession ksession = createKieSessionFromDRL(drl);
+        Role role = new Role();
+        Employer employer = new Employer();
+
         AccountType accountType = new AccountType();
         Account account = new Account("1234567891234", LocalDateTime.now(), accountType, 500, 1);
-        Debit debit = new Debit(DebitType.CASH_CREDIT, 50000, LocalDateTime.now(), 0, 0, 21, Status.PENDING, account );
-
+        account.setId(1L);
+        Debit debit = new Debit(DebitType.CASH_CREDIT, 50000, LocalDateTime.now(), 0, 3000, 21, Status.PENDING, account );
+        Debit debit1 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
+        Client client = new Client("ana@gmail.com", "12345", "Ana", "Anic", role, "Kraljevacka", "10", "36000", "Kraljevo", LocalDateTime.now().minusYears(22), EmployeeStatus.EMPLOYED,employer, account, 28000, Status.ACTIVE);
+        account.getDebits().add(debit1);
         ksession.insert(accountType);
         ksession.insert(account);
         ksession.insert(debit);
+        ksession.insert(debit1);
+        ksession.insert(client);
         ksession.fireAllRules();
 
-        System.out.println(debit.getMonthlyInterest());
+        System.out.println(debit.getDebitStatus());
     }
 
     private KieSession createKieSessionFromDRL(String drl){
