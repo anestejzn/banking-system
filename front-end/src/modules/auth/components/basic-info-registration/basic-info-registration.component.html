@@ -17,14 +17,14 @@
                 </mat-form-field>
     
                 <mat-form-field appearance="fill" class="role-colomn">
-                    <mat-label>Role</mat-label>
+                    <mat-label>Status</mat-label>
                     <mat-select formControlName="roleFormControl">
-                        <mat-option *ngFor="let role of regularUserRoles" [value]="role">
+                        <mat-option *ngFor="let role of employmentStatus" [value]="role">
                             {{role}}
                         </mat-option>
                     </mat-select>
                     <mat-error name="emptyRole" *ngIf="basicInfoForm.get('roleFormControl').hasError('required')">
-                        Role is <strong>required</strong>
+                        Employment status is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
     

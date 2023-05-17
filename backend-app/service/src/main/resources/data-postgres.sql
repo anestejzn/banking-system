@@ -10,11 +10,11 @@ insert into account_type (name, currency, monthly_subscription, overdraft, cash_
 
 
 INSERT INTO card_enum (account_type_id, cards)
-VALUES (1, 0),
-       (2, 0),
-       (2, 1),
-       (3, 0),
-       (3, 2);
+VALUES (1, 'DINA'),
+       (2, 'DINA'),
+       (2, 'VISA'),
+       (3, 'DINA'),
+       (3, 'VISA_PLATINUM');
 
 insert into account (account_number, account_date, account_type_id, total_balance, applicant_score) values
         ('1234567890123', '2023-01-01', 2, 10000, 0),

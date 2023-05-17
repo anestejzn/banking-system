@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
+import { MyErrorStateMatcher } from '../../pages/registration/registration.component';
 
 @Component({
   selector: 'app-basic-info-registration',
@@ -11,7 +12,9 @@ export class BasicInfoRegistrationComponent implements OnInit {
 
   hidePassword = true;
   hideConfirmPassword = true;
-  regularUserRoles = ['EMPLOYED', 'RETIREE'];
+  employmentStatus = ['EMPLOYED', 'RETIREE'];
+
+  matcher = new MyErrorStateMatcher();
 
   constructor(private controlContainer: ControlContainer) {
     this.basicInfoForm = <FormGroup>this.controlContainer.control;
@@ -22,6 +25,10 @@ export class BasicInfoRegistrationComponent implements OnInit {
     this.basicInfoForm.clearValidators();
     this.basicInfoForm.updateValueAndValidity();
     this.basicInfoForm.reset();
+  }
+
+  getError() {
+    return this.basicInfoForm.hasError('mismatch');
   }
 
 }

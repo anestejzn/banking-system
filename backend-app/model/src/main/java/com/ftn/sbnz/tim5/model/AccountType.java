@@ -4,6 +4,7 @@ import com.ftn.sbnz.tim5.model.enums.CardType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.LinkedList;

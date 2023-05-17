@@ -7,7 +7,7 @@
                 <div style="text-align:center;margin-top:5rem;">
                     <app-basic-info-registration></app-basic-info-registration>
                     <div>
-                        <button style="float: right; margin-top: 8rem;" class="next-button" mat-raised-button
+                        <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button
                             matStepperNext [disabled]="basicInfoForm.invalid">Next</button>
                     </div>
                 </div>
@@ -17,19 +17,43 @@
             <form [formGroup]="addressForm" class="stepper-container">
                 <ng-template matStepLabel>Address data</ng-template>
                 <app-address-registration></app-address-registration>
+                <div>
+                    <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button matStepperNext
+                        [disabled]="basicInfoForm.invalid">Next</button>
+                </div>
+                <div>
+                    <button style="float: right; margin-right: 1rem; margin-top: 1rem;" class="back-button" mat-raised-button
+                        matStepperPrevious>Back</button>
+                </div>
             </form>
         </mat-step>
         <mat-step [stepControl]="accountTypeForm">
             <form [formGroup]="accountTypeForm" class="stepper-container">
                 <ng-template matStepLabel>Account type</ng-template>
                 <app-account-type-registration></app-account-type-registration>
+                <div>
+                    <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button matStepperNext
+                        [disabled]="accountTypeForm.invalid">Next</button>
+                </div>
+                <div>
+                    <button style="float: right; margin-right: 1rem; margin-top: 1rem;" class="back-button" mat-raised-button
+                        matStepperPrevious>Back</button>
+                </div>
             </form>
         </mat-step>
         <mat-step [stepControl]="employmentForm">
             <form [formGroup]="employmentForm" class="stepper-container">
                 <ng-template matStepLabel>Employment data</ng-template>
-                <app-employment-registration></app-employment-registration>
+                <app-employment-registration [isRetiree]="basicInfoForm.get('roleFormControl').value === 'RETIREE'"></app-employment-registration>
             </form>
+            <div>
+                <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button matStepperNext
+                    [disabled]="employmentForm.invalid">Next</button>
+            </div>
+            <div>
+                <button style="float: right; margin-right: 1rem; margin-top: 1rem;" class="back-button" mat-raised-button
+                    matStepperPrevious>Back</button>
+            </div>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>End</ng-template>

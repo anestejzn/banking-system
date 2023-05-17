@@ -32,4 +32,12 @@ export class ConfigService {
   VERIFY_URL = `${this.API_URL}/verify`;
   SEND_CODE_AGAIN_URL = `${this.VERIFY_URL}/send-code-again`;
 
+  /////////////////ACCOUNT TYPES/////////////////
+  ACCOUNT_TYPES_URL = `${this.API_URL}/account-types`;
+  ALL_ACCOUNT_TYPES = `${this.ACCOUNT_TYPES_URL}/all-types`;
+
+  /////////////////ACCOUNT TYPES/////////////////
+  EMPLOYERS_URL = `${this.API_URL}/employers`;
+  ALL_EMPLOYERS = `${this.EMPLOYERS_URL}/all-employers`;
+
 }

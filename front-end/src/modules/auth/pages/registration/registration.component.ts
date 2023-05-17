@@ -5,8 +5,6 @@ import { map, Observable, startWith, Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { UserService } from 'src/modules/shared/service/user-service/user.service';
-import { Country } from 'src/modules/shared/model/country';
-import { countries } from 'src/modules/shared/model/country-data';
 import { UserRegistrationRequest } from '../../model/model/registration_and_verification/user-registration-request';
 import { matchPasswordsValidator } from 'src/modules/shared/validators/confirm-password.validator';
 
@@ -22,37 +20,55 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   
   registrationSubscription: Subscription;
   
-  filteredCities: Observable<string[]>;
-  public countries: Country[] = countries;
-  public filteredCountries: Observable<Country[]> | undefined;
-  
   constructor(
     private toast: ToastrService, 
     private router: Router,
     private userService: UserService
   ) {
-    // this.filteredCities = this.registrationForm
-    //   .get('cityFormControl')
-    //   .valueChanges.pipe(
-    //     startWith(''),
-    //     map(city => (city ? this._filterCities(city) : this.cities.slice()))
-    //   );
-
-    //   this.filteredCountries = this.registrationForm.get('countryFormControl')?.valueChanges.pipe(
-    //     startWith(''),
-    //     map((country: string) => (country ? this._filterCountries(country) : this.countries.slice()))
-    //   );  
     this.showSpiner = false;
   }
 
   ngOnInit(): void {}
 
-  basicInfoForm = new FormGroup({});
-  addressForm = new FormGroup({});
-  accountTypeForm = new FormGroup({});
-  employmentForm = new FormGroup({});
+  addressForm = new FormGroup({
+      cityFormControl: new FormControl('', [
+        Validators.required,
+        Validators.pattern('[a-zA-Z ]*'),
+      ]),
+      streetNameFormControl: new FormControl('', [
+        Validators.required,
+        Validators.pattern('[a-zA-Z ]*'),
+      ]),
+      streetNumberFormControl: new FormControl('', [
+        Validators.required,
+        Validators.pattern('[a-zA-Z1-9 ]*'),
+      ]),
+      postCodeFormControl: new FormControl('', [
+        Validators.required,
+        Validators.pattern('[1-9]{5}'),
+      ]),
+  });
 
-  registrationForm = new FormGroup(
+  accountTypeForm = new FormGroup({
+    accountTypeNameFormControl: new FormControl('', [
+        Validators.required
+      ]),
+  });
+
+  employmentForm = new FormGroup({
+      dateOfBirthFormControl: new FormControl('', [
+        Validators.required
+      ]),
+      startedWorkingFormControl: new FormControl(''),
+      monthlyIncomeFormControl: new FormControl(0, [
+        Validators.required,
+        Validators.pattern('[1-9][0-9]*')
+      ]),
+      employerNameFormControl: new FormControl(0),
+      termsOfPIOFondAgreementFormControl: new FormControl(false)
+  });
+
+  basicInfoForm = new FormGroup(
     {
       emailFormControl: new FormControl('', [
         Validators.required,
@@ -83,76 +99,40 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     [matchPasswordsValidator()]
   );
 
-  matcher = new MyErrorStateMatcher();
-  // cities: string[] = [
-  //   'Beograd',
-  //   'Novi Sad',
-  //   'Kraljevo',
-  //   'Kragujevac',
-  //   'Jagodina',
-  //   'Mladenovac',
-  //   'Subotica',
-  //   'Ruma',
-  //   'Priboj',
-  //   'Sabac',
-  //   'Leskovac',
-  //   'Vranje',
-  //   'Smederevo',
-  //   'Pozarevac',
-  //   'Zrenjanin',
-  //   'Sombor',
-  // ];
-
   register(): void {
-    if (this.registrationForm.hasError('mismatch')) {
-      this.toast.error('Passwords not match');
-    } else if (this.registrationForm.invalid) {
-      this.toast.error('Registration form is invalid.')
-    } else {
-      const newUser: UserRegistrationRequest = {
-        email: this.registrationForm.get('emailFormControl').value,
-        name: this.registrationForm.get('nameFormControl').value,
-        surname: this.registrationForm.get('surnameFormControl').value,
-        password: this.registrationForm.get('passwordFormControl').value,
-        confirmPassword: this.registrationForm.get('passwordAgainFormControl').value,
-        role: 'ROLE_'+this.registrationForm.get('roleFormControl').value
-      }
+    // if (this.registrationForm.hasError('mismatch')) {
+    //   this.toast.error('Passwords not match');
+    // } else if (this.registrationForm.invalid) {
+    //   this.toast.error('Registration form is invalid.')
+    // } else {
+    //   const newUser: UserRegistrationRequest = {
+    //     email: this.registrationForm.get('emailFormControl').value,
+    //     name: this.registrationForm.get('nameFormControl').value,
+    //     surname: this.registrationForm.get('surnameFormControl').value,
+    //     password: this.registrationForm.get('passwordFormControl').value,
+    //     confirmPassword: this.registrationForm.get('passwordAgainFormControl').value,
+    //     role: 'ROLE_'+this.registrationForm.get('roleFormControl').value
+    //   }
 
-      this.showSpiner = true;
-      this.registrationSubscription = this.userService
-            .registerRegularUser(newUser)
-            .subscribe(
-              response => {
-                this.showSpiner = false;
-                this.toast.success(
-                  'Please go to your email to verify account!',
-                  'Registration successfully'
-                );
-                this.router.navigate([`/banking-system/auth/login`]);
-              },
-              error => {
-                this.showSpiner = false;
-                this.toast.error(error.error, 'Registration failed')
-              }
-            );
-    }
+    //   this.showSpiner = true;
+    //   this.registrationSubscription = this.userService
+    //         .registerRegularUser(newUser)
+    //         .subscribe(
+    //           response => {
+    //             this.showSpiner = false;
+    //             this.toast.success(
+    //               'Please go to your email to verify account!',
+    //               'Registration successfully'
+    //             );
+    //             this.router.navigate([`/banking-system/auth/login`]);
+    //           },
+    //           error => {
+    //             this.showSpiner = false;
+    //             this.toast.error(error.error, 'Registration failed')
+    //           }
+    //         );
+    // }
   }
-
-  getError() {
-    return this.registrationForm.hasError('mismatch');
-  }
-
-  // _filterCountries(value: string): Country[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.countries.filter(country => country.name.toLowerCase().includes(filterValue));
-  // }
-
-  // _filterCities(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.cities.filter(city => city.toLowerCase().includes(filterValue));
-  // }
 
   ngOnDestroy(): void {
     if (this.registrationSubscription) {

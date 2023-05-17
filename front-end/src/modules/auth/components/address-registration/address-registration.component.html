@@ -1,1 +1,62 @@
-<p>address-registration works!</p>
+<div *ngIf="addressForm">
+    <form color="primary" [formGroup]="addressForm">
+        <div style="display: flex">
+            <mat-form-field appearance="fill">
+                    <mat-label>City</mat-label>
+                    <input type="text" placeholder="City" matInput formControlName="cityFormControl"
+                        [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+                            {{city}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="addressForm.get('cityFormControl')?.hasError('required')">
+                        City is <strong>required</strong> field
+                    </mat-error>
+                    <mat-error *ngIf="addressForm.get('cityFormControl')?.hasError('pattern')">
+                        City must contain only letters
+                    </mat-error>
+                </mat-form-field>
+            
+                <mat-form-field class="email-colomn" appearance="fill">
+                    <mat-label>Street Name</mat-label>
+                    <input type="text" matInput formControlName="streetNameFormControl" />
+                    <mat-error name="invalidStreetName" *ngIf="
+                        addressForm.get('streetNameFormControl').hasError('required')">
+                        Street name is <strong>required</strong>
+                    </mat-error>
+                    <mat-error name="emptyEmail" *ngIf="addressForm.get('streetNameFormControl').hasError('pattern')">
+                        Street name cannot contain digits
+                    </mat-error>
+                </mat-form-field>
+        </div>
+        <div style="display: flex">
+            <mat-form-field class="email-colomn" appearance="fill">
+                <mat-label>Street Number</mat-label>
+                <input type="text" matInput formControlName="streetNumberFormControl" />
+                <mat-error name="invalidStreetNumber" *ngIf="
+                                    addressForm.get('streetNumberFormControl').hasError('required')">
+                    Street number is <strong>required</strong>
+                </mat-error>
+                <mat-error name="emptyEmail" *ngIf="addressForm.get('streetNumberFormControl').hasError('pattern')">
+                    Enter a valid street number
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="email-colomn" appearance="fill">
+                <mat-label>Post code</mat-label>
+                <input type="number" matInput formControlName="postCodeFormControl" />
+                <mat-error name="invalidPostCode" *ngIf="
+                                    addressForm.get('postCodeFormControl').hasError('required')">
+                    Post code is <strong>required</strong>
+                </mat-error>
+                <mat-error name="emptyEmail" *ngIf="addressForm.get('postCodeFormControl').hasError('pattern')">
+                    Post code cannot contain letters
+                </mat-error>
+        </mat-form-field>
+        </div>
+
+        <br />
+    </form>
+
+</div>

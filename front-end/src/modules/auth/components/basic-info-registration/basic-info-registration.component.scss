@@ -1,28 +1,8 @@
-.colomn {
-    margin-top: 1rem;
-    margin-right: 2rem;
-}
 
-.email-colomn {
-    margin-top: 1rem;
-}
+mat-form-field {
+    margin: 0.5rem 3rem;
 
-.password-colomn {
-    margin-top: 1rem;
-    margin-right: 2rem;
-    max-width: 46.4%;
-}
-
-.role-colomn {
-    margin-top: 1rem;
-    margin-left: 2rem;
-    max-width: 46.4%;
-}
-
-h1 {
-    margin-bottom: 1px;
-}
-
-button {
-    margin-top: 5%;
+    .email-colomn {
+        margin-top: 0;
+    }
 }

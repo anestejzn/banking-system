@@ -1,1 +1,60 @@
-<p>employment-registration works!</p>
+<div>
+    <form color="primary" [formGroup]="employmentForm">
+        <div style="display: flex">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Date of Birth</mat-label>
+                <input type="date" matInput formControlName="dateOfBirthFormControl" />
+                <mat-error name="invalidDOB" *ngIf="
+                                        employmentForm.get('dateOfBirthFormControl').hasError('required')">
+                    Date of birth is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill" *ngIf="!isRetiree">
+                <mat-label>Started working</mat-label>
+                <input type="date" matInput formControlName="startedWorkingFormControl" />
+                <mat-error name="invalidStartedWorking" *ngIf="
+                            employmentForm.get('startedWorkingFormControl').hasError('required')">
+                    Started working is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div style="display: flex">
+            <mat-form-field appearance="fill" *ngIf="!isRetiree">
+                <mat-label>Employer</mat-label>
+                <input type="text" placeholder="Employer" matInput formControlName="employerNameFormControl"
+                    [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let employer of allEmployers" [value]="employer.name">
+                        {{employer.name}}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="employmentForm.get('employerNameFormControl')?.hasError('required')">
+                    Employer name is <strong>required</strong> field
+                </mat-error>
+            </mat-form-field>
+    
+            <mat-form-field class="email-colomn" appearance="fill">
+                <mat-label>Monthly income</mat-label>
+                <input type="number" matInput formControlName="monthlyIncomeFormControl" />
+                <mat-error name="invalidMonthlyIncome" *ngIf="
+                                        employmentForm.get('monthlyIncomeFormControl').hasError('required')">
+                    Monthly income is <strong>required</strong>
+                </mat-error>
+                <mat-error name="emptyEmail" *ngIf="employmentForm.get('monthlyIncomeFormControl').hasError('pattern')">
+                    Monthly income must be positive number
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="isRetiree">
+            <label class="checkbox-container">
+                <input type="checkbox" (click)="changeAgreementTerms()">
+                <span class="checkmark"></span>
+                <span class="label-text">I'm confirming that I'm a pensioner and a member of PIO Fond in Serbia</span>
+            </label>
+        </div>
+    
+        <br />
+    </form>
+</div>

@@ -1,1 +1,16 @@
-<p>account-type-registration works!</p>
+<div *ngIf="allAccountTypes.length > 0" class="cards-container">
+    <div *ngFor="let type of allAccountTypes" 
+    [class]="type.name === selected ? 'account-type-card selected' : 'account-type-card'" 
+    (click)="changeSelected(type.name)">
+        <div class="inner-content">
+            <h2>{{type.name}}</h2>
+            <p><b>{{type.monthlySubscription}} {{type.currency}}/month</b></p>
+            <p>Cash Credit Limit: <b>{{type.cashCreditLimit}}{{type.currency}}</b></p>
+            <p>Cards: <b><span *ngFor="let card of type.cards; let i=index">
+                {{card.replace('_', ' ')}}{{ i !== type.cards.length-1 ? ',' : ''}}
+            </span></b></p>
+            <p>Overdraft:<b> {{type.overdraft ? 'Yes' : 'No'}}</b></p>
+        </div>
+    </div>
+
+</div>
