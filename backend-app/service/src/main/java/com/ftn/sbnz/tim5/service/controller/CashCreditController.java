@@ -49,9 +49,11 @@ public class CashCreditController {
         Account account = new Account("1234567891234", LocalDateTime.now(), accountType, 500, 1);
         account.setId(1L);
         Debit debit = new Debit(DebitType.CASH_CREDIT, 50000, LocalDateTime.now(), 0, 3000, 21, Status.PENDING, account );
-        Debit debit1 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
-        Client client = new Client("ana@gmail.com", "12345", "Ana", "Anic", role, "Kraljevacka", "10", "36000", "Kraljevo", LocalDateTime.now().minusYears(22), EmployeeStatus.EMPLOYED,employer, account, 28000, Status.ACTIVE);
+        Debit debit1 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.REJECTED, account );
+        Debit debit2 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
+        Client client = new Client("ana@gmail.com", "12345", "Ana", "Anic", role, "Kraljevacka", "10", "36000", "Kraljevo", LocalDateTime.now().minusYears(22), EmployeeStatus.EMPLOYED,employer, account, 26000, Status.ACTIVE);
         account.getDebits().add(debit1);
+        account.getDebits().add(debit2);
         ksession.insert(accountType);
         ksession.insert(account);
         ksession.insert(debit);
