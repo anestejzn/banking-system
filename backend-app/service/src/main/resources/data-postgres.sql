@@ -4,9 +4,9 @@ insert into admin (id,email, password, name, surname, role_id) values
                                                     (nextval('users_id_gen'),'pera@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Pera', 'Peric',1);
 
 insert into account_type (name, currency, monthly_subscription, overdraft, cash_credit_limit) values
-    ('Regular', 'RSD', 150, 0, 50000),
-    ('Premium', 'RSD', 300, 50000, 100000),
-    ('Platinum', 'RSD', 500, 150000, 300000);    --pitanje ovde
+    ('Regular', 'RSD', 150, false, 50000),
+    ('Premium', 'RSD', 300, true, 100000),
+    ('Platinum', 'RSD', 500, true, 300000);
 
 
 INSERT INTO card_enum (account_type_id, cards)
@@ -16,10 +16,10 @@ VALUES (1, 0),
        (3, 0),
        (3, 2);
 
-insert into account (account_number, account_date, account_type_id) values
-        ('1234567890123', '2023-01-01', 2),
-        ('1234560090173', '2022-01-01', 3),
-        ('1034561110173', '2021-01-01', 1);
+insert into account (account_number, account_date, account_type_id, total_balance, applicant_score) values
+        ('1234567890123', '2023-01-01', 2, 10000, 0),
+        ('1234560090173', '2022-01-01', 3, 10000, 0),
+        ('1034561110173', '2021-01-01', 1, 10000, 0);
 
 insert into employer (name, pib, NBS_certified, employer_status, started_operating) values
     ('PIO FOND', '111100009', true, 0, '2000-05-01'),

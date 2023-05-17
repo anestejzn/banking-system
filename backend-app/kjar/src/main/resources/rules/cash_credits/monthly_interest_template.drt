@@ -1,0 +1,25 @@
+template header
+minPaymentPeriod
+maxPaymentPeriod
+minNumOfCredits
+maxNumOfCredits
+monthlyInterest
+
+package cash_credits;
+
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.enums.Status;
+
+template "monthly-interest"
+
+rule "Categorize MonthlyInterest_@{row.rowNumber}"
+no-loop true
+when
+    $d: Debit($account: account, paymentPeriod >= @{minPaymentPeriod} && paymentPeriod <= @{maxPaymentPeriod}, debitStatus == Status.PENDING)
+    $a: Account(this == $account, debits.size() >= @{minNumOfCredits} && debits.size() <= @{maxNumOfCredits})
+then
+    modify ($d){ setMonthlyInterest(@{monthlyInterest})};
+end
+
+end template

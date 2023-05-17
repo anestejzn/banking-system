@@ -88,6 +88,8 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/auth/**")
                 .permitAll()
+                .antMatchers("/cash-credit/proba")
+                .permitAll()
                 .antMatchers("/clients/register-retired-client")
                 .permitAll()
                 .antMatchers("/clients/register-employed-client")

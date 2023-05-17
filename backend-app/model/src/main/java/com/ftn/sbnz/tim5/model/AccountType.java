@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -25,16 +26,16 @@ public class AccountType {
     @Column(name="monthly_subscription", nullable = false)
     private double monthlySubscription;
     @Column(name="overdraft", nullable = false)
-    private double overdraft;
+    private boolean overdraft;
     @Column(name="cash_credit_limit", nullable = false)
     private double cashCreditLimit;
     @ElementCollection(targetClass = CardType.class)
     @JoinTable(name = "card_enum", joinColumns = @JoinColumn(name = "account_type_id"))
     @Column(name = "cards", nullable = false)
     @Enumerated(EnumType.STRING)
-    private List<CardType> cards;
+    private List<CardType> cards = new LinkedList<>();
 
-    public AccountType(String name, String currency, double monthlySubscription, double overdraft, double cashCreditLimit, List<CardType> cards) {
+    public AccountType(String name, String currency, double monthlySubscription, boolean overdraft, double cashCreditLimit, List<CardType> cards) {
         this.name = name;
         this.currency = currency;
         this.monthlySubscription = monthlySubscription;
@@ -42,4 +43,5 @@ public class AccountType {
         this.cashCreditLimit = cashCreditLimit;
         this.cards = cards;
     }
+
 }

@@ -1,0 +1,31 @@
+template header
+minIncome
+maxIncome
+debitPercentageOfIncome
+
+package cash_credits;
+
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+template "cash-credit-request-employee"
+
+rule "Categorize EmployeeRequestStatus_@{row.rowNumber}"
+no-loop true
+when
+    $d: Debit($account: account, debitStatus == Status.PENDING)
+    $c: Client(account.id == $account.id, ChronoUnit.YEARS.between(dateOfBirth, LocalDateTime.now()) > 20, monthlyIncome >= @{minIncome} && monthlyIncome <= @{maxIncome})
+    $sumOfMonthlyAmount: Double() from accumulate(
+            $debit: Debit(debitStatus == Status.ACTIVE) from $account.debits,
+            sum($debit.getMonthlyAmount())
+    )
+   eval(($sumOfMonthlyAmount + $d.getMonthlyAmount()) >= $c.getMonthlyIncome() * (@{debitPercentageOfIncome}/100.0))
+then
+    modify ($d){ setDebitStatus(Status.REJECTED)};
+end
+
+end template

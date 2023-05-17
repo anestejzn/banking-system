@@ -1,15 +1,13 @@
 package com.ftn.sbnz.tim5.model;
 
-import com.ftn.sbnz.tim5.model.enums.AccountStatus;
+import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name="client")
@@ -40,7 +38,7 @@ public class Client extends User{
     private boolean verified = false;
 
     @Column(name="account_status", nullable = false)
-    private AccountStatus accountStatus;
+    private Status accountStatus;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -71,7 +69,7 @@ public class Client extends User{
             Employer employer,
             Account account,
             double monthlyIncome,
-            AccountStatus accountStatus
+            Status accountStatus
     ) {
         super(email, password, name, surname, role);
         this.streetName = streetName;
@@ -103,7 +101,7 @@ public class Client extends User{
             LocalDateTime startedWorking,
             Account account,
             double monthlyIncome,
-            AccountStatus accountStatus
+            Status accountStatus
     ) {
         super(email, password, name, surname, role);
         this.streetName = streetName;
