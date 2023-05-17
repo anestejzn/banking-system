@@ -1,7 +1,6 @@
 package com.ftn.sbnz.tim5.service.security;
 
 
-import com.ftn.sbnz.tim5.model.Role;
 import com.ftn.sbnz.tim5.service.dto.response.UserResponse;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

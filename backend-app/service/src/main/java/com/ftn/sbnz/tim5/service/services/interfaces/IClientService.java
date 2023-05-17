@@ -2,18 +2,17 @@ package com.ftn.sbnz.tim5.service.services.interfaces;
 
 
 import com.ftn.sbnz.tim5.model.Client;
-import com.ftn.sbnz.tim5.model.Role;
-import com.ftn.sbnz.tim5.service.dto.response.UserResponse;
-import com.ftn.sbnz.tim5.service.exception.EntityNotFoundException;
+import com.ftn.sbnz.tim5.service.dto.response.ClientResponse;
+import com.ftn.sbnz.tim5.service.exception.*;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public interface IClientService {
     Client getClient(String email) throws EntityNotFoundException;
-//    UserResponse create(
-//            String email,
-//            String name,
-//            String surname,
-//            String password,
-//            Role role);
     boolean activateAccount(String userEmail) throws EntityNotFoundException;
-    Client getClientById(Long id) throws EntityNotFoundException;
+
+    ClientResponse createRetiree(String email, String name, String surname, String password, String confirmPassword, LocalDateTime dateOfBirth, double monthlyIncome, String accountTypeName, String city, String postCode, String streetName, String streetNumber, boolean termsOfPIOFondAgreement) throws EntityAlreadyExistsException, PasswordsDoNotMatchException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidTermsOfAgreementException;
+
+    ClientResponse createEmployedClient(String email, String name, String surname, String password, String confirmPassword, LocalDateTime dateOfBirth, double monthlyIncome, String accountTypeName, String city, String postCode, String streetName, String streetNumber, String employerName, LocalDateTime startedWorking) throws PasswordsDoNotMatchException, EntityAlreadyExistsException, EntityNotFoundException, IOException, MailCannotBeSentException;
 }
