@@ -1,8 +1,8 @@
 package com.ftn.sbnz.tim5.service.services.implementation;
 
 import com.ftn.sbnz.tim5.model.*;
-import com.ftn.sbnz.tim5.model.enums.AccountStatus;
 import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
+import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.service.dto.response.ClientResponse;
 import com.ftn.sbnz.tim5.service.exception.*;
 import com.ftn.sbnz.tim5.service.repository.ClientRepository;
@@ -83,7 +83,7 @@ public class ClientService implements IClientService {
         return new ClientResponse(clientRepository.save(
                 new Client(
                         email, getHash(password), name, surname, role, streetName, streetNumber, postCode,
-                        city, dateOfBirth, EmployeeStatus.RETIREE, employer, account, monthlyIncome, AccountStatus.PENDING
+                        city, dateOfBirth, EmployeeStatus.RETIREE, employer, account, monthlyIncome, Status.PENDING
                 )
         ));
     }
@@ -121,7 +121,7 @@ public class ClientService implements IClientService {
         return new ClientResponse(clientRepository.save(
                 new Client(
                         email, getHash(password), name, surname, role, streetName, streetNumber, postCode,
-                        city, dateOfBirth, EmployeeStatus.EMPLOYED, employer, startedWorking, account, monthlyIncome, AccountStatus.PENDING
+                        city, dateOfBirth, EmployeeStatus.EMPLOYED, employer, startedWorking, account, monthlyIncome, Status.PENDING
                 )
         ));
     }
