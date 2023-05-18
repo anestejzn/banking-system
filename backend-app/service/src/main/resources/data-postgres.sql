@@ -1,7 +1,10 @@
+
+--sifra1234A2@
+
 insert into role (role_name) values ('ROLE_ADMIN'),
                                     ('ROLE_CLIENT');
 insert into admin (id,email, password, name, surname, role_id) values
-                                                    (nextval('users_id_gen'),'pera@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Pera', 'Peric',1);
+                                                    (nextval('users_id_gen'),'admin@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Pera', 'Peric',1);
 
 insert into account_type (name, currency, monthly_subscription, overdraft, cash_credit_limit) values
     ('Regular', 'RSD', 150, false, 50000),

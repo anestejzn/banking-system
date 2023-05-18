@@ -1,0 +1,16 @@
+<div style="padding: 3%;" class="cancel-container" *ngIf="client">
+    <h1 class="center-content"><b>Request details</b></h1>
+
+    <mat-dialog-content style="min-height: 7rem; min-width: 7rem;">
+        <br>
+        <p>Full name: <b>{{client.name}} {{client.surname}}</b></p>
+        <p>Address: <b>{{client.city}}, {{client.streetName}} {{client.streetNumber}}, {{client.postCode}}</b></p>
+        <p>Date of Birth: <b>{{client.dateOfBirth.split('T')[0]}}</b></p>
+        <p>Employment status: <b>{{client.employeeStatus}}</b></p>
+        <p>Monthly income: <b>{{client.monthlyIncome}}</b></p>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="activity-buttons" align="center">
+        <button mat-button class="cancel-button" [mat-dialog-close]="null">Close</button>
+    </mat-dialog-actions>
+</div>

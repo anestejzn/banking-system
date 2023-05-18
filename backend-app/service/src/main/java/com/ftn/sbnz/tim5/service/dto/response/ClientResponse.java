@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -53,5 +55,14 @@ public class ClientResponse extends UserResponse {
         this.dateOfBirth = client.getDateOfBirth();
         this.employeeStatus = client.getEmployeeStatus();
         this.monthlyIncome = client.getMonthlyIncome();
+    }
+
+    public static List<ClientResponse> fromClientListToClientResponses(List<Client> clients) {
+        List<ClientResponse> responses = new LinkedList<>();
+        clients.forEach(client -> {
+            responses.add(new ClientResponse(client));
+        });
+
+        return responses;
     }
 }

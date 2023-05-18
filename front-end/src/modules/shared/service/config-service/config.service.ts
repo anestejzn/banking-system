@@ -42,9 +42,18 @@ export class ConfigService {
 
   ////////////////CLIENT////////////////////////
   CLIENTS_URL = `${this.API_URL}/clients`;
+  ALL_PENDING_CLIENTS = `${this.CLIENTS_URL}/all-pending-clients`
   
   getClientRegistrationURL(isRetiree: boolean): string {
     return isRetiree ? `${this.CLIENTS_URL}/register-retired-client` : `${this.CLIENTS_URL}/register-employed-client`;
+  }
+
+  getRegistrationAcceptanceURL(id: number): string {
+    return`${this.CLIENTS_URL}/accept-registration-request/${id}`;
+  }
+
+  getRegistrationRejectURL(id: number): string {
+    return `${this.CLIENTS_URL}/reject-registration-request/${id}`;
   }
 
 }

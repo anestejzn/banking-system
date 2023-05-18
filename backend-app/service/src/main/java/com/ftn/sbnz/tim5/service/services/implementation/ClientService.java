@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
+import static com.ftn.sbnz.tim5.service.dto.response.ClientResponse.fromClientListToClientResponses;
 import static com.ftn.sbnz.tim5.service.util.Constants.PIO_FOND;
 import static com.ftn.sbnz.tim5.service.util.Constants.ROLE_CLIENT;
 import static com.ftn.sbnz.tim5.service.util.Helper.getHash;
@@ -45,6 +47,21 @@ public class ClientService implements IClientService {
     public Client getClient(String email) throws EntityNotFoundException {
         return clientRepository.getClientByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User is not found."));
+    }
+
+    @Override
+    public Client getClientById(Long id) throws EntityNotFoundException {
+        return clientRepository.getClientById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User is not found."));
+    }
+
+    @Override
+    public boolean rejectRegistrationRequest(Long id) throws EntityNotFoundException {
+        Client client = this.getClientById(id);
+        client.setAccountStatus(Status.REJECTED);
+        clientRepository.save(client);
+
+        return true;
     }
 
     @Override
@@ -133,6 +150,21 @@ public class ClientService implements IClientService {
                         city, dateOfBirth, EmployeeStatus.EMPLOYED, employer, startedWorking, account, monthlyIncome, Status.PENDING
                 )
         ));
+    }
+
+    public List<ClientResponse> getPendingClients() {
+
+        return fromClientListToClientResponses(clientRepository.getPendingClients());
+    }
+
+    @Override
+    public boolean acceptRegistrationRequest(Long id) throws EntityNotFoundException {
+        Client client = this.getClientById(id);
+        client.setAccountStatus(Status.ACTIVE);
+        client.setVerified(true);
+        clientRepository.save(client);
+
+        return true;
     }
 
     private void checkValidityOfDataForRegistration(

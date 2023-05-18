@@ -12,6 +12,7 @@ import { User } from 'src/modules/shared/model/user';
 export class NavBarComponent implements OnInit {
   loggedUser:User;
   authSubscription: Subscription;
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -21,6 +22,7 @@ export class NavBarComponent implements OnInit {
       .getSubjectCurrentUser()
       .subscribe(user => {
         this.loggedUser = user;
+        this.isAdmin = this.loggedUser.role.roleName === 'ROLE_ADMIN';
       });
   }
 
