@@ -1,0 +1,76 @@
+package cash_credits;
+
+import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.AccountType;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
+import com.ftn.sbnz.tim5.model.enums.DebitType;
+import com.ftn.sbnz.tim5.model.enums.CardType;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+
+declare ReducedMonthlyInterestEvent
+    @role(event)
+    message: String;
+    debitId: Long;
+end
+
+rule "monthly interest client is retiree"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
+         $c: Client(account == $account, employeeStatus == EmployeeStatus.RETIREE)
+         $a: Account(id == $account.id, cards not contains CardType.AMERICAN_EXPRESS)
+         not(ReducedMonthlyInterestEvent(debitId == $d.id, message == "Retiree client"))
+    then
+        modify ($d) {
+            setMonthlyInterest($d.getMonthlyInterest() - 0.2)
+        }
+        System.out.println("Retiree client");
+        insert(new ReducedMonthlyInterestEvent("Retiree client",$d.getId()));
+end
+
+
+rule "monthly interest client is retiree and have american express/visa platinum card"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
+         $c: Client(account == $account, employeeStatus == EmployeeStatus.RETIREE)
+         $a: Account(id == $account.id, cards contains CardType.AMERICAN_EXPRESS || cards contains CardType.VISA_PLATINUM)
+         not(ReducedMonthlyInterestEvent(debitId == $d.id, message == "Retiree client with special cards"))
+    then
+        modify ($d) {
+            setMonthlyInterest($d.getMonthlyInterest() - 0.4)
+        }
+        System.out.println("Retiree client with special cards");
+        insert(new ReducedMonthlyInterestEvent("Retiree client with special cards",$d.getId()));
+end
+
+rule "monthly interest client is not retiree have american express/visa platinum card"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
+         $c: Client(account == $account, employeeStatus != EmployeeStatus.RETIREE)
+         $a: Account(id == $account.id, cards contains CardType.AMERICAN_EXPRESS || cards contains CardType.VISA_PLATINUM)
+         not(ReducedMonthlyInterestEvent(debitId == $d.id, message == "Non retiree client with special cards"))
+    then
+        modify ($d) {
+            setMonthlyInterest($d.getMonthlyInterest() - 0.3)
+        }
+        System.out.println("Non retiree client with special cards");
+        insert(new ReducedMonthlyInterestEvent("Non retiree client with special cards",$d.getId()));
+end
+
+rule "monthly interest applicant scores"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
+         $a: Account(id == $account.id, $applicantScoresTime: (applicantScore/5))
+         not(ReducedMonthlyInterestEvent(debitId == $d.id, message == "Applicant score"))
+    then
+        modify ($d) {
+            setMonthlyInterest($d.getMonthlyInterest() - $applicantScoresTime*0.1)
+        }
+        System.out.println("Applicant score");
+        insert(new ReducedMonthlyInterestEvent("Applicant score",$d.getId()));
+end
+

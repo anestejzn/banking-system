@@ -1,17 +1,21 @@
 package com.ftn.sbnz.tim5.service.controller;
 
 import com.ftn.sbnz.tim5.model.*;
+import com.ftn.sbnz.tim5.model.enums.CardType;
 import com.ftn.sbnz.tim5.model.enums.DebitType;
 import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
 import com.ftn.sbnz.tim5.model.enums.Status;
 import org.drools.template.DataProvider;
 import org.drools.template.DataProviderCompiler;
 import org.drools.template.objects.ArrayDataProvider;
+import org.kie.api.KieBase;
 import org.kie.api.builder.Message;
 import org.kie.api.builder.Results;
 import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.utils.KieHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +27,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/cash-credit")
 public class CashCreditController {
+
+    private final KieContainer kieContainer;
+
+    @Autowired
+    public CashCreditController(KieContainer kieContainer){
+        this.kieContainer = kieContainer;
+    }
 
     @GetMapping("/proba")
     public void proba(){
@@ -80,5 +91,42 @@ public class CashCreditController {
         }
 
         return kieHelper.build().newKieSession();
+    }
+
+    @GetMapping("/proba2")
+    public void proba2(){
+        Role role = new Role();
+        Employer employer = new Employer();
+
+        AccountType accountType1 = new AccountType();
+        accountType1.setName("Premium");
+        Account account = new Account("1234567891234", LocalDateTime.now(), accountType1, 500, 1);
+        account.setId(1L);
+        Debit debit1 = new Debit(DebitType.CASH_CREDIT, 50000, LocalDateTime.now(), 3, 3000, 60, Status.PENDING, account );
+
+        Debit debit2 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
+        Debit debit3 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
+        Debit debit4 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
+        Debit debit5 = new Debit(DebitType.CASH_CREDIT, 40000, LocalDateTime.now(), 0, 6000, 21, Status.ACTIVE, account );
+        account.getDebits().add(debit2);
+        account.getDebits().add(debit3);
+        account.getDebits().add(debit4);
+        account.getDebits().add(debit5);
+//      client is under 20
+//      Client client = new Client("ana@gmail.com", "12345", "Ana", "Anic", role, "Kraljevacka", "10", "36000", "Kraljevo", LocalDateTime.now().minusYears(18), EmployeeStatus.EMPLOYED,employer, account, 28000, Status.ACTIVE);
+        Client client = new Client("ana@gmail.com", "12345", "Ana", "Anic", role, "Kraljevacka", "10", "36000", "Kraljevo", LocalDateTime.now().minusYears(22), EmployeeStatus.EMPLOYED,employer, account, 28000, Status.ACTIVE);
+        account.setApplicantScore(10);
+        account.getDebits().add(debit1);
+        account.getCards().add(CardType.AMERICAN_EXPRESS);
+
+        KieSession kieSession = kieContainer.newKieSession("cashCreditKsession");
+        kieSession.insert(account);
+        kieSession.insert(accountType1);
+        kieSession.insert(debit1);
+        kieSession.insert(client);
+
+        kieSession.fireAllRules();
+
+        System.out.println(debit1.getDebitStatus());
     }
 }

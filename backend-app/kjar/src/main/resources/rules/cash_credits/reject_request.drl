@@ -1,0 +1,93 @@
+package cash_credits;
+
+import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.AccountType;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
+import com.ftn.sbnz.tim5.model.enums.DebitType;
+import com.ftn.sbnz.tim5.model.enums.CardType;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+
+rule "reject cash credit request, client is under 20"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING)
+         $c: Client(account == $account, employeeStatus != EmployeeStatus.RETIREE, ChronoUnit.YEARS.between(dateOfBirth, LocalDateTime.now()) < 20)
+
+    then
+        modify ($d) {
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject cash credit request, client is under 20");
+end
+
+
+rule "reject cash credit request, regular account type, amount > 50.000"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, totalAmount > 50000)
+         $a: Account(this == $account, $accountType: accountType)
+         $at: AccountType(this == $accountType, name == "Regular")
+    then
+        modify ($d) {
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject cash credit request, regular account type, amount > 50.000");
+end
+
+rule "reject cash credit request, premium account type, amount > 100.000"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, totalAmount > 100000)
+         $a: Account(this == $account, $accountType: accountType)
+         $at: AccountType(this == $accountType, name == "Premium")
+    then
+        modify ($d) {
+           setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject cash credit request, premium account type, amount > 100.000");
+end
+
+rule "reject cash credit request, premium account type, number of active cash credit is 4"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING)
+         $a: Account(this == $account, $accountType: accountType)
+         $at: AccountType(this == $accountType, name == "Premium")
+         $numOfActiveCashCredit: Long() from accumulate(
+                 $debit: Debit(account == $account, debitStatus == Status.ACTIVE, debitType == DebitType.CASH_CREDIT) from $account.debits,
+                 count($debit)
+         )
+         eval($numOfActiveCashCredit == 4)
+    then
+        modify ($d) {
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject cash credit request, premium account type, number of active cash credit is 4");
+end
+
+
+rule "reject cash credit request, payment period is over 71"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING, paymentPeriod > 71)
+    then
+        modify ($d) {
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject cash credit request, payment period is over 71");
+end
+
+rule "reject cash credit request, platinum account type, amount is over sum of 6 monthly income"
+    when
+         $d: Debit($account: account, debitStatus == Status.PENDING)
+         $a: Account(id == $account.id, $accountType: accountType)
+         $at: AccountType(id == $accountType.id, name == "Platinum")
+         $c: Client(account == $account)
+         eval($c.getMonthlyIncome()*6 < $d.getTotalAmount())
+    then
+        modify ($d) {
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject cash credit request, platinum account type, amount is over sum of 6 monthly income");
+end
+
