@@ -23,7 +23,7 @@ public class ClientController {
     @PostMapping(path = "register-retired-client")
     @ResponseStatus(HttpStatus.CREATED)
     public ClientResponse registerRetired(@Valid @RequestBody RetireeRegistrationRequest request)
-            throws PasswordsDoNotMatchException, EntityAlreadyExistsException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidTermsOfAgreementException {
+            throws PasswordsDoNotMatchException, EntityAlreadyExistsException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidTermsOfAgreementException, InvalidDateOfBirthException {
 
         return clientService.createRetiree(
           request.getEmail(),
@@ -45,8 +45,7 @@ public class ClientController {
     @PostMapping(path = "register-employed-client")
     @ResponseStatus(HttpStatus.CREATED)
     public ClientResponse registerEmployed(@Valid @RequestBody EmployedClientRegistrationRequest request)
-            throws PasswordsDoNotMatchException, EntityAlreadyExistsException, IOException, MailCannotBeSentException, EntityNotFoundException
-    {
+            throws PasswordsDoNotMatchException, EntityAlreadyExistsException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidDateOfBirthException {
 
         return clientService.createEmployedClient(
                 request.getEmail(),

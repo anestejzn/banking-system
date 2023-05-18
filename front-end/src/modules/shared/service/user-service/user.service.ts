@@ -13,13 +13,6 @@ export class UserService {
 
   constructor(private http: HttpClient, private configService: ConfigService) { }
 
-  registerRegularUser(newUser: UserRegistrationRequest): Observable<User> {
-    return this.http.post<User>(
-      this.configService.CREATE_USER_URL,
-      newUser
-    );
-  }
-
   verify(verifyRequest: VerifyRequest): Observable<boolean> {
     return this.http.put<boolean>(this.configService.ACTIVATE_ACCOUNT_URL, verifyRequest);
   }

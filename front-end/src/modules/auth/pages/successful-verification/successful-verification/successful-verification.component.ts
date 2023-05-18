@@ -11,7 +11,7 @@ export class SuccessfulVerificationComponent {
   constructor(private router: Router) { }
 
   redirectToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/banking-system/auth/login']);
   }
 
 }

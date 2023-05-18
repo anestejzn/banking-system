@@ -14,4 +14,20 @@ export interface User {
   accountStatus: string;
   role: Role;
 }
+
+export interface Client {
+  id: number;
+  email: string;
+  name: string;
+  surname: string;
+  accountStatus: string;
+  role: Role;
+  streetName: string;
+  streetNumber: string;
+  postCode: string;
+  city: string,
+  dateOfBirth: string;
+  employeeStatus: string;
+  monthlyIncome: number;
+}
  

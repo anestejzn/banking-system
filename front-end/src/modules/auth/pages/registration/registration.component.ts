@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { map, Observable, startWith, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { UserService } from 'src/modules/shared/service/user-service/user.service';
 import { UserRegistrationRequest } from '../../model/model/registration_and_verification/user-registration-request';
 import { matchPasswordsValidator } from 'src/modules/shared/validators/confirm-password.validator';
+import { ClientService } from 'src/modules/shared/service/client-service/client.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   constructor(
     private toast: ToastrService, 
     private router: Router,
-    private userService: UserService
+    private clientService: ClientService
   ) {
     this.showSpiner = false;
   }
@@ -45,7 +45,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       ]),
       postCodeFormControl: new FormControl('', [
         Validators.required,
-        Validators.pattern('[1-9]{5}'),
+        Validators.pattern('[1-9][0-9]{4}'),
       ]),
   });
 
@@ -64,7 +64,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern('[1-9][0-9]*')
       ]),
-      employerNameFormControl: new FormControl(0),
+      employerNameFormControl: new FormControl(''),
       termsOfPIOFondAgreementFormControl: new FormControl(false)
   });
 
@@ -99,39 +99,55 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     [matchPasswordsValidator()]
   );
 
-  register(): void {
-    // if (this.registrationForm.hasError('mismatch')) {
-    //   this.toast.error('Passwords not match');
-    // } else if (this.registrationForm.invalid) {
-    //   this.toast.error('Registration form is invalid.')
-    // } else {
-    //   const newUser: UserRegistrationRequest = {
-    //     email: this.registrationForm.get('emailFormControl').value,
-    //     name: this.registrationForm.get('nameFormControl').value,
-    //     surname: this.registrationForm.get('surnameFormControl').value,
-    //     password: this.registrationForm.get('passwordFormControl').value,
-    //     confirmPassword: this.registrationForm.get('passwordAgainFormControl').value,
-    //     role: 'ROLE_'+this.registrationForm.get('roleFormControl').value
-    //   }
+  print(): void {
+    console.log(this.basicInfoForm)
+  }
 
-    //   this.showSpiner = true;
-    //   this.registrationSubscription = this.userService
-    //         .registerRegularUser(newUser)
-    //         .subscribe(
-    //           response => {
-    //             this.showSpiner = false;
-    //             this.toast.success(
-    //               'Please go to your email to verify account!',
-    //               'Registration successfully'
-    //             );
-    //             this.router.navigate([`/banking-system/auth/login`]);
-    //           },
-    //           error => {
-    //             this.showSpiner = false;
-    //             this.toast.error(error.error, 'Registration failed')
-    //           }
-    //         );
-    // }
+  register(): void {
+    if (this.basicInfoForm.hasError('mismatch')) {
+      this.toast.error('Passwords not match');
+    } else if (this.basicInfoForm.invalid || this.addressForm.invalid
+              || this.accountTypeForm.invalid || this.employmentForm.invalid) {
+      this.toast.error('Registration form is invalid.')
+    } else {
+      const newUser: UserRegistrationRequest = {
+        email: this.basicInfoForm.get('emailFormControl').value,
+        name: this.basicInfoForm.get('nameFormControl').value,
+        surname: this.basicInfoForm.get('surnameFormControl').value,
+        password: this.basicInfoForm.get('passwordFormControl').value,
+        confirmPassword: this.basicInfoForm.get('passwordAgainFormControl').value,
+        streetName: this.addressForm.get('streetNameFormControl').value,
+        streetNumber: this.addressForm.get('streetNumberFormControl').value,
+        postCode: this.addressForm.get('postCodeFormControl').value,
+        city: this.addressForm.get('cityFormControl').value,
+        dateOfBirth: new Date(this.employmentForm.get('dateOfBirthFormControl').value),
+        monthlyIncome: this.employmentForm.get('monthlyIncomeFormControl').value,
+        accountTypeName: this.accountTypeForm.get('accountTypeNameFormControl').value,
+        termsOfPIOFondAgreement: this.employmentForm.get('termsOfPIOFondAgreementFormControl').value,
+        employerName: this.employmentForm.get('employerNameFormControl').value,
+        startedWorking: new Date(this.employmentForm.get('startedWorkingFormControl').value)
+      }
+      console.log(newUser)
+
+      this.showSpiner = true;
+      const isRetiree: boolean = this.basicInfoForm.get('roleFormControl').value === 'RETIREE';
+      this.registrationSubscription = this.clientService
+            .registerRegularUser(newUser, isRetiree)
+            .subscribe(
+              response => {
+                this.showSpiner = false;
+                this.toast.success(
+                  'Please go to your email to verify account!',
+                  'Registration successfully'
+                );
+                this.router.navigate([`/banking-system/auth/login`]);
+              },
+              error => {
+                this.showSpiner = false;
+                this.toast.error(error.error, 'Registration failed')
+              }
+            );
+    }
   }
 
   ngOnDestroy(): void {

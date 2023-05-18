@@ -40,4 +40,11 @@ export class ConfigService {
   EMPLOYERS_URL = `${this.API_URL}/employers`;
   ALL_EMPLOYERS = `${this.EMPLOYERS_URL}/all-employers`;
 
+  ////////////////CLIENT////////////////////////
+  CLIENTS_URL = `${this.API_URL}/clients`;
+  
+  getClientRegistrationURL(isRetiree: boolean): string {
+    return isRetiree ? `${this.CLIENTS_URL}/register-retired-client` : `${this.CLIENTS_URL}/register-employed-client`;
+  }
+
 }

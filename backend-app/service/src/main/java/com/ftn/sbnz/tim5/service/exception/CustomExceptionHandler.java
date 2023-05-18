@@ -24,6 +24,12 @@ public class CustomExceptionHandler {
         return passwordsDoNotMatchException.getMessage();
     }
 
+    @ExceptionHandler(value = InvalidDateOfBirthException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String invalidDateOfBirth(InvalidDateOfBirthException invalidDateOfBirthException) {
+        return invalidDateOfBirthException.getMessage();
+    }
+
     @ExceptionHandler(value = EntityAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String entityAlreadyExistsException(EntityAlreadyExistsException entityAlreadyExists) {

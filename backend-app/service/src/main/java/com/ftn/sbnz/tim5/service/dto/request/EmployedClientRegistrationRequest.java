@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +17,7 @@ public class EmployedClientRegistrationRequest extends ClientRegistrationRequest
     @NotBlank(message = WRONG_EMPLOYER_NAME)
     private final String employerName;
 
-    @NotBlank(message = "Started working date must be selected.")
+    @NotNull(message = "Started working date must be selected.")
     private final LocalDateTime startedWorking;
 
     public EmployedClientRegistrationRequest(String email,

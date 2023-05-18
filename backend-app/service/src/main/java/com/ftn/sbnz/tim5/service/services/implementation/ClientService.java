@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static com.ftn.sbnz.tim5.service.util.Constants.PIO_FOND;
@@ -70,9 +71,10 @@ public class ClientService implements IClientService {
             String streetName,
             String streetNumber,
             boolean termsOfPIOFondAgreement
-    ) throws EntityAlreadyExistsException, PasswordsDoNotMatchException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidTermsOfAgreementException {
+    ) throws EntityAlreadyExistsException, PasswordsDoNotMatchException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidTermsOfAgreementException, InvalidDateOfBirthException {
         checkValidityOfDataForRegistration(password, confirmPassword, email);
         checkRetireeTermsOfAgreement(termsOfPIOFondAgreement);
+        checkDayOfBirthValidity(dateOfBirth);
 
         Role role = roleService.getRoleByName(ROLE_CLIENT);
         AccountType accountType = accountTypeService.getAccountTypeByName(accountTypeName);
@@ -94,6 +96,12 @@ public class ClientService implements IClientService {
         }
     }
 
+    private void checkDayOfBirthValidity(LocalDateTime dayOfBirth) throws InvalidDateOfBirthException {
+        if (ChronoUnit.YEARS.between(dayOfBirth, LocalDateTime.now()) < 18) {
+            throw new InvalidDateOfBirthException("You cannot open an account if you are younger than 18.");
+        }
+    }
+
     @Override
     public ClientResponse createEmployedClient(String email,
                                                String name,
@@ -109,8 +117,9 @@ public class ClientService implements IClientService {
                                                String streetNumber,
                                                String employerName,
                                                LocalDateTime startedWorking
-    ) throws PasswordsDoNotMatchException, EntityAlreadyExistsException, EntityNotFoundException, IOException, MailCannotBeSentException {
+    ) throws PasswordsDoNotMatchException, EntityAlreadyExistsException, EntityNotFoundException, IOException, MailCannotBeSentException, InvalidDateOfBirthException {
         checkValidityOfDataForRegistration(password, confirmPassword, email);
+        checkDayOfBirthValidity(dateOfBirth);
 
         Role role = roleService.getRoleByName(ROLE_CLIENT);
         AccountType accountType = accountTypeService.getAccountTypeByName(accountTypeName);

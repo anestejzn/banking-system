@@ -8,7 +8,7 @@
                     <app-basic-info-registration></app-basic-info-registration>
                     <div>
                         <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button
-                            matStepperNext [disabled]="basicInfoForm.invalid">Next</button>
+                            matStepperNext (click)="print()" [disabled]="basicInfoForm.invalid">Next</button>
                     </div>
                 </div>
             </form>
@@ -19,7 +19,7 @@
                 <app-address-registration></app-address-registration>
                 <div>
                     <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button matStepperNext
-                        [disabled]="basicInfoForm.invalid">Next</button>
+                        [disabled]="addressForm.invalid">Next</button>
                 </div>
                 <div>
                     <button style="float: right; margin-right: 1rem; margin-top: 1rem;" class="back-button" mat-raised-button
@@ -44,7 +44,9 @@
         <mat-step [stepControl]="employmentForm">
             <form [formGroup]="employmentForm" class="stepper-container">
                 <ng-template matStepLabel>Employment data</ng-template>
-                <app-employment-registration [isRetiree]="basicInfoForm.get('roleFormControl').value === 'RETIREE'"></app-employment-registration>
+                <app-employment-registration 
+                [isRetiree]="basicInfoForm.get('roleFormControl').value === 'RETIREE'"
+                *ngIf="basicInfoForm.get('roleFormControl').value"></app-employment-registration>
             </form>
             <div>
                 <button style="float: right; margin-top: 1rem;" class="next-button" mat-raised-button matStepperNext
@@ -57,11 +59,12 @@
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>End</ng-template>
-            <p>Review application and confirm</p>
+            <h1>Review application and confirm</h1>
             <div style="display: flex">
                 <button style="margin-left:40.7rem" class="previous-button" mat-raised-button
                     matStepperPrevious>Back</button>
-                <button style="margin-left:1rem" class="next-button" mat-raised-button
+                <button style="margin-left:1rem" class="next-button"
+                 mat-raised-button (click)="register()"
                    >Confirm</button>
             </div>
         </mat-step>

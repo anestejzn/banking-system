@@ -25,9 +25,6 @@ public class UserService implements IUserService {
     private VerificationService verificationService;
 
     @Autowired
-    private IRoleService roleService;
-
-    @Autowired
     private IClientService clientService;
     @Override
     public User getVerifiedUser(String email) throws EntityNotFoundException {
@@ -39,14 +36,6 @@ public class UserService implements IUserService {
     public UserResponse create(String email, String name, String surname, String password, String confirmPassword, String role) {
         return null;
     }
-
-
-//    @Override
-//    public boolean checkIfUserAlreadyExists(String email) {
-//        Optional<User> user = userRepository.findByEmail(email);
-//        return user.isPresent();
-//    }
-
 
     @Override
     public boolean activate(String verifyId, int securityCode) throws WrongVerifyTryException, EntityNotFoundException {

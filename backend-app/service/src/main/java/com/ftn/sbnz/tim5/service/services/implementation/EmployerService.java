@@ -1,6 +1,5 @@
 package com.ftn.sbnz.tim5.service.services.implementation;
 
-import com.ftn.sbnz.tim5.model.AccountType;
 import com.ftn.sbnz.tim5.model.Employer;
 import com.ftn.sbnz.tim5.service.dto.response.EmployerBasicResponse;
 import com.ftn.sbnz.tim5.service.exception.EntityNotFoundException;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.ftn.sbnz.tim5.service.dto.response.EmployerBasicResponse.fromEmployersToBasicResponses;
+import static com.ftn.sbnz.tim5.service.dto.response.EmployerBasicResponse.fromEmployersWithoutPioFondToBasicResponses;
 
 @Service
 public class EmployerService implements IEmployerService {
@@ -28,7 +27,7 @@ public class EmployerService implements IEmployerService {
     @Override
     public List<EmployerBasicResponse> getAll() {
 
-        return fromEmployersToBasicResponses(employerRepository.findAll());
+        return fromEmployersWithoutPioFondToBasicResponses(employerRepository.findAll());
     }
 
 }

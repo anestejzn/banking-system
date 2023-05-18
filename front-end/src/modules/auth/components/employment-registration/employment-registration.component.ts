@@ -23,18 +23,19 @@ export class EmploymentRegistrationComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.employmentForm = <FormGroup>this.controlContainer.control;
+    this.setRequirementsOfFields();
     this.employmentForm.clearValidators();
     this.employmentForm.updateValueAndValidity();
     this.employmentForm.reset();
-
-    this.setRequirementsOfFields();
     this.termsOfAgreement = this.employmentForm.get('termsOfPIOFondAgreementFormControl').value;
 
-    this.employerSubscription = this.employerService.getAll().subscribe(
-      res => {
-        this.allEmployers = res;
-      }
-    );
+    if (!this.isRetiree) {
+      this.employerSubscription = this.employerService.getAll().subscribe(
+        res => {
+          this.allEmployers = res;
+        }
+      );
+    }
   }
 
   changeAgreementTerms(): void {
@@ -52,6 +53,10 @@ export class EmploymentRegistrationComponent implements OnInit, OnDestroy {
       this.employmentForm.get('employerNameFormControl').setValidators(Validators.required);
       this.employmentForm.get('startedWorkingFormControl').setValidators(Validators.required);
     }
+
+    this.employmentForm.get('termsOfPIOFondAgreementFormControl').setValue(false);
+    this.employmentForm.get('employerNameFormControl').setValue('');
+    this.employmentForm.get('startedWorkingFormControl').setValue('');
   }
   
   ngOnDestroy(): void {
