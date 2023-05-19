@@ -40,6 +40,8 @@ public class Employer {
         this.name = name;
         this.pib = pib;
         this.NBS_certified = NBS_certified;
+        this.employerStatus = EmployerStatus.ACTIVE;
+        this.startedOperating = LocalDateTime.now();
     }
 
     public Employer(String name,
