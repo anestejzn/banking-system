@@ -1,0 +1,23 @@
+template header
+cardType
+applicantPoints
+
+package credit_cards;
+
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.Transaction;
+import com.ftn.sbnz.tim5.model.enums.TransactionType;
+import com.ftn.sbnz.tim5.model.enums.CardType;
+
+template "applicant-score-points-for-new-cards"
+
+rule "Categorize Applicant Score Points_@{row.rowNumber}"
+no-loop true
+when
+    $t: Transaction($accountId: account.id, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.@{cardType})
+    $a: Account(id == $accountId)
+then
+    modify ($a){ setApplicantScore($a.getApplicantScore() + @{applicantPoints})};
+end
+
+end template

@@ -1,11 +1,14 @@
 package com.ftn.sbnz.tim5.model;
 
+import com.ftn.sbnz.tim5.model.enums.CardType;
+import com.ftn.sbnz.tim5.model.enums.TransactionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name="debit")
@@ -27,11 +30,36 @@ public class Transaction {
     private Account account;
     @Column(name="other_side", nullable = false)
     private String otherSide; //ko je uplatilac ili kome se placa
+    @Column(name="transaction_type", nullable = false)
+    private TransactionType transactionType;
+    @Column(name="bought_card_type")
+    private CardType boughtCardType;
 
-    public Transaction(double amount, LocalDateTime transactionDate, boolean income, String otherSide) {
+    public Transaction(double amount,
+                       LocalDateTime transactionDate,
+                       boolean income,
+                       String otherSide,
+                       TransactionType transactionType
+    ) {
         this.amount = amount;
         this.transactionDate = transactionDate;
         this.income = income;
         this.otherSide = otherSide;
+        this.transactionType = transactionType;
+    }
+
+    public Transaction(double amount,
+                       LocalDateTime transactionDate,
+                       boolean income,
+                       String otherSide,
+                       TransactionType transactionType,
+                       CardType boughtCardType
+    ) {
+        this.amount = amount;
+        this.transactionDate = transactionDate;
+        this.income = income;
+        this.otherSide = otherSide;
+        this.transactionType = transactionType;
+        this.boughtCardType = boughtCardType;
     }
 }
