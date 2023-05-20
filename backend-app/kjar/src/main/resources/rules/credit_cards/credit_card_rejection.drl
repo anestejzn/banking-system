@@ -3,63 +3,95 @@ package credit_cards;
 import com.ftn.sbnz.tim5.model.Account;
 import com.ftn.sbnz.tim5.model.Client;
 import com.ftn.sbnz.tim5.model.Transaction;
+import com.ftn.sbnz.tim5.model.ClientPenalty;
 import com.ftn.sbnz.tim5.model.AccountType;
 import com.ftn.sbnz.tim5.model.enums.CardType;
+import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.model.enums.TransactionType;
 
-declare CreditCardTransactionDeclines
-    @role(event)
-    message: String;
-    transactionId: Long;
-end
 
 rule "reject credit card request, client already has American Express card"
+no-loop true
+agenda-group "CreditCardRejection"
     when
-        $t: Transaction($accountId: account.id, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
-        $a: Account(id == $accountId)
-        $numOfAmericanExpress: Integer() from accumulate(
-                         $card: CardType(this == CardType.AMERICAN_EXPRESS) from $a.cards,
+        $t: Transaction($account: account, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
+        $numOfAmericanExpress: Long() from accumulate(
+                         $card: CardType(this == CardType.AMERICAN_EXPRESS) from $account.cards,
                          count($card)
                  )
         eval($numOfAmericanExpress > 0)
     then
-        insert(new CreditCardTransactionDeclines("reject credit card request,  client already have American Express card", $t.getId()));
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
         System.out.println("reject credit card request,  client already have American Express card");
 end
 
 rule "reject credit card request, client does not have Platinum Account Type"
+no-loop true
+agenda-group "CreditCardRejection"
     when
-        $t: Transaction($accountId: account.id, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
+        $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $a: Account(id == $accountId, accountType.name != "Platinum")
     then
-        insert(new CreditCardTransactionDeclines("reject credit card request, client does not have Platinum Account Type", $t.getId()));
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
         System.out.println("reject credit card request, client does not have Platinum Account Type");
 end
 
 rule "reject credit card request, client does not have enough money"
+no-loop true
+agenda-group "CreditCardRejection"
     when
-        $t: Transaction($accountId: account.id, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
+        $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $a: Account(id == $accountId, totalBalance < 10000)
     then
-        insert(new CreditCardTransactionDeclines("reject credit card request, client does not have enough money", $t.getId()));
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
         System.out.println("reject credit card request, client does not have enough money");
 end
 
 rule "reject credit card request, client has too low monthly income"
+no-loop true
+agenda-group "CreditCardRejection"
     when
-        $t: Transaction($accountId: account.id, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
-        $a: Account(id == $accountId)
+        $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $c: Client(account.id == $accountId, monthlyIncome < 150000)
     then
-        insert(new CreditCardTransactionDeclines("reject credit card request, client has too low monthly income", $t.getId()));
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
         System.out.println("reject credit card request, client has too low monthly income");
 end
 
 rule "reject credit card request, client has less than 1 applicant score"
+no-loop true
+agenda-group "CreditCardRejection"
     when
-        $t: Transaction($accountId: account.id, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
+        $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $a: Account(id == $accountId, applicantScore < 1)
     then
-        insert(new CreditCardTransactionDeclines("reject credit card request, client has less than 1 applicant score", $t.getId()));
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
         System.out.println("reject credit card request, client has less than 1 applicant score");
+end
+
+rule "reject credit card request, client has one penalty in last month"
+no-loop true
+agenda-group "CreditCardRejection"
+    when
+        $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
+        Long(longValue() >= 1) from accumulate(
+                $cp: ClientPenalty(client.account.id == $accountId)
+                over window: time(28d),
+                count($cp)
+            )
+    then
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
+        System.out.println("reject credit card request, client has one penalty in last month");
 end

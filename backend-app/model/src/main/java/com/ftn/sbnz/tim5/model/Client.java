@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name="client")
@@ -53,6 +55,12 @@ public class Client extends User{
 
     @Column(name="monthly_income")
     private double monthlyIncome;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private List<ClientWarning> warnings = new LinkedList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private List<ClientPenalty> penalties = new LinkedList<>();
 
     public Client(
             String email,
