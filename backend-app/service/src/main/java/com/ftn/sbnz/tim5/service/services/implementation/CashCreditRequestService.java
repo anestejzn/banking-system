@@ -53,25 +53,32 @@ public class CashCreditRequestService implements ICashCreditRequestService {
     public DebitResponse processCashCreditRequest(Long clientId, double amount, int paymentPeriod) throws EntityNotFoundException {
         Client client = clientService.getClientById(clientId);
         Debit debit = new Debit(DebitType.CASH_CREDIT, amount, LocalDateTime.now(), 0, 0, paymentPeriod, Status.PENDING, client.getAccount());
-
+        kSession.getAgenda().getAgendaGroup("client-suspicious").setFocus();
+        kSession.insert(debit);
+        kSession.insert(client);
+        kSession.insert(client.getAccount());
+        kSession.fireAllRules();
+        System.out.println(debit.getDebitStatus());
+        //1. mesecna kamata template
         KieSession kieSessionMonthlyInterestTemplate = getMonthlyInterestTemplateKieSession();
         kieSessionMonthlyInterestTemplate.insert(debit);
         kieSessionMonthlyInterestTemplate.insert(client.getAccount());
         kieSessionMonthlyInterestTemplate.insert(client);
         kieSessionMonthlyInterestTemplate.fireAllRules();
-        kieSessionMonthlyInterestTemplate.dispose();
-
+//        kieSessionMonthlyInterestTemplate.dispose();
+        //2. umanjenje mesecne rate - pravila
+        kSession.getAgenda().getAgendaGroup("client-suspicious").clear();
         kSession.getAgenda().getAgendaGroup("monthly-interest").setFocus();
         kSession.fireAllRules();
-
+        //3. reject - template
         KieSession kieSessionRejectRequestTemplate = getRejectRequestTemplateKieSession();
         kieSessionRejectRequestTemplate.insert(debit);
         kieSessionRejectRequestTemplate.insert(client);
         kieSessionRejectRequestTemplate.fireAllRules();
-        kieSessionRejectRequestTemplate.dispose();
+//        kieSessionRejectRequestTemplate.dispose();
 
         System.out.println(debit.getMonthlyInterest());
-
+        // 4. reject - ostala pravila
         if(debit.getDebitStatus().equals(Status.PENDING)){
             double monthlyAmount = calculateMonthlyAmount(paymentPeriod, amount, debit.getMonthlyInterest());
             System.out.println("amount: " + monthlyAmount);
@@ -97,7 +104,6 @@ public class CashCreditRequestService implements ICashCreditRequestService {
     }
     private KieSession getRejectRequestTemplateKieSession(){
         InputStream template = CashCreditController.class.getResourceAsStream("/rules/cash_credits/reject_cash_credit_request_employee.drt");
-
         DataProvider dataProvider = new ArrayDataProvider(new String[][]{
                 new String[]{"0", "25000", "15"},
                 new String[]{"25001", "30000", "25"},

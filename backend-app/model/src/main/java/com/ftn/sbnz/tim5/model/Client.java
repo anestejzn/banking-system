@@ -62,6 +62,21 @@ public class Client extends User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<ClientPenalty> penalties = new LinkedList<>();
 
+    @Column(name="suspicious_date")
+    private LocalDateTime suspiciousDate;
+
+    @Column(name="login_attention_counter")
+    private int loginAttentionCounter;
+
+    @Column(name="debit_attention_counter")
+    private int debitAttentionCounter;
+
+    @Column(name="account_attention_counter")
+    private int accountAttentionCounter;
+
+    @Column(name="penalty_counter")
+    private int penaltyCounter;
+
     public Client(
             String email,
             String password,
@@ -90,6 +105,11 @@ public class Client extends User{
         this.account = account;
         this.monthlyIncome = monthlyIncome;
         this.accountStatus = accountStatus;
+        this.suspiciousDate = null;
+        this.accountAttentionCounter = 0;
+        this.debitAttentionCounter = 0;
+        this.loginAttentionCounter = 0;
+        this.penaltyCounter = 0;
     }
 
     //ovde ima startedWorking, gore nema
@@ -123,5 +143,10 @@ public class Client extends User{
         this.account = account;
         this.monthlyIncome = monthlyIncome;
         this.accountStatus = accountStatus;
+        this.suspiciousDate = null;
+        this.accountAttentionCounter = 0;
+        this.debitAttentionCounter = 0;
+        this.loginAttentionCounter = 0;
+        this.penaltyCounter = 0;
     }
 }

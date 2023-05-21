@@ -65,6 +65,16 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    public List<Client> getAllClients() {
+        return clientRepository.getAll();
+    }
+
+    @Override
+    public Client save(Client client) {
+        return clientRepository.save(client);
+    }
+
+    @Override
     public boolean activateAccount(String userEmail) throws EntityNotFoundException {
         Client client = this.getClient(userEmail);
         client.setVerified(true);

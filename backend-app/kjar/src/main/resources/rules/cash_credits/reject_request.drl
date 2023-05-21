@@ -14,6 +14,18 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
+rule "reject cash credit request, client is suspicious"
+    agenda-group "client-suspicious"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING)
+        $c: Client(account == $account, suspiciousDate != null, ChronoUnit.MONTHS.between(suspiciousDate,LocalDateTime.now()) <= 3)
+    then
+         modify ($d) {
+            setDebitStatus(Status.REJECTED)
+         }
+         System.out.println("reject cash credit request, client is suspicious");
+end
+
 rule "reject cash credit request, client is under 20"
     when
          $d: Debit($account: account, debitStatus == Status.PENDING)

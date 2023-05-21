@@ -24,4 +24,7 @@ public interface IClientService {
     Client getClientById(Long id) throws EntityNotFoundException;
 
     boolean rejectRegistrationRequest(Long id) throws EntityNotFoundException;
+
+    List<Client> getAllClients();
+    Client save(Client client);
 }
