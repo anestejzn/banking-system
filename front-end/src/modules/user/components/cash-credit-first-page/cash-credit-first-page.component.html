@@ -1,0 +1,44 @@
+<div>
+    <h1>Request for cash credit</h1>
+    <form color="primary" [formGroup]="cashCreditRequestForm">
+        <mat-form-field
+        class="full-width"
+        appearance="fill">
+            <mat-label>Enter your wanted amount</mat-label>
+            <input
+            matInput
+            formControlName="amount"
+            type="number"
+            name="amount"
+            required />
+            <mat-error
+            *ngIf="
+                cashCreditRequestForm.get('amount').hasError('required')
+            ">
+            Amount is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field
+        class="full-width"
+        appearance="fill">
+            <mat-label>Enter your wanted payment period (months)</mat-label>
+            <input
+                matInput
+                formControlName="paymentPeriod"
+                type="number"
+                name="paymentPeriod"
+                required />
+            <mat-error
+            *ngIf="
+            cashCreditRequestForm.get('paymentPeriod').hasError('required')
+            ">
+            Payment period is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <div class="center margin-top">
+            <button mat-raised-button (click)="sendRequestCashCredit()" class="login-button" id="submit-login">
+                Send request
+            </button>
+        </div>
+    </form>
+</div>

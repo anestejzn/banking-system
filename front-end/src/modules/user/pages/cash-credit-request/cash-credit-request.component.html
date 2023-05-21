@@ -1,0 +1,5 @@
+
+<div class="form-container mat-elevation-z1" style="color:var(--deep-blue); text-align: center;">
+    <app-cash-credit-first-page *ngIf="firstPage" (sendRequest)="sendRequestCashCredit($event)"></app-cash-credit-first-page>
+    <app-cash-credit-second-page *ngIf="!firstPage" (answer)="answerFromSecondPage($event)" [debit]="processedDebit"></app-cash-credit-second-page>
+</div>
