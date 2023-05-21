@@ -8,4 +8,6 @@ public interface IAccountService {
     Account getAccountByNumber(String accNum) throws EntityNotFoundException;
 
     Account createNewAccountObject(AccountType accountType);
+
+    Account save(Account account);
 }

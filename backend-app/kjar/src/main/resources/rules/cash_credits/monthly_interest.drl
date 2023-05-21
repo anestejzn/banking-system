@@ -19,6 +19,7 @@ declare ReducedMonthlyInterestEvent
 end
 
 rule "monthly interest client is retiree"
+    agenda-group "monthly-interest"
     when
          $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
          $c: Client(account == $account, employeeStatus == EmployeeStatus.RETIREE)
@@ -34,6 +35,7 @@ end
 
 
 rule "monthly interest client is retiree and have american express/visa platinum card"
+    agenda-group "monthly-interest"
     when
          $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
          $c: Client(account == $account, employeeStatus == EmployeeStatus.RETIREE)
@@ -48,6 +50,7 @@ rule "monthly interest client is retiree and have american express/visa platinum
 end
 
 rule "monthly interest client is not retiree have american express/visa platinum card"
+    agenda-group "monthly-interest"
     when
          $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
          $c: Client(account == $account, employeeStatus != EmployeeStatus.RETIREE)
@@ -62,6 +65,7 @@ rule "monthly interest client is not retiree have american express/visa platinum
 end
 
 rule "monthly interest applicant scores"
+    agenda-group "monthly-interest"
     when
          $d: Debit($account: account, debitStatus == Status.PENDING, monthlyInterest > 0)
          $a: Account(id == $account.id, $applicantScoresTime: (applicantScore/5))

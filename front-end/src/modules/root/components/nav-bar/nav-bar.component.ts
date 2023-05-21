@@ -32,4 +32,16 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(['/banking-system/auth/login'])
   }
 
+  redirectToCashCreditRequestsPage() {
+    this.router.navigate(['/banking-system/user/cash-credit-requests']);
+  }
+
+  redirectToCardRequestsPage() {
+    this.router.navigate([`/serb-uber/user/user-profile/${this.loggedUser.id}`]);
+  }
+
+  redirectToOverdraftRequestsPage() {
+    this.router.navigate(['/serb-uber/admin/messages']);
+  }
+
 }

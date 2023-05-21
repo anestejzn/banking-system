@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name="debit")
+@Table(name="transaction")
 @Setter
 @Getter
 @NoArgsConstructor

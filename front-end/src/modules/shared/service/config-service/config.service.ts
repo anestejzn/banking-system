@@ -56,4 +56,15 @@ export class ConfigService {
     return `${this.CLIENTS_URL}/reject-registration-request/${id}`;
   }
 
+  //////////////////CASH_CREDIT//////
+  CASH_CREDIT_URL = `${this.API_URL}/cash-credit`;
+  SEND_CASH_CREDIT_REQUEST_URL = `${this.CASH_CREDIT_URL}/send-cash-credit-request`;
+
+  ///////////////DEBIT//////////
+  DEBIT_URL = `${this.API_URL}/debit`;
+
+  getCancelDebitUrl(debitId: number){
+    return `${this.DEBIT_URL}/${debitId}`;
+  }
+
 }

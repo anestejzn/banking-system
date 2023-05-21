@@ -36,4 +36,10 @@ public class AccountService implements IAccountService {
         );
     }
 
+    @Override
+    public Account save(Account account) {
+
+        return accountRepository.save(account);
+    }
+
 }

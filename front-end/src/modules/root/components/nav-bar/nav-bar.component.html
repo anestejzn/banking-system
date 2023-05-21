@@ -8,11 +8,14 @@
   <div class="spacer">
     <div *ngIf="loggedUser">
       &nbsp;&nbsp;
-          <a *ngIf="loggedUser && isAdmin" [routerLink]="['/banking-system/admin/home']" routerLinkActive="active" mat-button
-            color="primary">Requests</a>
-      
-      
-      </div>
+      <div
+      class="requests-menu-button"
+      mat-button
+      [matMenuTriggerFor]="requestsMenu"
+      >
+      Requests
+    </div>    
+  </div>
   </div>
     <a
       *ngIf="!loggedUser"
@@ -29,4 +32,15 @@
        <button mat-raised-button (click)="logOut()">Log out</button>
     </div>
   
+    <mat-menu class="requests-menu" #requestsMenu="matMenu">
+      <button mat-menu-item (click)="redirectToCashCreditRequestsPage()">
+        <span>Cash credit requests</span>
+      </button>
+      <button mat-menu-item (click)="redirectToCardRequestsPage()">
+        <span>Card requests</span>
+      </button>
+      <button mat-menu-item (click)="redirectToOverdraftRequestsPage()">
+        <span>Overdraft requests</span>
+      </button>
+    </mat-menu>
   </mat-toolbar>
