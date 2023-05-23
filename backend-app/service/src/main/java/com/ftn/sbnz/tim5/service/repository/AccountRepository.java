@@ -12,4 +12,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("select a from Account a where a.accountNumber=?1")
     Optional<Account> getAccountByNumber(String accNum);
+
+    @Query("select distinct a from Account a where a.id=?1")
+    Optional<Account> getAccountById(Long id);
+
 }

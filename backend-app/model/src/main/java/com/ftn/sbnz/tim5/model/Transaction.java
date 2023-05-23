@@ -6,6 +6,7 @@ import com.ftn.sbnz.tim5.model.enums.TransactionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class Transaction {
     @Column(name="income", nullable = false)
     private boolean income; //da li je prihod ili rashod, prihod-true; rashod-false
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;

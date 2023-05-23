@@ -1,0 +1,18 @@
+<div *ngIf="account">
+
+    <div class="card-inner">
+        <br>
+        <p>Card number: <b>{{account.accountNumber}}</b></p>
+        <p>Card date: <b>{{account.accountDate | dateFormat}}</b></p>
+    </div>
+    <div class="card-transparent">
+    
+    </div>
+    <div class="card-out">
+        <br>
+        <p style="font-size: 1.5rem;"><b>Total Balance: {{account.totalBalance}} {{account.accountType.currency}}</b></p>
+        <p>Account type: <b>{{account.accountType.name}}</b></p>
+        <mat-icon class="credit-card-icon">credit_card</mat-icon>
+    </div>
+
+</div>

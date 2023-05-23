@@ -1,0 +1,19 @@
+<div>
+    <h1><b>Account type cards: </b></h1>
+    <div style="margin-left: 2rem;">
+        <span *ngFor="let card of accountCards" [class]="'card-container ' +  card.toLowerCase()">
+            {{card.replace('_', ' ')}}
+        </span>
+    </div>
+
+    <h1><b>Your additional cards: </b></h1>
+    <div style="margin-left: 2rem;" *ngIf="additionalCards.length > 0; else noAdditionalCardsBlock">
+        <span *ngFor="let card of additionalCards" [class]="'card-container ' +  card.toLowerCase()">
+            {{card.replace('_', ' ')}}
+        </span>
+    </div>
+    <ng-template #noAdditionalCardsBlock>
+        <span class="no-additional-cards">You don't have additional cards.</span>
+    </ng-template>
+
+</div>

@@ -12,6 +12,10 @@ export class ClientService {
 
   constructor(private http: HttpClient, private configService: ConfigService) { }
 
+  getClientById(id: number): Observable<Client> {
+    return this.http.get<Client>(this.configService.getClientByIdURL(id));
+  }
+
   registerRegularUser(newUser: UserRegistrationRequest, isRetiree: boolean): Observable<Client> {
     return this.http.post<Client>(
       this.configService.getClientRegistrationURL(isRetiree),

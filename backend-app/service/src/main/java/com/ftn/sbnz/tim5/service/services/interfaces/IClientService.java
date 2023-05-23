@@ -2,6 +2,7 @@ package com.ftn.sbnz.tim5.service.services.interfaces;
 
 
 import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.service.dto.response.AccountResponse;
 import com.ftn.sbnz.tim5.service.dto.response.ClientResponse;
 import com.ftn.sbnz.tim5.service.exception.*;
 
@@ -27,4 +28,5 @@ public interface IClientService {
 
     List<Client> getAllClients();
     Client save(Client client);
+
 }

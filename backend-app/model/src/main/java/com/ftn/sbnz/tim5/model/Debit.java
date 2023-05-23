@@ -1,5 +1,6 @@
 package com.ftn.sbnz.tim5.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.sbnz.tim5.model.enums.CardType;
 import com.ftn.sbnz.tim5.model.enums.DebitType;
 import com.ftn.sbnz.tim5.model.enums.Status;
@@ -19,20 +20,29 @@ public class Debit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "debit_type", nullable = false)
     private DebitType debitType;
+
     @Column(name = "total_amount", nullable = false)
     private double totalAmount;
+
     @Column(name = "debit_date", nullable = false)
     private LocalDateTime debitDate;
+
     @Column(name = "monthly_interest")
     private double monthlyInterest;
+
     @Column(name = "monthly_amount")
     private double monthlyAmount;
+
     @Column(name = "payment_period", nullable = false)
     private int paymentPeriod;
+
     @Column(name = "debit_status", nullable = false)
     private Status debitStatus;
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;

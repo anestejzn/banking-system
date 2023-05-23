@@ -1,0 +1,25 @@
+
+
+.account-info-container, .credit-cards-container, .transactions-container {
+    border: 3px solid var(--deep-blue);
+    height: 16rem;
+    margin: 1rem 5rem;
+    border-radius: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.credit-cards-container {
+    background: linear-gradient(to bottom right, #228f46, #6BD88B);
+    color: white;
+    margin-left: 0rem;
+}
+
+.account-info-container {
+    border: none !important;
+}
+
+.transactions-container {
+    height: 17rem !important;
+    max-width: 100%;
+}

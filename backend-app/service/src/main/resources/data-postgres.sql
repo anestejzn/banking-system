@@ -24,6 +24,17 @@ insert into account (account_number, account_date, account_type_id, total_balanc
         ('1234560090173', '2022-01-01', 3, 10000, 0),
         ('1034561110173', '2021-01-01', 1, 10000, 0);
 
+INSERT INTO card_enum_additional (account_id, cards)
+VALUES (1, 'VISA_PLATINUM');
+
+insert into debit (debit_type, total_amount, debit_date, monthly_interest, monthly_amount, payment_period, debit_status, account_id) values
+    (0, 20000, '2023-05-01', 3, 1500, 12, 0, 1);
+
+insert into transaction (amount, transaction_date, income, other_side, transaction_type, bought_card_type, status, account_id) values
+    (100000, '2023-05-01', true, 'Apple', 0, null, 0, 1),
+    (10000, '2023-03-01', false, 'Apple', 1, 2, 0, 1),
+    (50000, '2023-01-01', true, 'MyFitWorld', 0, null, 0, 2);
+
 insert into employer (name, pib, NBS_certified, employer_status, started_operating) values
     ('PIO FOND', '111100009', true, 0, '2000-05-01'),
     ('MyFitWorld', '123456789', true, 0, '2000-05-01'),

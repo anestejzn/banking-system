@@ -36,7 +36,7 @@ export class ConfigService {
   ACCOUNT_TYPES_URL = `${this.API_URL}/account-types`;
   ALL_ACCOUNT_TYPES = `${this.ACCOUNT_TYPES_URL}/all-types`;
 
-  /////////////////ACCOUNT TYPES/////////////////
+  /////////////////EMPLOYERS/////////////////
   EMPLOYERS_URL = `${this.API_URL}/employers`;
   ALL_EMPLOYERS = `${this.EMPLOYERS_URL}/all-employers`;
 
@@ -54,6 +54,17 @@ export class ConfigService {
 
   getRegistrationRejectURL(id: number): string {
     return `${this.CLIENTS_URL}/reject-registration-request/${id}`;
+  }
+
+  getClientByIdURL(id: number): string {
+    return `${this.CLIENTS_URL}/${id}`;
+  }
+
+  //////////////////ACCOUNTS//////////
+  ACCOUNTS_URL = `${this.API_URL}/accounts`;
+
+  getAccountByIdURL(id: number): string {
+    return `${this.ACCOUNTS_URL}/${id}`;
   }
 
   //////////////////CASH_CREDIT//////

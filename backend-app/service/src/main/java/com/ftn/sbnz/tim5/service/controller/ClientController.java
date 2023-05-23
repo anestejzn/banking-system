@@ -2,6 +2,7 @@ package com.ftn.sbnz.tim5.service.controller;
 
 import com.ftn.sbnz.tim5.service.dto.request.EmployedClientRegistrationRequest;
 import com.ftn.sbnz.tim5.service.dto.request.RetireeRegistrationRequest;
+import com.ftn.sbnz.tim5.service.dto.response.AccountResponse;
 import com.ftn.sbnz.tim5.service.dto.response.ClientResponse;
 import com.ftn.sbnz.tim5.service.exception.*;
 import com.ftn.sbnz.tim5.service.services.interfaces.IClientService;
@@ -28,6 +29,15 @@ public class ClientController {
     public List<ClientResponse> getPendingClients() {
 
         return clientService.getPendingClients();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ClientResponse getClientById(@Valid @NotNull(message = MISSING_ID) @PathVariable Long id)
+            throws EntityNotFoundException
+    {
+
+        return new ClientResponse(clientService.getClientById(id));
     }
 
     @PostMapping(path = "register-retired-client")

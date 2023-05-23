@@ -10,4 +10,6 @@ public interface IAccountService {
     Account createNewAccountObject(AccountType accountType);
 
     Account save(Account account);
+
+    Account getAccountById(Long id) throws EntityNotFoundException;
 }

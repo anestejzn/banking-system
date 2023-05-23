@@ -1,1 +1,17 @@
-<div>user</div>
+<div *ngIf="account">
+    <div class="row" style="margin-top: 2rem;">
+        <div class="column account-info-container">
+            <app-account-info [account]="account"></app-account-info>
+        </div>
+        <div class="column credit-cards-container">
+            <app-cards-info [accountCards]="account.accountType.cards" [additionalCards]="account.cards"></app-cards-info>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="column transactions-container">
+            <app-transactions-history></app-transactions-history>
+        </div>
+    </div>
+
+</div>

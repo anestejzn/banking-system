@@ -27,6 +27,12 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public Account getAccountById(Long id) throws EntityNotFoundException {
+        return accountRepository.getAccountById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account is not found."));
+    }
+
+    @Override
     public Account createNewAccountObject(AccountType accountType) {
 
         return new Account(

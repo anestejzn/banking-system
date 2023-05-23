@@ -8,14 +8,13 @@
   <div class="spacer">
     <div *ngIf="loggedUser">
       &nbsp;&nbsp;
-      <div
-      class="requests-menu-button"
-      mat-button
-      [matMenuTriggerFor]="requestsMenu"
-      >
+    <a [routerLink]="['/banking-system/user/home']" routerLinkActive="active" mat-button color="primary">Home</a>
+    <span *ngIf="!isAdmin" class="requests-menu-button" mat-button [matMenuTriggerFor]="requestsMenu">
       Requests
-    </div>    
+    </span>
+
   </div>
+
   </div>
     <a
       *ngIf="!loggedUser"

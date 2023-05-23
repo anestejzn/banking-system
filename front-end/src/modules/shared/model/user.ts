@@ -29,5 +29,6 @@ export interface Client {
   dateOfBirth: string;
   employeeStatus: string;
   monthlyIncome: number;
+  accountId?: number;
 }
  

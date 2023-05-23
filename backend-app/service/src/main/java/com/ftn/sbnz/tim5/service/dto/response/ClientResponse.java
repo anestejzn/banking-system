@@ -22,6 +22,7 @@ public class ClientResponse extends UserResponse {
     private LocalDateTime dateOfBirth;
     private EmployeeStatus employeeStatus;
     private double monthlyIncome;
+    private Long accountId;
 
     public ClientResponse(Long id,
                           String email,
@@ -34,7 +35,8 @@ public class ClientResponse extends UserResponse {
                           String city,
                           LocalDateTime dateOfBirth,
                           EmployeeStatus employeeStatus,
-                          double monthlyIncome
+                          double monthlyIncome,
+                          Long accountId
     ) {
         super(id, email, "", name, surname, role);
         this.streetName = streetName;
@@ -44,6 +46,7 @@ public class ClientResponse extends UserResponse {
         this.dateOfBirth = dateOfBirth;
         this.employeeStatus = employeeStatus;
         this.monthlyIncome = monthlyIncome;
+        this.accountId = accountId;
     }
 
     public ClientResponse(Client client) {
@@ -55,6 +58,7 @@ public class ClientResponse extends UserResponse {
         this.dateOfBirth = client.getDateOfBirth();
         this.employeeStatus = client.getEmployeeStatus();
         this.monthlyIncome = client.getMonthlyIncome();
+        this.accountId = client.getAccount().getId();
     }
 
     public static List<ClientResponse> fromClientListToClientResponses(List<Client> clients) {

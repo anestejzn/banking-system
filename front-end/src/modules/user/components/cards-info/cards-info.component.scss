@@ -1,0 +1,37 @@
+
+h1 {
+    color: white;
+    margin-left: 2rem;
+}
+
+.dina {
+    background-color: yellow;
+}
+
+.visa {
+    background-color: blue;
+    color: white !important;
+}
+
+.visa_platinum {
+    background-color: rgb(53, 53, 82);
+    color: white !important;
+}
+
+.american_express {
+    background-color: gold;
+    color: red !important;
+}
+
+.no-additional-cards {
+    margin-left: 2rem;
+    font-size: 1.1rem;
+}
+
+.card-container {
+    padding: 0.3rem;
+    margin: 0.4rem;
+    border-radius: 0.3rem;
+    color: var(--deep-blue);
+    font-size: 1.3rem;
+}

@@ -5,11 +5,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MaterialModule } from '../material/material.module';
+import { DateFormatPipe } from './pipes/date-format.pipe';
 
 
 @NgModule({
   declarations: [
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    DateFormatPipe
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,9 @@ import { MaterialModule } from '../material/material.module';
       preventDuplicates: true,
       closeButton: true,
     })
+  ],
+  exports: [
+    DateFormatPipe
   ],
   providers:[
     {
