@@ -66,16 +66,16 @@ public class Client extends User{
     private LocalDateTime suspiciousDate;
 
     @Column(name="login_attention_counter")
-    private int loginAttentionCounter;
+    private int loginAttentionCounter = 0;
 
     @Column(name="debit_attention_counter")
-    private int debitAttentionCounter;
+    private int debitAttentionCounter = 0;
 
     @Column(name="account_attention_counter")
-    private int accountAttentionCounter;
+    private int accountAttentionCounter = 0;
 
     @Column(name="penalty_counter")
-    private int penaltyCounter;
+    private int penaltyCounter = 0;
 
     public Client(
             String email,

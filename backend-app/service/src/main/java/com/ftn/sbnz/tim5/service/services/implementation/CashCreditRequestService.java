@@ -53,43 +53,65 @@ public class CashCreditRequestService implements ICashCreditRequestService {
     public DebitResponse processCashCreditRequest(Long clientId, double amount, int paymentPeriod) throws EntityNotFoundException {
         Client client = clientService.getClientById(clientId);
         Debit debit = new Debit(DebitType.CASH_CREDIT, amount, LocalDateTime.now(), 0, 0, paymentPeriod, Status.PENDING, client.getAccount());
+
+        //1. Se proverava suspicious
         kSession.getAgenda().getAgendaGroup("client-suspicious").setFocus();
         kSession.insert(debit);
         kSession.insert(client);
         kSession.insert(client.getAccount());
         kSession.fireAllRules();
         System.out.println(debit.getDebitStatus());
-        //1. mesecna kamata template
-        KieSession kieSessionMonthlyInterestTemplate = getMonthlyInterestTemplateKieSession();
-        kieSessionMonthlyInterestTemplate.insert(debit);
-        kieSessionMonthlyInterestTemplate.insert(client.getAccount());
-        kieSessionMonthlyInterestTemplate.insert(client);
-        kieSessionMonthlyInterestTemplate.fireAllRules();
-//        kieSessionMonthlyInterestTemplate.dispose();
-        //2. umanjenje mesecne rate - pravila
-        kSession.getAgenda().getAgendaGroup("client-suspicious").clear();
-        kSession.getAgenda().getAgendaGroup("monthly-interest").setFocus();
-        kSession.fireAllRules();
-        //3. reject - template
-        KieSession kieSessionRejectRequestTemplate = getRejectRequestTemplateKieSession();
-        kieSessionRejectRequestTemplate.insert(debit);
-        kieSessionRejectRequestTemplate.insert(client);
-        kieSessionRejectRequestTemplate.fireAllRules();
-//        kieSessionRejectRequestTemplate.dispose();
 
-        System.out.println(debit.getMonthlyInterest());
-        // 4. reject - ostala pravila
-        if(debit.getDebitStatus().equals(Status.PENDING)){
+        //2. Osnovna pravila za kes kredit
+        kSession.getAgenda().getAgendaGroup("client-suspicious").clear();
+        kSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
+        kSession.insert(debit);
+        kSession.insert(client);
+        kSession.insert(client.getAccount());
+        kSession.insert(client.getAccount().getAccountType());
+        kSession.insert(client.getEmployer());
+        kSession.fireAllRules();
+        System.out.println(debit.getDebitStatus());
+
+        if (debit.getDebitStatus() != Status.REJECTED) {
+            //3. mesecna kamata template
+            KieSession kieSessionMonthlyInterestTemplate = getMonthlyInterestTemplateKieSession();
+            kieSessionMonthlyInterestTemplate.insert(debit);
+            kieSessionMonthlyInterestTemplate.insert(client.getAccount());
+            kieSessionMonthlyInterestTemplate.insert(client);
+            kieSessionMonthlyInterestTemplate.fireAllRules();
+//        kieSessionMonthlyInterestTemplate.dispose();
+            //4. umanjenje mesecne rate - pravila
+            kSession.getAgenda().getAgendaGroup("reject-cash-credit").clear();
+            kSession.getAgenda().getAgendaGroup("monthly-interest").setFocus();
+            kSession.insert(debit);
+            kSession.insert(client);
+            kSession.insert(client.getAccount());
+
+            kSession.fireAllRules();
+            //5. Racunanje mesecne rate na osnovu kamate
             double monthlyAmount = calculateMonthlyAmount(paymentPeriod, amount, debit.getMonthlyInterest());
             System.out.println("amount: " + monthlyAmount);
-            debit.setMonthlyAmount(Double.valueOf(decfor.format(monthlyAmount)));
+            debit.setMonthlyAmount(Double.parseDouble(decfor.format(monthlyAmount)));
             kSession.getAgenda().getAgendaGroup("monthly-interest").clear();
-            kSession.insert(client.getAccount().getAccountType());
-            kSession.insert(client.getEmployer());
-            kSession.fireAllRules();
 
+            //6. Odbijanje zahteva ako je prevelik iznos u odnosu na platu
+            KieSession kieSessionRejectRequestTemplate = getRejectRequestTemplateKieSession();
+            kieSessionRejectRequestTemplate.insert(debit);
+            kieSessionRejectRequestTemplate.insert(client);
+            kieSessionRejectRequestTemplate.fireAllRules();
+//        kieSessionRejectRequestTemplate.dispose();
+
+            System.out.println(debit.getMonthlyInterest());
+            // 7. reject - ostala pravila
             if(debit.getDebitStatus().equals(Status.PENDING)){
-                debit.setDebitStatus(Status.ACTIVE);
+                kSession.insert(client.getAccount().getAccountType());
+                kSession.insert(client.getEmployer());
+                kSession.fireAllRules();    //preostala pravila, ako ih ima
+
+                if(debit.getDebitStatus().equals(Status.PENDING)){
+                    debit.setDebitStatus(Status.ACTIVE);
+                }
             }
         }
 

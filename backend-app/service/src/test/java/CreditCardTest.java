@@ -99,7 +99,7 @@ public class CreditCardTest {
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
         Agenda agenda = kieSession.getAgenda();
-        agenda.getAgendaGroup("CreditCardRejection").setFocus();
+        agenda.getAgendaGroup("credit-card-rejection").setFocus();
 
         Account a1 = new Account("1231", LocalDateTime.now(), new AccountType());
         a1.getCards().add(CardType.AMERICAN_EXPRESS);   //dodaje se american express
@@ -125,7 +125,7 @@ public class CreditCardTest {
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
         Agenda agenda = kieSession.getAgenda();
-        agenda.getAgendaGroup("CreditCardRejection").setFocus();
+        agenda.getAgendaGroup("credit-card-rejection").setFocus();
 
         Account a1 = new Account("1231", LocalDateTime.now(), new AccountType());
         AccountType accountType = new AccountType();
@@ -153,7 +153,7 @@ public class CreditCardTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
-        kieSession.getAgenda().getAgendaGroup("CreditCardRejection").setFocus();
+        kieSession.getAgenda().getAgendaGroup("credit-card-rejection").setFocus();
 
         Account a1 = new Account("1231", LocalDateTime.now(), new AccountType());
         AccountType accountType = new AccountType();
@@ -183,7 +183,7 @@ public class CreditCardTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
-        kieSession.getAgenda().getAgendaGroup("CreditCardRejection").setFocus();
+        kieSession.getAgenda().getAgendaGroup("credit-card-rejection").setFocus();
 
         Account a1 = new Account("1231", LocalDateTime.now(), new AccountType());
         AccountType accountType = new AccountType();
@@ -215,7 +215,7 @@ public class CreditCardTest {
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
         Agenda agenda = kieSession.getAgenda();
-        agenda.getAgendaGroup("CreditCardRejection").setFocus();
+        agenda.getAgendaGroup("credit-card-rejection").setFocus();
 
         Account a1 = new Account("1231", LocalDateTime.now(), new AccountType());
         AccountType accountType = new AccountType();
@@ -249,7 +249,7 @@ public class CreditCardTest {
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
         Agenda agenda = kieSession.getAgenda();
-        agenda.getAgendaGroup("CreditCardRejection").setFocus();
+        agenda.getAgendaGroup("credit-card-rejection").setFocus();
 
         Account a1 = new Account("1231", LocalDateTime.now(), new AccountType());
         AccountType accountType = new AccountType();

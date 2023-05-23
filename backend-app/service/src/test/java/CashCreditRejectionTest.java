@@ -31,6 +31,7 @@ public class CashCreditRejectionTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
+        kieSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
 
         Account account = new Account("1234567891234", LocalDateTime.now(), EMPTY_ACC_TYPE, 500, 1);
         Client client = new Client("ana@gmail.com", "12345", "Ana", "Anic", EMPTY_ROLE, "Kraljevacka", "10", "36000", "Kraljevo", LocalDateTime.now().minusYears(67), EmployeeStatus.RETIREE,EMPTY_EMPLOYER, account, 28000, Status.ACTIVE);
@@ -54,6 +55,7 @@ public class CashCreditRejectionTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
+        kieSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
 
         Account account = new Account("1234567891234", LocalDateTime.now(), EMPTY_ACC_TYPE, 500, 1);
 
@@ -83,6 +85,7 @@ public class CashCreditRejectionTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
+        kieSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
 
         Account account = new Account("1234567891234", LocalDateTime.now(), EMPTY_ACC_TYPE, 500, 1);
 
@@ -109,6 +112,7 @@ public class CashCreditRejectionTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
+        kieSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
 
         Account account = new Account("1234567891234", LocalDateTime.now(), EMPTY_ACC_TYPE, 500, 1);
 
@@ -135,6 +139,7 @@ public class CashCreditRejectionTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
+        kieSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
 
         Account account = new Account("1234567891234", LocalDateTime.now(), EMPTY_ACC_TYPE, 500, 1);
 
@@ -152,7 +157,7 @@ public class CashCreditRejectionTest {
     }
 
     @Test
-    @DisplayName("T5 - Cash credit rejected, Employee is working less than 6 months at current Employer")
+    @DisplayName("T6 - Cash credit rejected, Employee is working less than 6 months at current Employer")
     public void shouldRejectCreditDueToEmployeeWorkingLessThanSixMonths() {
         KieServices kieServices = KieServices.Factory.get();
         KieContainer kieContainer = kieServices.getKieClasspathContainer();
@@ -161,6 +166,7 @@ public class CashCreditRejectionTest {
         KieSessionConfiguration kieSessionConfiguration = KieServices.Factory.get().newKieSessionConfiguration();
 
         KieSession kieSession = kieBase.newKieSession(kieSessionConfiguration, null);
+        kieSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
 
         Account account = new Account("1234567891234", LocalDateTime.now(), EMPTY_ACC_TYPE, 500, 1);
 

@@ -30,7 +30,7 @@ insert into employer (name, pib, NBS_certified, employer_status, started_operati
     ('Apple', '123456800', true, 0, '2000-05-01'),
     ('Microsoft', '123061800', true, 0, '2000-05-01');
 
-insert into client (id,email, password, name, surname, role_id, street_name, street_number, post_code, city, date_of_birth, employee_status, account_id, employer_id, verified, started_working, monthly_income, account_status) values
-    (nextval('users_id_gen'),'ana@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Ana', 'Sam',2, 'Bozidara Milunovica', '7', '36000', 'Kraljevo', '2001-02-12', 0, 2, 2, true, '2022-01-01', 100000, 0),
-    (nextval('users_id_gen'),'srdjan@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Srdjan', 'Djuric', 2, 'Laze Kostica', '10', '21000', 'Novi Sad', '2000-08-23', 0, 1, 3, true, '2021-01-01', 100000, 0),
-    (nextval('users_id_gen'),'penzos@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Penzioner', 'Penzioner', 2, 'Laze Kostica', '3', '21000', 'Novi Sad', '1960-08-23', 1, 3, 1, true, null, 40000, 0);
+insert into client (id,email, password, name, surname, role_id, street_name, street_number, post_code, city, date_of_birth, employee_status, account_id, employer_id, verified, started_working, monthly_income, account_status, login_attention_counter, debit_attention_counter, account_attention_counter, penalty_counter) values
+    (nextval('users_id_gen'),'ana@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Ana', 'Sam',2, 'Bozidara Milunovica', '7', '36000', 'Kraljevo', '2001-02-12', 0, 2, 2, true, '2022-01-01', 100000, 0, 0, 0, 0, 0),
+    (nextval('users_id_gen'),'srdjan@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Srdjan', 'Djuric', 2, 'Laze Kostica', '10', '21000', 'Novi Sad', '2000-08-23', 0, 1, 3, true, '2021-01-01', 100000, 0, 0, 0, 0, 0),
+    (nextval('users_id_gen'),'penzos@gmail.com', '$2y$10$uwgoYpON2hx80Xpfgn4.O.j0Pys.uATCE2gQu3BNr/DwC8qn6G9am', 'Penzioner', 'Penzioner', 2, 'Laze Kostica', '3', '21000', 'Novi Sad', '1960-08-23', 1, 3, 1, true, null, 40000, 0, 0, 0, 0, 0);

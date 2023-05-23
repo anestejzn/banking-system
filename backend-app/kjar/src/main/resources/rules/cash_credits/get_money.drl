@@ -83,6 +83,7 @@ rule "get one penalty for account attentions"
 end
 
 rule "get one penalty for debit attentions"
+agenda-group "penalty-group"
     when
         $c: Client(debitAttentionCounter >= 3)
     then
@@ -93,6 +94,7 @@ rule "get one penalty for debit attentions"
 end
 
 rule "get one penalty for login attentions"
+agenda-group "penalty-group"
     when
         $c: Client(loginAttentionCounter >= 3)
     then

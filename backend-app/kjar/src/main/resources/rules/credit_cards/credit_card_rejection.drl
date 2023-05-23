@@ -12,7 +12,7 @@ import com.ftn.sbnz.tim5.model.enums.TransactionType;
 
 rule "reject credit card request, client already has American Express card"
 no-loop true
-agenda-group "CreditCardRejection"
+agenda-group "credit-card-rejection"
     when
         $t: Transaction($account: account, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $numOfAmericanExpress: Long() from accumulate(
@@ -29,7 +29,7 @@ end
 
 rule "reject credit card request, client does not have Platinum Account Type"
 no-loop true
-agenda-group "CreditCardRejection"
+agenda-group "credit-card-rejection"
     when
         $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $a: Account(id == $accountId, accountType.name != "Platinum")
@@ -42,7 +42,7 @@ end
 
 rule "reject credit card request, client does not have enough money"
 no-loop true
-agenda-group "CreditCardRejection"
+agenda-group "credit-card-rejection"
     when
         $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $a: Account(id == $accountId, totalBalance < 10000)
@@ -55,7 +55,7 @@ end
 
 rule "reject credit card request, client has too low monthly income"
 no-loop true
-agenda-group "CreditCardRejection"
+agenda-group "credit-card-rejection"
     when
         $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $c: Client(account.id == $accountId, monthlyIncome < 150000)
@@ -68,7 +68,7 @@ end
 
 rule "reject credit card request, client has less than 1 applicant score"
 no-loop true
-agenda-group "CreditCardRejection"
+agenda-group "credit-card-rejection"
     when
         $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         $a: Account(id == $accountId, applicantScore < 1)
@@ -81,7 +81,7 @@ end
 
 rule "reject credit card request, client has one penalty in last month"
 no-loop true
-agenda-group "CreditCardRejection"
+agenda-group "credit-card-rejection"
     when
         $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.AMERICAN_EXPRESS)
         Long(longValue() >= 1) from accumulate(
