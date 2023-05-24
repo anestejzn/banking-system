@@ -65,18 +65,6 @@ public class Client extends User{
     @Column(name="suspicious_date")
     private LocalDateTime suspiciousDate;
 
-    @Column(name="login_attention_counter")
-    private int loginAttentionCounter = 0;
-
-    @Column(name="debit_attention_counter")
-    private int debitAttentionCounter = 0;
-
-    @Column(name="account_attention_counter")
-    private int accountAttentionCounter = 0;
-
-    @Column(name="penalty_counter")
-    private int penaltyCounter = 0;
-
     public Client(
             String email,
             String password,
@@ -106,10 +94,6 @@ public class Client extends User{
         this.monthlyIncome = monthlyIncome;
         this.accountStatus = accountStatus;
         this.suspiciousDate = null;
-        this.accountAttentionCounter = 0;
-        this.debitAttentionCounter = 0;
-        this.loginAttentionCounter = 0;
-        this.penaltyCounter = 0;
     }
 
     //ovde ima startedWorking, gore nema
@@ -144,9 +128,5 @@ public class Client extends User{
         this.monthlyIncome = monthlyIncome;
         this.accountStatus = accountStatus;
         this.suspiciousDate = null;
-        this.accountAttentionCounter = 0;
-        this.debitAttentionCounter = 0;
-        this.loginAttentionCounter = 0;
-        this.penaltyCounter = 0;
     }
 }

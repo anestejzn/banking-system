@@ -1,11 +1,16 @@
 package cash_credits;
 
 import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.ClientWarning;
 import com.ftn.sbnz.tim5.model.Debit;
 import com.ftn.sbnz.tim5.model.Account;
 import com.ftn.sbnz.tim5.model.AccountType;
-import com.ftn.sbnz.tim5.model.enums.Status
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.WarningType;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.time.temporal.ChronoUnit;
+
 
 rule "get money for debits and monthlySubscription, don't have money"
     agenda-group "get-money"
@@ -19,7 +24,7 @@ rule "get money for debits and monthlySubscription, don't have money"
         eval($a.getTotalBalance() - $sumOfMonthlyAmount < 0)
     then
         modify($c){
-            setDebitAttentionCounter($c.getDebitAttentionCounter()+1)
+            getWarnings().add(new ClientWarning(new Date(), WarningType.CASH_CREDIT_WARNING))
         }
         modify($a){
             setTotalBalance($a.getTotalBalance() - $sumOfMonthlyAmount)
@@ -51,7 +56,7 @@ rule "get money for monthly subscription, don't have money"
         eval($a.getTotalBalance() - $at.getMonthlySubscription() < 0)
     then
         modify($c){
-            setAccountAttentionCounter($c.getAccountAttentionCounter()+1)
+            getWarnings().add(new ClientWarning(new Date(), WarningType.MAINTENANCE_WARNING))
         }
         modify($a){
             setTotalBalance($a.getTotalBalance() - $at.getMonthlySubscription())
@@ -72,47 +77,6 @@ rule "get money for monthly subscription, have money"
 end
 
 
-rule "get one penalty for account attentions"
-    when
-        $c: Client(accountAttentionCounter >= 5)
-    then
-        modify($c){
-            setPenaltyCounter($c.getPenaltyCounter() + 1),
-            setAccountAttentionCounter(0)
-        }
-end
-
-rule "get one penalty for debit attentions"
-agenda-group "penalty-group"
-    when
-        $c: Client(debitAttentionCounter >= 3)
-    then
-        modify($c){
-            setPenaltyCounter($c.getPenaltyCounter() + 1),
-            setDebitAttentionCounter(0)
-        }
-end
-
-rule "get one penalty for login attentions"
-agenda-group "penalty-group"
-    when
-        $c: Client(loginAttentionCounter >= 3)
-    then
-        modify($c){
-            setPenaltyCounter($c.getPenaltyCounter() + 1),
-            setLoginAttentionCounter(0)
-        }
-end
-
-//rule "suspicious client, penalty"
-//    when
-//        $c: Client(penaltyCounter >= 3)
-//        $newDate:  LocalDateTime.now()
-//    then
-//        modify($c){
-//            setSuspiciousDate($newDate)
-//        }
-//end
 
 
 

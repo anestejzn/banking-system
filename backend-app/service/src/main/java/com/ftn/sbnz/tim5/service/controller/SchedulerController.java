@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class SchedulerController {
-
+    //TODO ANASTASIJA
     @Scheduled(cron = "0 0 0 L * *")
     public void scheduleGetMoneyForDebits(){
 

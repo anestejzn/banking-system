@@ -4,6 +4,7 @@ import com.ftn.sbnz.tim5.model.enums.WarningType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
 
@@ -17,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @org.kie.api.definition.type.Role(Role.Type.EVENT)
 @Timestamp("timeStamp")
+@Expires("12m")
 public class ClientWarning {
 
     @Id
