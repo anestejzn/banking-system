@@ -65,7 +65,7 @@ agenda-group "penalty-group"
 end
 
 rule "suspicious client, penalty"
-agenda-group "penalty-group"
+agenda-group "client-suspicious"
     when
         $c: Client(penalties.size() >= 3)
         $newDate:  LocalDateTime()
