@@ -76,7 +76,7 @@ agenda-group "penalty-group"
 end
 
 rule "suspicious client, three transactions over 300K RSD in last 1h"
-agenda-group "penalty-group"
+agenda-group "client-suspicious"
     when
         $c: Client($accountId: account.id)
         $a: Account(id == $accountId)
