@@ -13,6 +13,7 @@ import { AccountInfoComponent } from './components/account-info/account-info.com
 import { CardsInfoComponent } from './components/cards-info/cards-info.component';
 import { TransactionsHistoryComponent } from './components/transactions-history/transactions-history.component';
 import { TransactionRowComponent } from './components/transaction-row/transaction-row.component';
+import { CreditCardRequestPageComponent } from './pages/credit-card-request-page/credit-card-request-page.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { TransactionRowComponent } from './components/transaction-row/transactio
    AccountInfoComponent,
    CardsInfoComponent,
    TransactionsHistoryComponent,
-   TransactionRowComponent
+   TransactionRowComponent,
+   CreditCardRequestPageComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,47 @@
+<div class="form-container">
+    <div class="cards-container">
+        <div class="credit-card visa">
+            <div [class]="selected==='visa' ? 'card-front selected' : 'card-front'" (click)="changeSelected('visa')">
+                <div class="card-logo">Visa</div>
+                <div class="card-chip"></div>
+                <div class="card-number">Card Number</div>
+                <div class="card-info">
+                    <div class="card-holder">Name Surname</div>
+                </div>
+                <div class="card-separator"></div>
+            </div>
+        </div>
+
+        <div class="credit-card platinum">
+            <div [class]="selected==='platinum' ? 'card-front selected' : 'card-front'" (click)="changeSelected('platinum')">
+                <div class="card-logo">Visa Platinum</div>
+                <div class="card-chip"></div>
+                <div class="card-number">Card Number</div>
+                <div class="card-info">
+                    <div class="card-holder">Name Surname</div>
+                </div>
+                <div class="card-separator"></div>
+            </div>
+        </div>
+
+        <div class="credit-card amex">
+            <div [class]="selected==='amex' ? 'card-front selected' : 'card-front'" (click)="changeSelected('amex')">
+                <div class="card-logo">American Express</div>
+                <div class="card-chip"></div>
+                <div class="card-number">Card Number</div>
+                <div class="card-info">
+                    <div class="card-holder">Name Surname</div>
+                </div>
+                <div class="card-separator"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="center request-button">
+        <button mat-raised-button class="login-button">
+            Send request
+        </button>
+    </div>
+
+</div>

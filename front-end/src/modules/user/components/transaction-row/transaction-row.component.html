@@ -1,1 +1,26 @@
-<p>transaction-row works!</p>
+<div *ngIf="transaction" class="transaction-row">
+    <table style="width: 100%;">
+        <colgroup>
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 40%;">
+            <col span="1" style="width: 25%;">
+        </colgroup>
+        <th>
+            {{index+1}}.
+        </th>
+        <th>
+            {{ transaction.income ? '+' : '-'}}{{transaction.amount}}
+        </th>
+        <th>
+            {{transaction.transactionDate | dateFormat}}
+        </th>
+        <th>
+            {{transaction.otherSide}}
+        </th>
+        <th [class]="">
+            {{transaction.transactionType === 'REGULAR_TRANSACTION' ? 'REGULAR' : 'CARD'}}
+        </th>
+    </table>
+</div>

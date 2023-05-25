@@ -1,1 +1,25 @@
-<p>transactions-history works!</p>
+<div>
+    <div class="row">
+        <div class="column filter-column">
+            <h1>Transactions</h1>
+            <mat-radio-group>
+                <mat-radio-button *ngFor="let filter of filterByPossibilities" [value]="filter.value" [checked]="filter.checked"
+                    (change)="changeFilter(filter.value)" class="sort-btn">
+                    {{ filter.name }}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="column transactions-column">
+            <div *ngIf="transactions.length > 0; else noContentBlock" style="margin-top: 2rem; margin-bottom: 0.5rem; overflow-y: auto; overflow-x: hidden;">
+                <div *ngFor="let transaction of transactions; let index=index">
+                    <app-transaction-row [index]="index" [transaction]="transaction"></app-transaction-row>
+                </div>
+            </div>
+            <ng-template #noContentBlock>
+                <div class="no-content center-content">
+                    There are no transactions yet.
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

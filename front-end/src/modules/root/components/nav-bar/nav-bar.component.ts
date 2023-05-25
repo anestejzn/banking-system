@@ -37,11 +37,11 @@ export class NavBarComponent implements OnInit {
   }
 
   redirectToCardRequestsPage() {
-    this.router.navigate([`/serb-uber/user/user-profile/${this.loggedUser.id}`]);
+    this.router.navigate([`/banking-system/user/credit-card-request`]);
   }
 
   redirectToOverdraftRequestsPage() {
-    this.router.navigate(['/serb-uber/admin/messages']);
+    // this.router.navigate(['/serb-uber/admin/messages']);
   }
 
 }

@@ -1,0 +1,19 @@
+
+
+.no-content {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 2rem;
+}
+
+.filter-column {
+    flex: 30% !important;
+}
+
+.transactions-column {
+    flex: 70% !important;
+}
+
+h1, mat-radio-group {
+    margin-left: 3rem;
+}

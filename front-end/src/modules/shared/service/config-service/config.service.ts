@@ -78,4 +78,12 @@ export class ConfigService {
     return `${this.DEBIT_URL}/${debitId}`;
   }
 
+  ////////////TRANSACTION///////
+  TRANSACTION_URL = `${this.API_URL}/transactions`;
+
+  getFilteredTransactions(accountId, parameter): string {
+
+    return `${this.TRANSACTION_URL}/${accountId}/${parameter}`;
+  }
+
 }

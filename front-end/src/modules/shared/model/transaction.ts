@@ -3,7 +3,7 @@
 export interface Transaction {
     id: number;
     amount: number;
-    transactionDate: number;
+    transactionDate: Date;
     income: boolean;
     otherSide: string;
     transactionType: string;

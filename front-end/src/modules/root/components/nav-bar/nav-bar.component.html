@@ -6,10 +6,10 @@
         class="app-icon" />
     </a>
   <div class="spacer">
-    <div *ngIf="loggedUser">
+    <div *ngIf="loggedUser && !isAdmin">
       &nbsp;&nbsp;
     <a [routerLink]="['/banking-system/user/home']" routerLinkActive="active" mat-button color="primary">Home</a>
-    <span *ngIf="!isAdmin" class="requests-menu-button" mat-button [matMenuTriggerFor]="requestsMenu">
+    <span class="requests-menu-button" mat-button [matMenuTriggerFor]="requestsMenu">
       Requests
     </span>
 

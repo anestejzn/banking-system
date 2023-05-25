@@ -1,0 +1,95 @@
+
+.form-container {
+    min-height: 15rem;
+    min-width: 60rem;
+    position: relative;
+}
+
+.selected {
+    border: 5px solid var(--deep-blue);
+    // box-shadow: 10px 50px 50px rgba(0, 0, 0, 0.2);
+}
+
+.credit-card:hover {
+    box-shadow: 10px 50px 50px rgba(0, 0, 0, 0.2);
+}
+
+.request-button {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}
+
+.cards-container {
+  display: flex;
+  gap: 20px;
+}
+
+.credit-card {
+    width: 300px;
+    height: 150px;
+    perspective: 1000px;
+}
+
+.credit-card.visa .card-front {
+    background-color: #0047AB;
+}
+
+.credit-card.platinum .card-front {
+    background-color: rgb(53, 53, 82);
+}
+
+.credit-card.amex .card-front {
+    background-color: orange;
+}
+
+.card-front {
+    color: white;
+    transform: rotateY(0deg);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-chip {
+    width: 60px;
+    height: 40px;
+    background-color: gold;
+    border-radius: 6px;
+}
+
+.card-number {
+    font-size: 20px;
+    font-family: monospace;
+    margin-top: 20px;
+}
+
+.card-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-holder,
+.card-expiry {
+    font-size: 14px;
+}
+
+.card-separator {
+    margin-top: 20px;
+    height: 2px;
+    background-color: white;
+}
+
+.card-separator {
+    margin-top: 20px;
+    height: 2px;
+    background-color: white;
+}
