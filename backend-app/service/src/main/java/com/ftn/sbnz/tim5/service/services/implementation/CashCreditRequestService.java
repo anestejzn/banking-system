@@ -60,6 +60,7 @@ public class CashCreditRequestService implements ICashCreditRequestService {
         kSession.insert(client);
         kSession.insert(client.getAccount());
         kSession.fireAllRules();
+        kSession.get
         System.out.println(debit.getDebitStatus());
 
         //2. Osnovna pravila za kes kredit
