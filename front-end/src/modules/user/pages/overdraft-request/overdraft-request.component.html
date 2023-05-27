@@ -1,0 +1,4 @@
+<div class="form-container mat-elevation-z1" style="color:var(--deep-blue); text-align: center;">
+    <app-overdraft-first-page (overdraftRequest)="sendRequestOverdraft($event)" *ngIf="firstPage"></app-overdraft-first-page>
+    <app-overdraft-second-page *ngIf="!firstPage" (answer)="answerFromSecondPage($event)" [debit]="processedDebit"></app-overdraft-second-page>
+</div>

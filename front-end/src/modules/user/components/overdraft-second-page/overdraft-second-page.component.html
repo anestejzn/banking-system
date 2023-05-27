@@ -1,0 +1,18 @@
+<div>
+    <div *ngIf="processedDebit.debitStatus == 'REJECTED'">
+        <h1>Your request is rejected.</h1>
+        <button mat-raised-button (click)="answerSecondPage('back')">Go back</button>
+    </div>
+
+    <div *ngIf="processedDebit.debitStatus =='ACTIVE'">
+        <h1>Your request is accepted.</h1>
+        <div>For {{processedDebit.paymentPeriod }} months, you have to have amount of {{processedDebit.totalAmount}} RSD on your account</div>
+        <button mat-raised-button (click)="answerSecondPage('back')" *ngIf="!showQuestionAndButtons">Go back</button>
+        <h2 *ngIf="showQuestionAndButtons">Do you want accept this conditions?</h2>
+        <div class="row" *ngIf="showQuestionAndButtons">
+            <button mat-raised-button (click)="answerSecondPage('yes')">Yes</button>
+            <button mat-raised-button  (click)="answerSecondPage('no')" style="margin-left:1rem;">No</button>
+        </div>
+    </div>
+</div>
+
