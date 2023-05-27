@@ -10,6 +10,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { CashCreditRequestComponent } from './pages/cash-credit-request/cash-credit-request.component';
 import { CashCreditFirstPageComponent } from './components/cash-credit-first-page/cash-credit-first-page.component';
 import { CashCreditSecondPageComponent } from './components/cash-credit-second-page/cash-credit-second-page.component';
+import { OverdraftRequestComponent } from './pages/overdraft-request/overdraft-request.component';
+import { OverdraftFirstPageComponent } from './components/overdraft-first-page/overdraft-first-page.component';
+import { OverdraftSecondPageComponent } from './components/overdraft-second-page/overdraft-second-page.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { CashCreditSecondPageComponent } from './components/cash-credit-second-p
    HomeComponent,
    CashCreditRequestComponent,
    CashCreditFirstPageComponent,
-   CashCreditSecondPageComponent
+   CashCreditSecondPageComponent,
+   OverdraftRequestComponent,
+   OverdraftFirstPageComponent,
+   OverdraftSecondPageComponent
   ],
   imports: [
     CommonModule,

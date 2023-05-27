@@ -41,7 +41,7 @@ export class NavBarComponent implements OnInit {
   }
 
   redirectToOverdraftRequestsPage() {
-    this.router.navigate(['/serb-uber/admin/messages']);
+    this.router.navigate(['/banking-system/user/overdraft-requests']);
   }
 
 }
