@@ -1,0 +1,160 @@
+package overdraft;
+
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.AccountType;
+import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
+import com.ftn.sbnz.tim5.model.enums.DebitType;
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
+
+rule "reject overdraft request, client has Regular account"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+        $ac: AccountType(id == $account.accountType.id, $name: name)
+        eval($name.equalsIgnoreCase("Regular"))
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has Regular account");
+end
+
+rule "reject overdraft request, paying period is longer than 24 months"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT, paymentPeriod > 24)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, paying period is longer than 24 months");
+end
+
+rule "reject overdraft request, client has Premium account and wants more than one salary"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+        $ac: AccountType(id == $account.accountType.id, $name: name)
+        eval($name.equalsIgnoreCase("Premium") && $d.getTotalAmount() > $c.getMonthlyIncome())
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has Premium account and wants more than one salary");
+end
+
+rule "reject overdraft request, client has Platinum account and wants more than three salaries"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+        $ac: AccountType(id == $account.accountType.id, $name: name)
+        eval($name.equalsIgnoreCase("Platinum") && $d.getTotalAmount() > (3*$c.getMonthlyIncome()))
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has Premium account and wants more than one salary");
+end
+
+rule "reject overdraft request, client has less than 250RSD on his account"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+        $ac: AccountType(id == $account.accountType.id, $name: name)
+        eval(($name.equalsIgnoreCase("Premium") || $name.equalsIgnoreCase("Platinum")) && $account.getTotalBalance() < 250)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has less than 250RSD on his account");
+end
+
+rule "reject overdraft request, client has more than 3 active cash credits"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+        $numOfActiveCashCredit: Long() from accumulate(
+                         $debit: Debit(account == $account, debitStatus == Status.ACTIVE, debitType == DebitType.CASH_CREDIT) from $account.debits,
+                         count($debit)
+                 )
+        eval($numOfActiveCashCredit >= 3)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has more than 3 active cash credits");
+end
+
+rule "reject overdraft request, client has more than 2 penalties"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED, penalties.size() >= 2)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has more than 2 penalties");
+end
+
+rule "reject overdraft request, paying period is longer than 12 months for retiree"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT, paymentPeriod > 12)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.RETIREE)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, paying period is longer than 12 months for retiree");
+end
+
+rule "reject overdraft request, client is retiree and wants overdraft greater than his salary+20%"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.RETIREE)
+        $ac: AccountType(id == $account.accountType.id, $name: name)
+        eval($name.equalsIgnoreCase("Platinum") && $d.getTotalAmount() > ($c.getMonthlyIncome() + $c.getMonthlyIncome()*0.2))
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client is retiree and wants overdraft greater than his salary+20%");
+end
+
+rule "reject overdraft request, client has over 75 years and active cash credits"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.RETIREE, ChronoUnit.YEARS.between(dateOfBirth,LocalDateTime.now()) >= 75)
+        $numOfActiveCashCredit: Long() from accumulate(
+             $debit: Debit(account == $account, debitStatus == Status.ACTIVE, debitType == DebitType.CASH_CREDIT) from $account.debits,
+             count($debit)
+        )
+        eval($numOfActiveCashCredit > 0)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has over 75 years and active cash credits");
+end
