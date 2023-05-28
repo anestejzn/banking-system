@@ -14,6 +14,7 @@ import { CardsInfoComponent } from './components/cards-info/cards-info.component
 import { TransactionsHistoryComponent } from './components/transactions-history/transactions-history.component';
 import { TransactionRowComponent } from './components/transaction-row/transaction-row.component';
 import { CreditCardRequestPageComponent } from './pages/credit-card-request-page/credit-card-request-page.component';
+import { CreditCardDetailsComponent } from './components/credit-card-details/credit-card-details.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { CreditCardRequestPageComponent } from './pages/credit-card-request-page
    CardsInfoComponent,
    TransactionsHistoryComponent,
    TransactionRowComponent,
-   CreditCardRequestPageComponent
+   CreditCardRequestPageComponent,
+   CreditCardDetailsComponent
   ],
   imports: [
     CommonModule,

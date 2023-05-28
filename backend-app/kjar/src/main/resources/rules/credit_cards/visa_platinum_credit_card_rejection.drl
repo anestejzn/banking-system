@@ -5,29 +5,32 @@ import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.model.enums.TransactionType;
 import com.ftn.sbnz.tim5.model.enums.CardType;
 import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.AccountType;
 import com.ftn.sbnz.tim5.model.Client;
 import com.ftn.sbnz.tim5.model.ClientPenalty;
 
 
-rule "reject visa platinum credit card request, client has already visa platinum"
+rule "reject visa platinum credit card request, client already has visa platinum"
 no-loop true
 agenda-group "credit-card-rejection"
     when
        $t: Transaction($account: account, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.VISA_PLATINUM)
+       $at: AccountType(id == $account.accountType.id, $name: name)
        $numOfVisa: Long() from accumulate(
                                 $card: CardType(this == CardType.VISA_PLATINUM) from $account.cards,
                                 count($card)
                         )
-       eval($numOfVisa > 0)
+       eval($numOfVisa > 0 || $name.equalsIgnoreCase("Platinum"))
     then
         modify($t){
             setStatus(Status.REJECTED)
         }
-        System.out.println("reject visa platinum credit card request, client has already visa platinum");
+        System.out.println($name);
+        System.out.println("reject visa platinum credit card request, client already has visa platinum");
 end
 
 
-rule "reject visa platinum credit card request, client has not have 2500 RSD"
+rule "reject visa platinum credit card request, client doens't have 2500 RSD"
 no-loop true
 agenda-group "credit-card-rejection"
     when
@@ -37,21 +40,21 @@ agenda-group "credit-card-rejection"
         modify($t){
             setStatus(Status.REJECTED)
         }
-        System.out.println("reject visa platinum credit card request, client has already visa platinum");
+        System.out.println("reject visa platinum credit card request, client doens't have 2500 RSD");
 end
 
 
-rule "reject visa platinum credit card request, income > 80000RSD"
+rule "reject visa platinum credit card request, income < 80000RSD"
 no-loop true
 agenda-group "credit-card-rejection"
     when
        $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.VISA_PLATINUM)
-       $c: Client(account.id == $accountId, monthlyIncome > 80000)
+       $c: Client(account.id == $accountId, monthlyIncome < 80000)
     then
         modify($t){
             setStatus(Status.REJECTED)
         }
-        System.out.println("reject visa platinum credit card request, client has already visa platinum");
+        System.out.println("reject visa platinum credit card request, income < 80000RSD");
 end
 
 

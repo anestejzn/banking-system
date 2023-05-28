@@ -1,5 +1,6 @@
 package com.ftn.sbnz.tim5.service.services.implementation;
 
+import com.ftn.sbnz.tim5.model.Transaction;
 import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.service.dto.response.TransactionResponse;
 import com.ftn.sbnz.tim5.service.repository.TransactionRepository;
@@ -21,5 +22,10 @@ public class TransactionService implements ITransactionService {
     public List<TransactionResponse> getFilteredTransactions(Long accountId, Status parameter) {
 
         return fromTransactionsToResponses(transactionRepository.getFilteredTransactions(accountId, parameter));
+    }
+
+    @Override
+    public Transaction save(Transaction transaction) {
+        return transactionRepository.save(transaction);
     }
 }

@@ -1,6 +1,9 @@
 package com.ftn.sbnz.tim5.service.util;
 
 public class Constants {
+
+    public static final String BANK_NAME = "Banking System DOO";
+
     //PATHS
     public static final String TEMPLATE_FILE_PATH = "./src/main/resources/emailTemplates/";
 
@@ -44,4 +47,14 @@ public class Constants {
     public static final String PIN_CODE_REG = "^\\d{4}$";
     public static final String LEGIT_RE_CITY_AND_STREET_REG = "[a-zA-Z ]{1,20}";
     public static final String POSITIVE_WHOLE_NUMBER_REG = "[1-9][0-9]*";
+
+
+    //CREDIT CARDS
+    public static final String VISA = "VISA";
+    public static final String PLATINUM = "PLATINUM";
+    public static final String AMEX = "AMEX";
+
+    public static final double VISA_AMOUNT = 1000;
+    public static final double PLATINUM_AMOUNT = 2500;
+    public static final double AMEX_AMOUNT = 10000;
 }

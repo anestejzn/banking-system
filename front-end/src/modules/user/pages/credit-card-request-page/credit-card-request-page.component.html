@@ -38,8 +38,12 @@
 
     </div>
 
+    <div *ngIf="selected" style="margin-top: 6rem;">
+        <app-credit-card-details [selectedCard]="selected"></app-credit-card-details>
+    </div>
+
     <div class="center request-button">
-        <button mat-raised-button class="login-button">
+        <button mat-raised-button class="login-button" (click)="sendRequest()">
             Send request
         </button>
     </div>

@@ -86,4 +86,9 @@ export class ConfigService {
     return `${this.TRANSACTION_URL}/${accountId}/${parameter}`;
   }
 
+  ///////////CREDIT CARD///////
+  CREDIT_CARD_URL = `${this.API_URL}/credit-cards`;
+  NEW_CREDIT_CARD_URL = `${this.API_URL}/credit-cards/create`;
+
+
 }

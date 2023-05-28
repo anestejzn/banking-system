@@ -7,16 +7,17 @@ import com.ftn.sbnz.tim5.model.enums.CardType;
 import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.model.enums.TransactionType;
 
-rule "reject visa credit card request, client has already visa"
+rule "reject visa credit card request, client already has visa"
 no-loop true
 agenda-group "credit-card-rejection"
     when
        $t: Transaction($account: account, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.VISA)
+       $at: AccountType(id == $account.accountType.id, $name: name)
        $numOfVisa: Long() from accumulate(
                                 $card: CardType(this == CardType.VISA) from $account.cards,
                                 count($card)
                         )
-       eval($numOfVisa > 0)
+       eval($numOfVisa > 0 || $name.equalsIgnoreCase("Premium"))
     then
         modify($t){
             setStatus(Status.REJECTED)
@@ -25,7 +26,7 @@ agenda-group "credit-card-rejection"
 end
 
 
-rule "reject visa credit card request, client has not have 1000 RSD"
+rule "reject visa credit card request, client doesn't have 1000 RSD"
 no-loop true
 agenda-group "credit-card-rejection"
     when
@@ -35,5 +36,5 @@ agenda-group "credit-card-rejection"
         modify($t){
             setStatus(Status.REJECTED)
         }
-        System.out.println("reject visa credit card request, client has already visa");
+        System.out.println("reject visa credit card request, client doesn't have 1000 RSD");
 end

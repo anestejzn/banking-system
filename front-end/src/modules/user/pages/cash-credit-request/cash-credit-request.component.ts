@@ -51,7 +51,7 @@ export class CashCreditRequestComponent implements OnInit {
         this.firstPage = false;
       },
       error => {
-        this.toast.error(error.error);
+        this.toast.error(error.error, "Error happened");
       }
     )
   }
@@ -64,10 +64,10 @@ export class CashCreditRequestComponent implements OnInit {
       this.firstPage = true;
       this.debitSubscription = this.debitService.cancelDebitRequest(this.processedDebit.id).subscribe(
         response => {
-          this.toast.info("Your debit request is cancelled.");
+          this.toast.info("Your debit request is cancelled.", "Info");
         },
         error => {
-          this.toast.error(error.error);
+          this.toast.error(error.error, "Error happened");
         }
       )
     }

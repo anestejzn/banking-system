@@ -1,0 +1,33 @@
+<div *ngIf="selectedCard">
+
+    <div *ngIf="selectedCard === 'visa'">
+        <p>
+            Details:<br>
+            &nbsp;&nbsp;&#x2022;Cost: 1000RSD<br>
+            &nbsp;&nbsp;&#x2022;Discounts in 500 stores world wide<br>
+            &nbsp;&nbsp;&#x2022;Online shopping
+        </p>
+    </div>
+
+    <div *ngIf="selectedCard === 'platinum'">
+        <p>
+            Details:<br>
+            &nbsp;&nbsp;&#x2022;Cost: 2,500RSD<br>
+            &nbsp;&nbsp;&#x2022;Required income greater than 80K RSD<br>
+            &nbsp;&nbsp;&#x2022;Discounts in 1500 stores world wide<br>
+            &nbsp;&nbsp;&#x2022;Online shopping
+        </p>
+    </div>
+
+    <div *ngIf="selectedCard === 'amex'">
+        <p>
+            Details:<br>
+            &nbsp;&nbsp;&#x2022;Cost: 10000RSD<br>
+            &nbsp;&nbsp;&#x2022;Required income greater than 150K RSD<br>
+            &nbsp;&nbsp;&#x2022;Required Platinum Account Type<br>
+            &nbsp;&nbsp;&#x2022;Discounts in 3500 stores world wide<br>
+            &nbsp;&nbsp;&#x2022;Online shopping and special internet protection
+        </p>
+    </div>
+
+</div>
