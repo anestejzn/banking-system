@@ -1,0 +1,94 @@
+
+package cash_credits;
+
+import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.Transaction;
+import com.ftn.sbnz.tim5.model.ClientWarning;
+import com.ftn.sbnz.tim5.model.ClientPenalty;
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.AccountType;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.WarningType;
+import com.ftn.sbnz.tim5.model.enums.TransactionType;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+
+rule "get one penalty for account attentions"
+agenda-group "penalty-group"
+    when
+        $c: Client()
+        $numOfMaintananceWarnings: Long() from accumulate(
+                $warning: ClientWarning(warningType == WarningType.MAINTENANCE_WARNING, ChronoUnit.MONTHS.between(timeStamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDateTime.now()) <= 12)  from $c.warnings,
+                count($warning)
+        )
+        eval($numOfMaintananceWarnings >= 5)
+    then
+        modify($c){
+            getPenalties().add(new ClientPenalty(new Date(), "Penalty because you have 5 maintance warnings."))
+        }
+        $c.getWarnings().removeIf(cw -> cw.getWarningType() == WarningType.MAINTENANCE_WARNING);
+end
+
+rule "get one penalty for debit attentions"
+agenda-group "penalty-group"
+    when
+        $c: Client()
+        $numOfCashCreditWarnings: Long() from accumulate(
+                $warning: ClientWarning(warningType == WarningType.CASH_CREDIT_WARNING, ChronoUnit.MONTHS.between(timeStamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDateTime.now()) <= 6) from $c.warnings,
+                count($warning)
+        )
+        eval($numOfCashCreditWarnings >= 3)
+    then
+        modify($c) {
+            getPenalties().add(new ClientPenalty(new Date(), "Penalty because you have 3 cash credit warnings."))
+        }
+        $c.getWarnings().removeIf(cw -> cw.getWarningType() == WarningType.CASH_CREDIT_WARNING);
+end
+
+rule "get one penalty for login attentions"
+agenda-group "penalty-group"
+    when
+        $c: Client()
+        $numOfLogInWarnings: Long() from accumulate(
+                $warning: ClientWarning(warningType == WarningType.LOG_IN_WARNING, ChronoUnit.DAYS.between(timeStamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDateTime.now()) <= 7) from $c.warnings,
+                count($warning)
+        )
+        eval($numOfLogInWarnings >= 3)
+    then
+        modify($c) {
+            getPenalties().add(new ClientPenalty(new Date(), "Penalty because you have 3 login warnings."))
+        }
+        $c.getWarnings().removeIf(cw -> cw.getWarningType() == WarningType.LOG_IN_WARNING);
+end
+
+rule "suspicious client, penalty"
+agenda-group "client-suspicious"
+    when
+        $c: Client(penalties.size() >= 3)
+        $newDate:  LocalDateTime()
+    then
+        modify($c){
+            setSuspiciousDate($newDate)
+        }
+end
+
+rule "suspicious client, three transactions over 300K RSD in last 1h"
+agenda-group "client-suspicious"
+    when
+        $c: Client($accountId: account.id)
+        $a: Account(id == $accountId)
+        $numOfTransactions: Long() from accumulate(
+                        $t: Transaction(transactionType == TransactionType.REGULAR_TRANSACTION, ChronoUnit.HOURS.between(transactionDate, LocalDateTime.now()) <= 1) from $a.transactions,
+                        count($t)
+                )
+        eval($numOfTransactions >= 3)
+        $newDate:  LocalDateTime()
+    then
+        modify($c){
+            setSuspiciousDate($newDate)
+        }
+end
+

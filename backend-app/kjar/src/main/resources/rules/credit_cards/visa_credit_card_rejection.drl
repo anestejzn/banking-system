@@ -1,0 +1,39 @@
+package credit_cards;
+
+import com.ftn.sbnz.tim5.model.Account;
+import com.ftn.sbnz.tim5.model.Transaction;
+import com.ftn.sbnz.tim5.model.AccountType;
+import com.ftn.sbnz.tim5.model.enums.CardType;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.TransactionType;
+
+rule "reject visa credit card request, client has already visa"
+no-loop true
+agenda-group "credit-card-rejection"
+    when
+       $t: Transaction($account: account, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.VISA)
+       $numOfVisa: Long() from accumulate(
+                                $card: CardType(this == CardType.VISA) from $account.cards,
+                                count($card)
+                        )
+       eval($numOfVisa > 0)
+    then
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
+        System.out.println("reject visa credit card request, client has already visa");
+end
+
+
+rule "reject visa credit card request, client has not have 1000 RSD"
+no-loop true
+agenda-group "credit-card-rejection"
+    when
+       $t: Transaction($accountId: account.id, status == Status.PENDING, transactionType == TransactionType.CREDIT_CARD_TRANSACTION, boughtCardType == CardType.VISA)
+       $a: Account(id == $accountId, totalBalance < 1000)
+    then
+        modify($t){
+            setStatus(Status.REJECTED)
+        }
+        System.out.println("reject visa credit card request, client has already visa");
+end

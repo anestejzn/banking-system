@@ -17,7 +17,12 @@ rule "Categorize MonthlyInterest_@{row.rowNumber}"
 no-loop true
 when
     $d: Debit($account: account, paymentPeriod >= @{minPaymentPeriod} && paymentPeriod <= @{maxPaymentPeriod}, debitStatus == Status.PENDING)
-    $a: Account(this == $account, debits.size() >= @{minNumOfCredits} && debits.size() <= @{maxNumOfCredits})
+    $a: Account(this == $account)
+    $numOfActiveDebits: Long() from accumulate(
+                    $debit: Debit(debitStatus == Status.ACTIVE) from $a.debits,
+                    count($debit)
+            )
+    eval($numOfActiveDebits >= @{minNumOfCredits} && $numOfActiveDebits <= @{maxNumOfCredits})
 then
     modify ($d){ setMonthlyInterest(@{monthlyInterest})};
 end

@@ -18,7 +18,7 @@ import org.kie.api.definition.type.Timestamp;
 @NoArgsConstructor
 @Role(Role.Type.EVENT)
 @Timestamp("timeStamp")
-@Expires("28d")
+@Expires("12m")
 public class ClientPenalty {
 
     @Id

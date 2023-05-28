@@ -150,7 +150,8 @@ public class CashCreditRequestService implements ICashCreditRequestService {
                 new String[]{"13", "23", "1", "20", "3.8"},
                 new String[]{"24", "36", "0", "2", "3"},
                 new String[]{"24", "36", "3", "20", "4.1"},
-                new String[]{"37", "72", "3", "20", "4.5"},
+                new String[]{"37", "72", "0", "2", "4.5"},
+                new String[]{"37", "72", "3", "20", "4.9"},
         });
 
         DataProviderCompiler converter = new DataProviderCompiler();
