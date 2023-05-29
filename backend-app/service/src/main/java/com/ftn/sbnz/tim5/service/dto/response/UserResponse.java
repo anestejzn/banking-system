@@ -2,6 +2,7 @@ package com.ftn.sbnz.tim5.service.dto.response;
 
 import com.ftn.sbnz.tim5.model.Role;
 import com.ftn.sbnz.tim5.model.User;
+import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

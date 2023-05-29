@@ -12,6 +12,7 @@ export interface User {
   country: string;
   city: string;
   accountStatus: string;
+  employeeStatus: string;
   role: Role;
 }
 

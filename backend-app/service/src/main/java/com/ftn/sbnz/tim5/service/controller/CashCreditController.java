@@ -30,15 +30,9 @@ import java.util.List;
 @RequestMapping("/cash-credit")
 public class CashCreditController {
 
-    private final KieContainer kieContainer;
 
     @Autowired
     private CashCreditRequestService cashCreditRequestService;
-
-    @Autowired
-    public CashCreditController(KieContainer kieContainer){
-        this.kieContainer = kieContainer;
-    }
 
     @PostMapping("/send-cash-credit-request")
     public DebitResponse sendCashCreditRequest(@RequestBody CashCreditRequest cashCreditRequest) throws EntityNotFoundException {

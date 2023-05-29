@@ -78,6 +78,7 @@ export class ConfigService {
     return `${this.DEBIT_URL}/${debitId}`;
   }
 
+
   ////////////TRANSACTION///////
   TRANSACTION_URL = `${this.API_URL}/transactions`;
 
@@ -90,5 +91,8 @@ export class ConfigService {
   CREDIT_CARD_URL = `${this.API_URL}/credit-cards`;
   NEW_CREDIT_CARD_URL = `${this.API_URL}/credit-cards/create`;
 
+  /////////OVERDRAFT/////
+  OVERDRAFT_URL = `${this.API_URL}/overdraft`;
+  SEND_OVERDRAFT_REQUEST_URL = `${this.CASH_CREDIT_URL}/send-overdraft-request`;
 
 }

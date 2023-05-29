@@ -1,0 +1,67 @@
+<div>
+    <h1>Request for overdraft</h1>
+    <h4>Enter your last 3 monthly income</h4>
+    <form color="primary" [formGroup]="overdraftRequestForm">
+        <mat-form-field
+        class="full-width"
+        appearance="fill">
+            <mat-label>First monthly income</mat-label>
+            <input
+            matInput
+            formControlName="firstMonthlyIncome"
+            type="number"
+            name="secondMonthlyIncome"
+            required />
+            <mat-error
+            *ngIf="
+                overdraftRequestForm.get('firstMonthlyIncome').hasError('required')
+            ">
+            Income is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field
+        class="full-width"
+        appearance="fill">
+            <mat-label>Second monthly income</mat-label>
+            <input
+                matInput
+                formControlName="secondMonthlyIncome"
+                type="number"
+                name="secondMonthlyIncome"
+                required />
+            <mat-error
+                *ngIf="
+                overdraftRequestForm.get('secondMonthlyIncome').hasError('required')"
+            >
+                Income is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field
+            class="full-width"
+            appearance="fill"
+        >
+            <mat-label>Third monthly income</mat-label>
+            <input
+                matInput
+                formControlName="thirdMonthlyIncome"
+                type="number"
+                name="thirdMonthlyIncome"
+                required />
+            <mat-error
+            *ngIf="
+            overdraftRequestForm.get('thirdMonthlyIncome').hasError('required')
+            ">
+            Income is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <h5 *ngIf="showMessage()">
+            If your request is accepted, you will have to have amount of {{calculateAmount()}} on your account for 12 or 24 months.
+        </h5>
+        <div class="center margin-top">
+            <button mat-raised-button (click)="send()" class="login-button" id="submit-login">
+                Send request
+            </button>
+        </div>
+    </form>
+</div>
