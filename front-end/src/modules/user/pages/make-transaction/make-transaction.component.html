@@ -1,0 +1,35 @@
+
+<div class="form-container">
+
+    <h1 class="center">Create Transaction</h1>
+
+    <form color="primary" [formGroup]="transactionRequestForm">
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Enter your wanted amount</mat-label>
+            <input matInput formControlName="amount" type="number" name="amount" required />
+            <mat-error *ngIf="
+                    transactionRequestForm.get('amount').hasError('required')
+                ">
+                Amount is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Enter receiver name from company register</mat-label>
+            <input matInput formControlName="otherSide" type="text" name="otherSide" required />
+            <mat-error *ngIf="
+                            transactionRequestForm.get('otherSide').hasError('required')
+                        ">
+                Receiver name is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+    </form>
+
+    <div class="payment-button">
+        <button mat-raised-button class="login-button" [disabled]="transactionRequestForm.invalid" (click)="createPayment()">
+            Create payment
+        </button>
+    </div>
+        
+
+</div>

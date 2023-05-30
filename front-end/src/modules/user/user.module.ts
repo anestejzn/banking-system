@@ -18,6 +18,7 @@ import { CreditCardDetailsComponent } from './components/credit-card-details/cre
 import { OverdraftRequestComponent } from './pages/overdraft-request/overdraft-request.component';
 import { OverdraftFirstPageComponent } from './components/overdraft-first-page/overdraft-first-page.component';
 import { OverdraftSecondPageComponent } from './components/overdraft-second-page/overdraft-second-page.component';
+import { MakeTransactionComponent } from './pages/make-transaction/make-transaction.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { OverdraftSecondPageComponent } from './components/overdraft-second-page
    CreditCardDetailsComponent,
    OverdraftRequestComponent,
    OverdraftFirstPageComponent,
-   OverdraftSecondPageComponent
+   OverdraftSecondPageComponent,
+   MakeTransactionComponent
   ],
   imports: [
     CommonModule,

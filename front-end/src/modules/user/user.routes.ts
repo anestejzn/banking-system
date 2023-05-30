@@ -3,6 +3,7 @@ import { HomeComponent } from "./pages/home/home.component";
 import { CashCreditRequestComponent } from "./pages/cash-credit-request/cash-credit-request.component";
 import { CreditCardRequestPageComponent } from "./pages/credit-card-request-page/credit-card-request-page.component";
 import { OverdraftRequestComponent } from "./pages/overdraft-request/overdraft-request.component";
+import { MakeTransactionComponent } from "./pages/make-transaction/make-transaction.component";
 
 export const UserRoutes: Routes = [
     {
@@ -24,5 +25,10 @@ export const UserRoutes: Routes = [
       path: "overdraft-requests",
       pathMatch: "full",
       component: OverdraftRequestComponent
+    },
+    {
+      path: "make-transaction",
+      pathMatch: "full",
+      component: MakeTransactionComponent
     }
 ]
