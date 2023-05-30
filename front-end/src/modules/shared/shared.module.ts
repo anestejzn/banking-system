@@ -6,7 +6,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MaterialModule } from '../material/material.module';
 import { DateFormatPipe } from './pipes/date-format.pipe';
-
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -24,14 +24,16 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     })
   ],
   exports: [
-    DateFormatPipe
+    DateFormatPipe,
+    DatePipe
   ],
   providers:[
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    DatePipe
   ]
 })
 export class SharedModule { }

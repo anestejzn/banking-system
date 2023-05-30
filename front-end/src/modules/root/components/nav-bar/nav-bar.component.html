@@ -15,7 +15,14 @@
 
     <a [routerLink]="['/banking-system/user/make-transaction']" mat-button color="primary">Transaction</a>
 
+  </div>
 
+  <div class="spacer">
+    <div *ngIf="loggedUser && isAdmin">
+      &nbsp;&nbsp;
+      <a [routerLink]="['/banking-system/admin/home']" routerLinkActive="active" mat-button color="primary">Home</a>
+      <a [routerLink]="['/banking-system/admin/reports']" routerLinkActive="active" mat-button color="primary">Reports</a>
+    </div>
   </div>
 
   </div>

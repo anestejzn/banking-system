@@ -29,4 +29,5 @@ public interface IClientService {
     List<Client> getAllClients();
     Client save(Client client);
 
+    List<ClientResponse> getVerifiedClients();
 }

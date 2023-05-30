@@ -21,4 +21,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query("select c from Client c")
     List<Client> getAll();
+
+    @Query("select distinct c from Client c where c.accountStatus=0 and c.verified=true")
+    List<Client> getVerifiedActiveClients();
 }

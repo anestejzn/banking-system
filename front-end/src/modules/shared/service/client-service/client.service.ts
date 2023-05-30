@@ -16,6 +16,10 @@ export class ClientService {
     return this.http.get<Client>(this.configService.getClientByIdURL(id));
   }
 
+  getAllVerified() {
+    return this.http.get<Client[]>(this.configService.ALL_VERIFIED_CLIENTS);
+  }
+
   registerRegularUser(newUser: UserRegistrationRequest, isRetiree: boolean): Observable<Client> {
     return this.http.post<Client>(
       this.configService.getClientRegistrationURL(isRetiree),

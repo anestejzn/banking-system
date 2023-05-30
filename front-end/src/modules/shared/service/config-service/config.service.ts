@@ -8,6 +8,12 @@ export class ConfigService {
 
   constructor() { }
 
+  //////////////////REPORTS/////////////////
+  CASH_CREDIT_REPORT = "CASH_CREDIT_REPORT";
+  CREDIT_CARD_REPORT = "CREDIT_CARD_REPORT";
+  OVERDRAFT_REPORT = "OVERDRAFT_REPORT";
+
+
   API_URL = environment.apiUrl;
   ///////////////////AUTH///////////////////
   AUTH_URL = `${this.API_URL}/auth`;
@@ -43,6 +49,7 @@ export class ConfigService {
   ////////////////CLIENT////////////////////////
   CLIENTS_URL = `${this.API_URL}/clients`;
   ALL_PENDING_CLIENTS = `${this.CLIENTS_URL}/all-pending-clients`
+  ALL_VERIFIED_CLIENTS  = `${this.API_URL}/clients/all-verified`
   
   getClientRegistrationURL(isRetiree: boolean): string {
     return isRetiree ? `${this.CLIENTS_URL}/register-retired-client` : `${this.CLIENTS_URL}/register-employed-client`;

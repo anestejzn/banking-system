@@ -31,6 +31,13 @@ public class ClientController {
         return clientService.getPendingClients();
     }
 
+    @GetMapping("all-verified")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ClientResponse> getAllVerified() {
+
+        return clientService.getVerifiedClients();
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ClientResponse getClientById(@Valid @NotNull(message = MISSING_ID) @PathVariable Long id)
