@@ -24,6 +24,12 @@ public class CustomExceptionHandler {
         return passwordsDoNotMatchException.getMessage();
     }
 
+    @ExceptionHandler(value = NotEnoughMoneyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String passwordsDoNotMatchException(NotEnoughMoneyException exception) {
+        return exception.getMessage();
+    }
+
     @ExceptionHandler(value = InvalidDateOfBirthException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String invalidDateOfBirth(InvalidDateOfBirthException invalidDateOfBirthException) {

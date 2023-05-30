@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Transaction } from '../../model/transaction';
+import { Transaction, TransactionRequest } from '../../model/transaction';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../config-service/config.service';
 
@@ -14,4 +14,9 @@ export class TransactionService {
   getFilteredTransactions(accountId: number, parameter: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(this.configService.getFilteredTransactions(accountId, parameter));
   }
+
+  createTransaction(request: TransactionRequest): Observable<Transaction> {
+    return this.http.post<Transaction>(this.configService.TRANSACTION_URL, request);
+  }
+
 }

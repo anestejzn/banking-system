@@ -10,3 +10,9 @@ export interface Transaction {
     status?: string;
     boughtCardType?: string;
 }
+
+export interface TransactionRequest {
+    clientId: number;
+    amount: number;
+    otherSide: string;
+}
