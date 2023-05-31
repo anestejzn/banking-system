@@ -80,6 +80,7 @@ export class ConfigService {
 
   ///////////////DEBIT//////////
   DEBIT_URL = `${this.API_URL}/debit`;
+  DEBIT_REPORT_URL = `${this.API_URL}/debit/report`;
 
   getCancelDebitUrl(debitId: number){
     return `${this.DEBIT_URL}/${debitId}`;
@@ -88,6 +89,7 @@ export class ConfigService {
 
   ////////////TRANSACTION///////
   TRANSACTION_URL = `${this.API_URL}/transactions`;
+  CREDIT_CARD_REPORT_URL = `${this.API_URL}/transactions/report`
 
   getFilteredTransactions(accountId, parameter): string {
 

@@ -28,7 +28,8 @@ INSERT INTO card_enum_additional (account_id, cards)
 VALUES (1, 'VISA_PLATINUM');
 
 insert into debit (debit_type, total_amount, debit_date, monthly_interest, monthly_amount, payment_period, debit_status, account_id) values
-    (0, 20000, '2023-05-01', 3, 1500, 12, 0, 1);
+    (0, 20000, '2023-05-10', 3, 1500, 12, 0, 1),
+    (0, 3000, '2023-05-015', 3, 1500, 12, 2, 1);
 
 insert into transaction (amount, transaction_date, income, other_side, transaction_type, bought_card_type, status, account_id) values
                        (100000, '2023-05-01', true, 'Apple', 0, null, 0, 1),

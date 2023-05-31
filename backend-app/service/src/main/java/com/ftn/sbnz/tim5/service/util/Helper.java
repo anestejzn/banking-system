@@ -1,6 +1,11 @@
 package com.ftn.sbnz.tim5.service.util;
 
 
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.enums.DebitType;
+import com.ftn.sbnz.tim5.model.enums.ReportType;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.service.dto.response.ReportResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -55,6 +60,17 @@ public class Helper {
             // Handle exception
             return null;
         }
+    }
+
+    public static DebitType getTypeFromReport(ReportType reportType) {
+        switch (reportType) {
+            case CASH_CREDIT_REPORT:
+                return DebitType.CASH_CREDIT;
+            case OVERDRAFT_REPORT:
+                return DebitType.OVERDRAFT;
+        }
+
+        return null;
     }
 
 }

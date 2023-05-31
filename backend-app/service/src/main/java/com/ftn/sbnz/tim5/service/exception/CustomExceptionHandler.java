@@ -36,6 +36,12 @@ public class CustomExceptionHandler {
         return invalidDateOfBirthException.getMessage();
     }
 
+    @ExceptionHandler(value = UnableToPerformActionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String invalidDateOfBirth(UnableToPerformActionException exception) {
+        return exception.getMessage();
+    }
+
     @ExceptionHandler(value = EntityAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String entityAlreadyExistsException(EntityAlreadyExistsException entityAlreadyExists) {
