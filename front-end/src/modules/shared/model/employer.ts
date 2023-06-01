@@ -1,6 +1,8 @@
 
 
 export interface Employer {
-    id: number,
+    id?: number,
     name: string
+    pib?: string,
+    startedOperating?: Date
 }

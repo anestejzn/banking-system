@@ -16,4 +16,11 @@ export class EmployerService {
       this.configService.ALL_EMPLOYERS
     );
   }
+
+  save(employerRequest): Observable<Employer> {
+    console.log(employerRequest);
+    return this.http.post<Employer>(
+      this.configService.SAVE_EMPLOYERS_URL, employerRequest
+    )
+  }
 }

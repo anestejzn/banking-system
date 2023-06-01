@@ -45,6 +45,7 @@ export class ConfigService {
   /////////////////EMPLOYERS/////////////////
   EMPLOYERS_URL = `${this.API_URL}/employers`;
   ALL_EMPLOYERS = `${this.EMPLOYERS_URL}/all-employers`;
+  SAVE_EMPLOYERS_URL = `${this.API_URL}/employers/save`;
 
   ////////////////CLIENT////////////////////////
   CLIENTS_URL = `${this.API_URL}/clients`;
@@ -86,6 +87,9 @@ export class ConfigService {
     return `${this.DEBIT_URL}/${debitId}`;
   }
 
+  getAcceptDebitUrl(debitId: number){
+    return `${this.DEBIT_URL}/accept/${debitId}`;
+  }
 
   ////////////TRANSACTION///////
   TRANSACTION_URL = `${this.API_URL}/transactions`;

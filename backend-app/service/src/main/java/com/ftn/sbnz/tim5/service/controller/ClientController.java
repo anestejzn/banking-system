@@ -106,4 +106,5 @@ public class ClientController {
         return clientService.rejectRegistrationRequest(id);
     }
 
+
 }

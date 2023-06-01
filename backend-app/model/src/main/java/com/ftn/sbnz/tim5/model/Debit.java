@@ -43,7 +43,7 @@ public class Debit {
     private Status debitStatus;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private Account account;
 

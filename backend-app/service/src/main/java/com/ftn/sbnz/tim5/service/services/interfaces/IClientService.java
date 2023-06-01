@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface IClientService {
     Client getClient(String email) throws EntityNotFoundException;
+
     boolean activateAccount(String userEmail) throws EntityNotFoundException;
 
     ClientResponse createRetiree(String email, String name, String surname, String password, String confirmPassword, LocalDateTime dateOfBirth, double monthlyIncome, String accountTypeName, String city, String postCode, String streetName, String streetNumber, boolean termsOfPIOFondAgreement) throws EntityAlreadyExistsException, PasswordsDoNotMatchException, IOException, MailCannotBeSentException, EntityNotFoundException, InvalidTermsOfAgreementException, InvalidDateOfBirthException;
@@ -27,6 +28,7 @@ public interface IClientService {
     boolean rejectRegistrationRequest(Long id) throws EntityNotFoundException;
 
     List<Client> getAllClients();
+
     Client save(Client client);
 
     List<ClientResponse> getVerifiedClients();

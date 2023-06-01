@@ -14,5 +14,9 @@ public interface IDebitService {
 
     void delete(Long debitId);
 
+    void accept(Long debitId) throws EntityNotFoundException;
+
+    Debit getDebitById(Long debitId) throws EntityNotFoundException;
+
     ReportResponse getReportStatistics(Long clientId, ReportType reportType, boolean showAll, LocalDateTime startDate, LocalDateTime endDate) throws EntityNotFoundException, UnableToPerformActionException;
 }

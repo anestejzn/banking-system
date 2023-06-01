@@ -1,5 +1,6 @@
 package com.ftn.sbnz.tim5.service.services.implementation;
 
+import com.ftn.sbnz.tim5.model.Account;
 import com.ftn.sbnz.tim5.model.Client;
 import com.ftn.sbnz.tim5.model.Debit;
 import com.ftn.sbnz.tim5.model.enums.ReportType;
@@ -8,6 +9,7 @@ import com.ftn.sbnz.tim5.service.dto.response.ReportResponse;
 import com.ftn.sbnz.tim5.service.exception.EntityNotFoundException;
 import com.ftn.sbnz.tim5.service.exception.UnableToPerformActionException;
 import com.ftn.sbnz.tim5.service.repository.DebitRepository;
+import com.ftn.sbnz.tim5.service.services.interfaces.IAccountService;
 import com.ftn.sbnz.tim5.service.services.interfaces.IClientService;
 import com.ftn.sbnz.tim5.service.services.interfaces.IDebitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class DebitService implements IDebitService {
     @Autowired
     private IClientService clientService;
 
+    @Autowired
+    private IAccountService accountService;
+
     @Override
     public Debit save(Debit debit) {
         return debitRepository.save(debit);
@@ -37,6 +42,20 @@ public class DebitService implements IDebitService {
     @Override
     public void delete(Long debitId) {
         debitRepository.deleteById(debitId);
+    }
+
+    @Override
+    public void accept(Long debitId) throws EntityNotFoundException {
+        Debit debit = getDebitById(debitId);
+        Account account = debit.getAccount();
+        account.setTotalBalance(account.getTotalBalance() + debit.getTotalAmount());
+        accountService.save(account);
+    }
+
+    @Override
+    public Debit getDebitById(Long id) throws EntityNotFoundException {
+        return debitRepository.getDebitById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Debit is not found."));
     }
 
     @Override

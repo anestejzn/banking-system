@@ -1,0 +1,62 @@
+<div class="form-container mat-elevation-z1 text-center">
+    <h1>Add new employer</h1>
+    <form color="primary" [formGroup]="employerForm">
+        <mat-form-field
+          class="full-width"
+          appearance="fill">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            placeholder="Employer name"
+            formControlName="name"
+            name="name"
+            required />
+            <mat-error
+            *ngIf="
+              employerForm.get('name').hasError('required')
+            ">
+            Employer name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+        class="full-width"
+        appearance="fill">
+        <mat-label>Pib</mat-label>
+        <input
+          matInput
+          placeholder="Employer pib"
+          formControlName="pib"
+          name="pib"
+          required />
+          <mat-error
+          *ngIf="
+            employerForm.get('pib').hasError('required') &&
+            !employerForm.get('pib').hasError('minlength')
+          ">
+          Pib is <strong>required</strong>
+        </mat-error>
+
+        <mat-error
+        *ngIf="
+          !employerForm.get('pib').hasError('required') &&
+          employerForm.get('pib').hasError('minlength')
+        ">
+        Pib have to have 9 characters.
+      </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Started operating</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="startedOperating">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+    <div class="center margin-top">
+        <button mat-raised-button (click)="addEmployer()" class="login-button" id="submit-login">
+          Save
+        </button>
+      </div>
+    </form>
+</div>

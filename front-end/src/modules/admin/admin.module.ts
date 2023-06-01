@@ -13,7 +13,8 @@ import { ChartsPageComponent } from './pages/charts-page/charts-page.component';
 import { ChartTabComponent } from './components/chart-tab/chart-tab.component';
 import { ChartGraphComponent } from './components/chart-graph/chart-graph.component';
 import { MatNativeDateModule } from '@angular/material/core'
-import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NewEmployerComponent } from './pages/new-employer/new-employer.component'
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
    RegistrationReqDetailsDialogComponent,
    ChartsPageComponent,
    ChartTabComponent,
-   ChartGraphComponent
+   ChartGraphComponent,
+   NewEmployerComponent
   ],
   imports: [
     CommonModule,

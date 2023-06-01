@@ -35,4 +35,9 @@ public class DebitController {
     public void cancelDebitRequest(@PathVariable Long debitId){
         debitService.delete(debitId);
     }
+
+    @GetMapping("/accept/{debitId}")
+    public void acceptDebitRequest(@PathVariable Long debitId) throws EntityNotFoundException {
+        debitService.accept(debitId);
+    }
 }

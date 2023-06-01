@@ -1,5 +1,6 @@
 package com.ftn.sbnz.tim5.service.repository;
 
+import com.ftn.sbnz.tim5.model.Client;
 import com.ftn.sbnz.tim5.model.Debit;
 import net.bytebuddy.asm.Advice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DebitRepository extends JpaRepository<Debit, Long> {
@@ -17,4 +19,7 @@ public interface DebitRepository extends JpaRepository<Debit, Long> {
 
     @Query("select distinct d from Debit d where d.debitDate >= ?1 and d.debitDate <= ?2 and d.debitType=1")
     List<Debit> getAllOverdraft(LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query("select d from Debit d where d.id=?1")
+    Optional<Debit> getDebitById(Long id);
 }

@@ -18,4 +18,9 @@ export class DebitService {
   cancelDebitRequest(debitId: number){
     return this.http.delete(this.configService.getCancelDebitUrl(debitId));
   }
+
+  acceptDebitRequest(debitId: number){
+    console.log("accept");
+    return this.http.get(this.configService.getAcceptDebitUrl(debitId));
+  }
 }
