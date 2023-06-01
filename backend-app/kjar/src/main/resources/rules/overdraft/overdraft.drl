@@ -2,12 +2,34 @@ package overdraft;
 
 import com.ftn.sbnz.tim5.model.Debit;
 import com.ftn.sbnz.tim5.model.AccountType;
+import com.ftn.sbnz.tim5.model.Account;
 import com.ftn.sbnz.tim5.model.Client;
+import com.ftn.sbnz.tim5.model.ClientPenalty;
 import com.ftn.sbnz.tim5.model.enums.Status;
 import com.ftn.sbnz.tim5.model.enums.EmployeeStatus;
 import com.ftn.sbnz.tim5.model.enums.DebitType;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.time.ZoneId;
+
+
+rule "reject overdraft request, client has already overdraft"
+no-loop true
+agenda-group "overdraft-rejection"
+    when
+        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
+        $numOfActiveCashCredit: Long() from accumulate(
+             $debit: Debit(account == $account, debitStatus == Status.ACTIVE, debitType == DebitType.OVERDRAFT) from $account.debits,
+             count($debit)
+        )
+        eval($numOfActiveCashCredit > 0)
+    then
+        modify($d){
+            setDebitStatus(Status.REJECTED)
+        }
+        System.out.println("reject overdraft request, client has already overdraft");
+end
 
 rule "reject overdraft request, client has Regular account"
 no-loop true
@@ -15,26 +37,14 @@ agenda-group "overdraft-rejection"
     when
         $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
         $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
-        $ac: AccountType(id == $account.accountType.id, $name: name)
-        eval($name.equalsIgnoreCase("Regular"))
+        $a: Account(id == $account.id, $accountType: accountType)
+        $ac: AccountType(id == $accountType.id, $name: name)
+        eval($name.equals("Regular"))
     then
         modify($d){
             setDebitStatus(Status.REJECTED)
         }
         System.out.println("reject overdraft request, client has Regular account");
-end
-
-rule "reject overdraft request, paying period is longer than 24 months"
-no-loop true
-agenda-group "overdraft-rejection"
-    when
-        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT, paymentPeriod > 24)
-        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
-    then
-        modify($d){
-            setDebitStatus(Status.REJECTED)
-        }
-        System.out.println("reject overdraft request, paying period is longer than 24 months");
 end
 
 rule "reject overdraft request, client has Premium account and wants more than one salary"
@@ -43,8 +53,9 @@ agenda-group "overdraft-rejection"
     when
         $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
         $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
-        $ac: AccountType(id == $account.accountType.id, $name: name)
-        eval($name.equalsIgnoreCase("Premium") && $d.getTotalAmount() > $c.getMonthlyIncome())
+        $a: Account(id == $account.id, $accountType: accountType)
+        $ac: AccountType(id == $accountType.id, $name: name)
+        eval($name.equals("Premium") && $d.getTotalAmount() > $c.getMonthlyIncome())
     then
         modify($d){
             setDebitStatus(Status.REJECTED)
@@ -58,8 +69,9 @@ agenda-group "overdraft-rejection"
     when
         $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
         $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
-        $ac: AccountType(id == $account.accountType.id, $name: name)
-        eval($name.equalsIgnoreCase("Platinum") && $d.getTotalAmount() > (3*$c.getMonthlyIncome()))
+        $a: Account(id == $account.id, $accountType: accountType)
+        $ac: AccountType(id == $accountType.id, $name: name)
+        eval($name.equals("Platinum") && $d.getTotalAmount() > (3*$c.getMonthlyIncome()))
     then
         modify($d){
             setDebitStatus(Status.REJECTED)
@@ -73,8 +85,9 @@ agenda-group "overdraft-rejection"
     when
         $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
         $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
-        $ac: AccountType(id == $account.accountType.id, $name: name)
-        eval(($name.equalsIgnoreCase("Premium") || $name.equalsIgnoreCase("Platinum")) && $account.getTotalBalance() < 250)
+        $a: Account(id == $account.id, $accountType: accountType)
+        $ac: AccountType(id == $accountType.id, $name: name)
+        eval(($name.equals("Premium") || $name.equals("Platinum")) && $account.getTotalBalance() < 250)
     then
         modify($d){
             setDebitStatus(Status.REJECTED)
@@ -105,7 +118,12 @@ no-loop true
 agenda-group "overdraft-rejection"
     when
         $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
-        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED, penalties.size() >= 2)
+        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.EMPLOYED)
+         $numOfPenalties: Long() from accumulate(
+                                $penalty: ClientPenalty(ChronoUnit.MONTHS.between(timeStamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDateTime.now()) <= 12) from $c.penalties,
+                                count($penalty)
+                        )
+         eval($numOfPenalties > 2)
     then
         modify($d){
             setDebitStatus(Status.REJECTED)
@@ -113,18 +131,6 @@ agenda-group "overdraft-rejection"
         System.out.println("reject overdraft request, client has more than 2 penalties");
 end
 
-rule "reject overdraft request, paying period is longer than 12 months for retiree"
-no-loop true
-agenda-group "overdraft-rejection"
-    when
-        $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT, paymentPeriod > 12)
-        $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.RETIREE)
-    then
-        modify($d){
-            setDebitStatus(Status.REJECTED)
-        }
-        System.out.println("reject overdraft request, paying period is longer than 12 months for retiree");
-end
 
 rule "reject overdraft request, client is retiree and wants overdraft greater than his salary+20%"
 no-loop true
@@ -132,8 +138,7 @@ agenda-group "overdraft-rejection"
     when
         $d: Debit($account: account, debitStatus == Status.PENDING, debitType == DebitType.OVERDRAFT)
         $c: Client(account.id == $account.id, employeeStatus == EmployeeStatus.RETIREE)
-        $ac: AccountType(id == $account.accountType.id, $name: name)
-        eval($name.equalsIgnoreCase("Platinum") && $d.getTotalAmount() > ($c.getMonthlyIncome() + $c.getMonthlyIncome()*0.2))
+        eval($d.getTotalAmount() > ($c.getMonthlyIncome() + $c.getMonthlyIncome()*0.2))
     then
         modify($d){
             setDebitStatus(Status.REJECTED)

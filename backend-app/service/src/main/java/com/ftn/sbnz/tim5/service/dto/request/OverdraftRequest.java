@@ -11,16 +11,16 @@ public class OverdraftRequest {
     @NotNull(message = "Client id can not be null")
     private Long clientId;
     @NotNull(message = "Amount can not be null")
-    private double firstMonthlyAmount;
+    private double firstMonthlyIncome;
     @NotNull(message = "Amount can not be null")
-    private double secondMonthlyAmount;
+    private double secondMonthlyIncome;
     @NotNull(message = "Amount can not be null")
-    private double thirdMonthlyAmount;
+    private double thirdMonthlyIncome;
 
-    public OverdraftRequest(Long clientId, double firstMonthlyAmount, double secondMonthlyAmount, double thirdMonthlyAmount) {
+    public OverdraftRequest(Long clientId, double firstMonthlyIncome, double secondMonthlyIncome, double thirdMonthlyIncome) {
         this.clientId = clientId;
-        this.firstMonthlyAmount = firstMonthlyAmount;
-        this.secondMonthlyAmount = secondMonthlyAmount;
-        this.thirdMonthlyAmount = thirdMonthlyAmount;
+        this.firstMonthlyIncome = firstMonthlyIncome;
+        this.secondMonthlyIncome = secondMonthlyIncome;
+        this.thirdMonthlyIncome = thirdMonthlyIncome;
     }
 }

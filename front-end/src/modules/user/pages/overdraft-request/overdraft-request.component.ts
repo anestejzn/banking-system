@@ -40,7 +40,7 @@ export class OverdraftRequestComponent implements OnInit {
 
 
   sendRequestOverdraft(event){
-
+    console.log(event);
     const request: OverdraftRequest = {
       clientId: this.loggedUser.id,
       firstMonthlyIncome: event.firstMonthlyIncome,
@@ -52,6 +52,7 @@ export class OverdraftRequestComponent implements OnInit {
       debit => {
         this.processedDebit = debit;
         this.firstPage = false;
+        console.log(debit);
       },
       error => {
         this.toast.error(error.error);

@@ -102,6 +102,6 @@ export class ConfigService {
 
   /////////OVERDRAFT/////
   OVERDRAFT_URL = `${this.API_URL}/overdraft`;
-  SEND_OVERDRAFT_REQUEST_URL = `${this.CASH_CREDIT_URL}/send-overdraft-request`;
+  SEND_OVERDRAFT_REQUEST_URL = `${this.OVERDRAFT_URL}/send-overdraft-request`;
 
 }

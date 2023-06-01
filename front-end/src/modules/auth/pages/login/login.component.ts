@@ -63,8 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          console.log(error.error);
-          this.toast.error('Email or password is not correct!', 'Login failed');
+          this.toast.error(error.error, 'Login failed');
         }
       );
     }

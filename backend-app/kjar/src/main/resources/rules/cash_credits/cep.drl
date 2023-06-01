@@ -67,8 +67,13 @@ end
 rule "suspicious client, penalty"
 agenda-group "client-suspicious"
     when
-        $c: Client(penalties.size() >= 3)
+        $c: Client()
         $newDate:  LocalDateTime()
+        $numOfPenalties: Long() from accumulate(
+                        $penalty: ClientPenalty(ChronoUnit.MONTHS.between(timeStamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDateTime.now()) <= 12) from $c.penalties,
+                        count($penalty)
+                )
+        eval($numOfPenalties >= 3)
     then
         modify($c){
             setSuspiciousDate($newDate)
@@ -76,7 +81,7 @@ agenda-group "client-suspicious"
 end
 
 rule "suspicious client, three transactions over 300K RSD in last 1h"
-agenda-group "client-suspicious"
+    agenda-group "client-suspicious"
     when
         $c: Client($accountId: account.id)
         $a: Account(id == $accountId)
@@ -90,5 +95,35 @@ agenda-group "client-suspicious"
         modify($c){
             setSuspiciousDate($newDate)
         }
+end
+
+rule "3 times unsuccessfully login"
+    agenda-group "login"
+    when
+        $c: Client(unsuccessfulLogin == 3)
+    then
+        modify($c){
+            getProhibitions().add(LocalDateTime.now()),
+            setLockedUntil(LocalDateTime.now())
+        }
+
+        System.out.println("3 times unsuccessfully login");
+end
+
+
+rule "add attention to user for unsuccessfully login"
+agenda-group "login"
+  when
+    $c: Client()// Match the list of LocalDateTime objects fact
+    $numOfLogInWarnings:Long() from accumulate(
+                        $p: LocalDateTime(this < LocalDateTime.now().minusHours(24)) from $c.prohibitions,
+                        count($p)
+                )
+    eval($numOfLogInWarnings >= 2)
+  then
+    modify($c){
+         getWarnings().add(new ClientWarning(new Date(), WarningType.LOG_IN_WARNING))
+    }
+    System.out.println("add attention to user for unsuccessfully login");
 end
 

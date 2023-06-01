@@ -49,28 +49,33 @@ public class OverdraftService implements IOverdraftService {
             paymentPeriod = 12;
         }
 
+        System.out.println((firstMonthlyAmount + secondMonthlyAmount + thirdMonthlyAmount) / 3);
         double amount = Double.parseDouble(decfor.format((firstMonthlyAmount + secondMonthlyAmount + thirdMonthlyAmount) / 3));
         Debit debit = new Debit(DebitType.OVERDRAFT, amount, LocalDateTime.now(), 0, 0, paymentPeriod, Status.PENDING, client.getAccount());
-
         //1. Proverava se suspicious
         kSession.getAgenda().getAgendaGroup("client-suspicious").setFocus();
         kSession.insert(debit);
         kSession.insert(client);
         kSession.insert(client.getAccount());
+        kSession.insert(client.getAccount().getAccountType());
         kSession.fireAllRules();
         System.out.println(debit.getDebitStatus());
+        System.out.println(debit.getTotalAmount());
 
         //2. Osnovna pravila za overdraft
         kSession.getAgenda().getAgendaGroup("client-suspicious").clear();
-        kSession.getAgenda().getAgendaGroup("reject-cash-credit").setFocus();
-        kSession.insert(debit);
-        kSession.insert(client);
-        kSession.insert(client.getAccount());
-        kSession.insert(client.getAccount().getAccountType());
-        kSession.insert(client.getEmployer());
+        kSession.getAgenda().getAgendaGroup("overdraft-rejection").setFocus();
+//        kSession.insert(debit);
+//        kSession.insert(client);
+//        kSession.insert(client.getAccount());
+//        kSession.insert(client.getAccount().getAccountType());
+//        kSession.insert(client.getEmployer());
         kSession.fireAllRules();
         System.out.println(debit.getDebitStatus());
 
+        if(debit.getDebitStatus().equals(Status.PENDING)){
+            debit.setDebitStatus(Status.ACTIVE);
+        }
 
         Debit savedDebit = debitService.save(debit);
         Account account = client.getAccount();

@@ -20,10 +20,11 @@ public class OverdraftController {
 
     @PostMapping("/send-overdraft-request")
     public DebitResponse sendOverdraftRequest(@RequestBody OverdraftRequest overdraftRequest) throws EntityNotFoundException {
+
         return overdraftService.processOverdraftRequest(
                 overdraftRequest.getClientId(),
-                overdraftRequest.getFirstMonthlyAmount(),
-                overdraftRequest.getSecondMonthlyAmount(),
-                overdraftRequest.getThirdMonthlyAmount());
+                overdraftRequest.getFirstMonthlyIncome(),
+                overdraftRequest.getSecondMonthlyIncome(),
+                overdraftRequest.getThirdMonthlyIncome());
     }
 }

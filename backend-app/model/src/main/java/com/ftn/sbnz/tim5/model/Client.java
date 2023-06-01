@@ -56,14 +56,24 @@ public class Client extends User{
     @Column(name="monthly_income")
     private double monthlyIncome;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private List<ClientWarning> warnings = new LinkedList<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    private List<ClientWarning> warnings =  new LinkedList<>();;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private List<ClientPenalty> penalties = new LinkedList<>();
+    @OneToMany( mappedBy = "client",fetch = FetchType.LAZY)
+    private List<ClientPenalty> penalties = new LinkedList<>();;
 
     @Column(name="suspicious_date")
     private LocalDateTime suspiciousDate;
+
+    @Column(name="unsuccessful_login")
+    private int unsuccessfulLogin = 0;
+
+    @ElementCollection
+    private List<LocalDateTime> prohibitions = new LinkedList<>();;
+
+    @Column(name="login_until")
+    private LocalDateTime lockedUntil;
+
 
     public Client(
             String email,
@@ -94,6 +104,7 @@ public class Client extends User{
         this.monthlyIncome = monthlyIncome;
         this.accountStatus = accountStatus;
         this.suspiciousDate = null;
+
     }
 
     //ovde ima startedWorking, gore nema

@@ -127,7 +127,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         employerName: this.employmentForm.get('employerNameFormControl').value,
         startedWorking: new Date(this.employmentForm.get('startedWorkingFormControl').value)
       }
-      console.log(newUser)
 
       this.showSpiner = true;
       const isRetiree: boolean = this.basicInfoForm.get('roleFormControl').value === 'RETIREE';

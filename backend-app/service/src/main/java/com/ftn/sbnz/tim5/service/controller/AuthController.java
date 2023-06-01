@@ -4,6 +4,7 @@ package com.ftn.sbnz.tim5.service.controller;
 import com.ftn.sbnz.tim5.service.dto.request.LoginRequest;
 import com.ftn.sbnz.tim5.service.dto.request.RetireeRegistrationRequest;
 import com.ftn.sbnz.tim5.service.dto.response.LoginResponse;
+import com.ftn.sbnz.tim5.service.exception.EntityNotFoundException;
 import com.ftn.sbnz.tim5.service.exception.InvalidCredsException;
 import com.ftn.sbnz.tim5.service.services.interfaces.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class AuthController {
 
     @PostMapping(path="/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) throws InvalidCredsException {
+    public LoginResponse login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) throws InvalidCredsException, EntityNotFoundException {
         return authService.login(loginRequest.getEmail(), loginRequest.getPassword(), response);
     }
 
