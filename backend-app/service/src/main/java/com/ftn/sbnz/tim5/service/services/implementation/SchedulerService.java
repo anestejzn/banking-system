@@ -43,7 +43,6 @@ public class SchedulerService {
             kSession.insert(client.getAccount().getAccountType());
         }
         kSession.getAgenda().getAgendaGroup("get-money").setFocus();
-        //fire rules with filter - probati ako ne radi agenda group
         kSession.fireAllRules();
         System.out.println("lalla");
 

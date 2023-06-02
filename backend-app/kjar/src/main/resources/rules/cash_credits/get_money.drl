@@ -12,7 +12,7 @@ import java.util.Date;
 import java.time.temporal.ChronoUnit;
 
 
-rule "get money for debits and monthlySubscription, don't have money"
+rule "get money for debits, don't have money"
     agenda-group "get-money"
     when
         $c: Client($account: account)
@@ -29,6 +29,8 @@ rule "get money for debits and monthlySubscription, don't have money"
         modify($a){
             setTotalBalance($a.getTotalBalance() - $sumOfMonthlyAmount)
         }
+
+        System.out.println("get money for debits, don't have money"+ $c.getId());
 end
 
 rule "get money for debits, have money"
@@ -45,6 +47,7 @@ rule "get money for debits, have money"
         modify($a){
             setTotalBalance($a.getTotalBalance() - $sumOfMonthlyAmount)
         }
+        System.out.println("get money for debits, have money"+ $c.getId());
 end
 
 rule "get money for monthly subscription, don't have money"
@@ -61,6 +64,7 @@ rule "get money for monthly subscription, don't have money"
         modify($a){
             setTotalBalance($a.getTotalBalance() - $at.getMonthlySubscription())
         }
+        System.out.println("get money for monthly subscription, don't have money"+ $c.getId());
 end
 
 rule "get money for monthly subscription, have money"
@@ -74,6 +78,7 @@ rule "get money for monthly subscription, have money"
         modify($a){
             setTotalBalance($a.getTotalBalance() - $at.getMonthlySubscription())
         }
+        System.out.println("get money for monthly subscription, have money" + $c.getId());
 end
 
 
