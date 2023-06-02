@@ -43,10 +43,15 @@ public class SchedulerService {
             kSession.insert(client.getAccount().getAccountType());
         }
         kSession.getAgenda().getAgendaGroup("get-money").setFocus();
+        kSession.getAgenda().getAgendaGroup("penalty-group").setFocus();
+        kSession.getAgenda().getAgendaGroup("client-suspicious").setFocus();
         kSession.fireAllRules();
         System.out.println("lalla");
 
         kSession.getAgenda().getAgendaGroup("get-money").clear();
+        kSession.getAgenda().getAgendaGroup("penalty-group").clear();
+        kSession.getAgenda().getAgendaGroup("client-suspicious").clear();
+
         kSession.fireAllRules();
 
         for(Client client : clientList) {

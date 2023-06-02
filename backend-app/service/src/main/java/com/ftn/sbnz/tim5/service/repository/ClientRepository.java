@@ -16,7 +16,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("select c from Client c where c.id=?1")
     Optional<Client> getClientById(Long id);
 
-    @Query("select distinct c from Client c where c.accountStatus=1 and c.verified=false")
+    @Query("select distinct c from Client c where c.accountStatus=1 and c.verified=true")
     List<Client> getPendingClients();
 
     @Query("select c from Client c")

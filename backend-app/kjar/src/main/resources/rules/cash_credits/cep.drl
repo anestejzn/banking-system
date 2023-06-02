@@ -86,7 +86,7 @@ rule "suspicious client, three transactions over 300K RSD in last 1h"
         $c: Client($accountId: account.id)
         $a: Account(id == $accountId)
         $numOfTransactions: Long() from accumulate(
-                        $t: Transaction(transactionType == TransactionType.REGULAR_TRANSACTION, ChronoUnit.HOURS.between(transactionDate, LocalDateTime.now()) <= 1) from $a.transactions,
+                        $t: Transaction(transactionType == TransactionType.REGULAR_TRANSACTION, ChronoUnit.MINUTES.between(LocalDateTime.now(), transactionDate) <= 60) from $a.transactions,
                         count($t)
                 )
         eval($numOfTransactions >= 3)
@@ -95,6 +95,7 @@ rule "suspicious client, three transactions over 300K RSD in last 1h"
         modify($c){
             setSuspiciousDate($newDate)
         }
+        System.out.println("Client suspicious");
 end
 
 rule "3 times unsuccessfully login"

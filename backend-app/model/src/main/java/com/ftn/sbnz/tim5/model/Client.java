@@ -56,10 +56,10 @@ public class Client extends User{
     @Column(name="monthly_income")
     private double monthlyIncome;
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ClientWarning> warnings =  new LinkedList<>();;
 
-    @OneToMany( mappedBy = "client",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ClientPenalty> penalties = new LinkedList<>();;
 
     @Column(name="suspicious_date")

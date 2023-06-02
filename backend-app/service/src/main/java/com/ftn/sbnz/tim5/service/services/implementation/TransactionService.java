@@ -75,6 +75,8 @@ public class TransactionService implements ITransactionService {
         kSession.insert(client.getAccount());
         kSession.fireAllRules();//client-suspicious
 
+        clientService.save(client);
+
         return new TransactionResponse(save(transaction));
     }
 

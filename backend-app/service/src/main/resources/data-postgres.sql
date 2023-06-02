@@ -20,7 +20,7 @@ VALUES (1, 'DINA'),
        (3, 'VISA_PLATINUM');
 
 insert into account (account_number, account_date, account_type_id, total_balance, applicant_score) values
-                    ('1234567890123', '2023-01-01', 3, 100, 0),
+                    ('1234567890123', '2023-01-01', 3, 15000, 0),
                     ('1234560090173', '2022-01-01', 2, 100, 1),
                     ('1034561110173', '2021-01-01', 1, 10000, 0),
                     ('1034561895040', '2021-01-01', 1, 10000, 0);
