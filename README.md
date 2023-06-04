@@ -17,7 +17,7 @@
 
 #### <span style="vertical-align: middle">:warning:</span> *Pre requirements:*
 
-- Installed Node.js
+- Node.js
 - Angular
 - JDK version 11
 - PostgreSQL
@@ -48,11 +48,11 @@
 ## 🤝 Useful to know:
 - There are two types of user roles to login:
     - Admin (admin@gmail.com)
-    - Regular user (srdjan@gmail.com)
+    - Client (srdjan@gmail.com)
 - Password for all users is: sifra1234A2@
 - <b>Note that you will need to change configuration to connect to your local PostgreSQL Database</b>
 
-## 📱 Some photos of applicationC:\Users\HP 840 
+## 📱 Some photos of application
 ![registration page](./front-end/src/assets/images/S1.jpg)
 ![home page](./front-end/src/assets/images/S2.jpg)
 ![credit card request page](./front-end/src/assets/images/S3.jpg)
