@@ -1,0 +1,59 @@
+package cash_credits;
+
+import com.ftn.sbnz.tim5.model.Debit;
+import com.ftn.sbnz.tim5.model.Transaction;
+import com.ftn.sbnz.tim5.model.enums.DebitType;
+import com.ftn.sbnz.tim5.model.enums.TransactionType;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import com.ftn.sbnz.tim5.model.enums.Status;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+
+query reportCashCreditsForAll(LocalDateTime startDate, LocalDateTime endDate, Debit[] debits)
+     $numOfRejected:Long() from accumulate(
+                                    $d: Debit(debitType == DebitType.CASH_CREDIT, debitDate >= startDate && debitDate <= endDate, debitStatus == Status.REJECTED) from debits,
+                                    count($d)
+                            )
+     $numOfPending: Long() from accumulate(
+                 $d: Debit(debitType == DebitType.CASH_CREDIT, debitDate >= startDate && debitDate <= endDate, debitStatus == Status.PENDING) from debits,
+                                                    count($d)
+                            )
+     $numOfActive: Long() from accumulate(
+                      $d: Debit(debitType == DebitType.CASH_CREDIT, debitDate >= startDate && debitDate <= endDate, debitStatus == Status.ACTIVE) from debits,
+                                                         count($d)
+                      )
+end
+
+query reportCreditCardsForAll(LocalDateTime startDate, LocalDateTime endDate, Transaction[] transactions)
+
+     $numOfRejected:Long() from accumulate(
+                                    $t: Transaction(transactionType == TransactionType.CREDIT_CARD_TRANSACTION, transactionDate >= startDate && transactionDate <= endDate, status == Status.REJECTED) from transactions,
+                                    count($t)
+                            )
+     $numOfPending: Long() from accumulate(
+                $t: Transaction(transactionType == TransactionType.CREDIT_CARD_TRANSACTION, transactionDate >= startDate && transactionDate <= endDate, status == Status.PENDING) from transactions,
+                                                    count($t)
+                            )
+     $numOfActive: Long() from accumulate(
+                     $t: Transaction(transactionType == TransactionType.CREDIT_CARD_TRANSACTION, transactionDate >= startDate && transactionDate <= endDate, status == Status.ACTIVE) from transactions,
+                                                         count($t)
+                      )
+end
+
+
+query reportOverdraftsForAll(LocalDateTime startDate, LocalDateTime endDate, Debit[] debits)
+     $numOfRejected:Long() from accumulate(
+                                    $d: Debit(debitType == DebitType.OVERDRAFT, debitDate >= startDate && debitDate <= endDate, debitStatus == Status.REJECTED) from debits,
+                                    count($d)
+                            )
+     $numOfPending: Long() from accumulate(
+                 $d: Debit(debitType == DebitType.OVERDRAFT, debitDate >= startDate && debitDate <= endDate, debitStatus == Status.PENDING) from debits,
+                                                    count($d)
+                            )
+     $numOfActive: Long() from accumulate(
+                      $d: Debit(debitType == DebitType.OVERDRAFT, debitDate >= startDate && debitDate <= endDate, debitStatus == Status.ACTIVE) from debits,
+                                                         count($d)
+                      )
+end
+

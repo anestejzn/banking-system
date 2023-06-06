@@ -12,10 +12,15 @@ import com.ftn.sbnz.tim5.service.repository.DebitRepository;
 import com.ftn.sbnz.tim5.service.services.interfaces.IAccountService;
 import com.ftn.sbnz.tim5.service.services.interfaces.IClientService;
 import com.ftn.sbnz.tim5.service.services.interfaces.IDebitService;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +30,9 @@ import static com.ftn.sbnz.tim5.service.util.Helper.getTypeFromReport;
 @Service
 public class DebitService implements IDebitService {
 
+    private final KieContainer kieContainer;
+    private final KieSession kSession;
+
     @Autowired
     private DebitRepository debitRepository;
 
@@ -33,6 +41,12 @@ public class DebitService implements IDebitService {
 
     @Autowired
     private IAccountService accountService;
+
+    @Autowired
+    public DebitService(KieContainer kieContainer){
+        this.kieContainer = kieContainer;
+        kSession = this.kieContainer.newKieSession("cashCreditKsession");
+    }
 
     @Override
     public Debit save(Debit debit) {
@@ -67,8 +81,7 @@ public class DebitService implements IDebitService {
     ) throws EntityNotFoundException, UnableToPerformActionException {
         checkDataValidity(reportType);
 
-        return showAll ? showStatisticsForAll(startDate, endDate, reportType)
-                : showStatisticsForClient(startDate, endDate, reportType, clientId);
+        return showStatisticsForAll(startDate, endDate, reportType, showAll, clientId);
     }
 
     private void checkDataValidity(ReportType reportType) throws UnableToPerformActionException {
@@ -77,38 +90,41 @@ public class DebitService implements IDebitService {
         }
     }
 
-    private ReportResponse showStatisticsForClient(LocalDateTime startDate, LocalDateTime endDate, ReportType reportType, Long clientId) throws EntityNotFoundException {
-        Client client = clientService.getClientById(clientId);
-        List<Debit> debits = client.getAccount().getDebits();
-        Stream<Debit> filteredDebits = debits.stream().filter(debit -> debit.getDebitType() == getTypeFromReport(reportType) && debit.getDebitDate().isAfter(startDate) && debit.getDebitDate().isBefore(endDate));
 
+    private ReportResponse showStatisticsForAll(LocalDateTime startDate, LocalDateTime endDate, ReportType reportType, boolean showAll, Long clientId) throws EntityNotFoundException {
+        List<Debit> debits = new LinkedList<>();
+        if(showAll){
+            debits = debitRepository.getAllDebits();
+        }
+        else{
+            Client client = clientService.getClientById(clientId);
+            debits = client.getAccount().getDebits();
+        }
+//        for(Debit debit : debits){
+//            kSession.insert(debit);
+//        }
+        kSession.insert(debits);
 
-        return calculateNumOfDebits(filteredDebits.collect(Collectors.toList()));
-    }
-
-    private ReportResponse showStatisticsForAll(LocalDateTime startDate, LocalDateTime endDate, ReportType reportType) {
-        List<Debit> debits = reportType == ReportType.CASH_CREDIT_REPORT ? debitRepository.getAllCashCredit(startDate, endDate)
-                                            : debitRepository.getAllOverdraft(startDate, endDate);
-
-
-        return calculateNumOfDebits(debits);
-    }
-
-    public static ReportResponse calculateNumOfDebits(List<Debit> debits) {
-        int numOfActive = 0;
-        int numOfPending = 0;
-        int numOfRejected = 0;
-
-        for (Debit d : debits) {
-            if (d.getDebitStatus() == Status.ACTIVE) {
-                numOfActive += 1;
-            } else if (d.getDebitStatus() == Status.PENDING) {
-                numOfPending += 1;
-            } else {
-                numOfRejected += 1;
-            }
+        Long activeDebitsNum = 0L;
+        Long pendingDebitsNum = 0L;
+        Long rejectedDebitsNum = 0L;
+        QueryResults results =  reportType == ReportType.CASH_CREDIT_REPORT ? getCashCreditsForAll(startDate, endDate, debits) : getOverdraftsForAll(startDate, endDate, debits);
+        for (QueryResultsRow row : results) {
+            rejectedDebitsNum = (Long) row.get("$numOfRejected");
+            pendingDebitsNum = (Long) row.get("$numOfPending");
+            activeDebitsNum = (Long) row.get("$numOfActive");
         }
 
-        return new ReportResponse(numOfActive, numOfPending, numOfRejected);
+        return new ReportResponse(activeDebitsNum, pendingDebitsNum, rejectedDebitsNum);
     }
+
+    private QueryResults getCashCreditsForAll(LocalDateTime startDate, LocalDateTime endDate, List<Debit> debits){
+        return kSession.getQueryResults("reportCashCreditsForAll", startDate, endDate, debits.toArray());
+    }
+
+    private QueryResults getOverdraftsForAll(LocalDateTime startDate, LocalDateTime endDate, List<Debit> debits){
+        return kSession.getQueryResults("reportOverdraftsForAll", startDate, endDate, debits.toArray());
+    }
+
+
 }

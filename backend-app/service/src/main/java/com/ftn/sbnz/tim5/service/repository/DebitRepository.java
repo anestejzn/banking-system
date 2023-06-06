@@ -22,4 +22,7 @@ public interface DebitRepository extends JpaRepository<Debit, Long> {
 
     @Query("select d from Debit d where d.id=?1")
     Optional<Debit> getDebitById(Long id);
+
+    @Query("select d from Debit d")
+    List<Debit> getAllDebits();
 }

@@ -16,6 +16,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query("select t from Transaction t where t.account.id=?1 and t.status=?2 order by t.transactionDate desc")
     List<Transaction> getFilteredTransactions(Long accountId, Status parameter);
 
-    @Query("select distinct t from Transaction t where t.transactionDate >= ?1 and t.transactionDate <= ?2 and t.transactionType=1")
-    List<Transaction> getAllCreditCardTransactions(LocalDateTime startDate, LocalDateTime endDate);
+    @Query("select t from Transaction t")
+    List<Transaction> getAllCreditCardTransactions();
 }
