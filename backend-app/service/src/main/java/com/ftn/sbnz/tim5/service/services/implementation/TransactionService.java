@@ -16,10 +16,13 @@ import com.ftn.sbnz.tim5.service.services.interfaces.IClientService;
 import com.ftn.sbnz.tim5.service.services.interfaces.ITransactionService;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -89,8 +92,8 @@ public class TransactionService implements ITransactionService {
     ) throws EntityNotFoundException, UnableToPerformActionException {
         checkDataValidity(reportType);
 
-        return showAll ? showStatisticsForAll(startDate, endDate)
-                : showStatisticsForClient(startDate, endDate, clientId);
+        return showStatisticsForAll(startDate, endDate, showAll, clientId);
+
     }
 
     private void checkDataValidity(ReportType reportType) throws UnableToPerformActionException {
@@ -99,36 +102,35 @@ public class TransactionService implements ITransactionService {
         }
     }
 
-    private ReportResponse showStatisticsForClient(LocalDateTime startDate, LocalDateTime endDate, Long clientId) throws EntityNotFoundException {
-        Client client = clientService.getClientById(clientId);
-        List<Transaction> transactions = client.getAccount().getTransactions();
-        Stream<Transaction> filteredTransactions = transactions.stream().filter(t -> t.getTransactionDate().isAfter(startDate) && t.getTransactionDate().isBefore(endDate));
+    private ReportResponse showStatisticsForAll(LocalDateTime startDate, LocalDateTime endDate, boolean showAll, Long clientId) throws EntityNotFoundException {
+        List<Transaction> transactions = new LinkedList<>();
 
-        return calculateNumOfTransactions(filteredTransactions.collect(Collectors.toList()));
-    }
-
-    private ReportResponse showStatisticsForAll(LocalDateTime startDate, LocalDateTime endDate) {
-        List<Transaction> transactions = transactionRepository.getAllCreditCardTransactions(startDate, endDate);
-
-        return calculateNumOfTransactions(transactions);
-    }
-
-    public static ReportResponse calculateNumOfTransactions(List<Transaction> transactions) {
-        int numOfActive = 0;
-        int numOfPending = 0;
-        int numOfRejected = 0;
-
-        for (Transaction t : transactions) {
-            if (t.getStatus() == Status.ACTIVE) {
-                numOfActive += 1;
-            } else if (t.getStatus() == Status.PENDING) {
-                numOfPending += 1;
-            } else {
-                numOfRejected += 1;
-            }
+        if(showAll){
+            transactions = transactionRepository.getAllCreditCardTransactions();
+        }
+        else{
+            Client client = clientService.getClientById(clientId);
+            transactions = client.getAccount().getTransactions();
         }
 
-        return new ReportResponse(numOfActive, numOfPending, numOfRejected);
+        kSession.insert(transactions);
+
+        Long activeDebitsNum = 0L;
+        Long pendingDebitsNum = 0L;
+        Long rejectedDebitsNum = 0L;
+        QueryResults results = kSession.getQueryResults("reportCreditCardsForAll", startDate, endDate, transactions.toArray());
+        for (QueryResultsRow row : results) {
+            rejectedDebitsNum = (Long) row.get("$numOfRejected");
+            pendingDebitsNum = (Long) row.get("$numOfPending");
+            activeDebitsNum = (Long) row.get("$numOfActive");
+        }
+
+
+        System.out.println("active" + activeDebitsNum);
+        System.out.println("rejected" + rejectedDebitsNum);
+        System.out.println("pending" + pendingDebitsNum);
+
+        return new ReportResponse(activeDebitsNum, pendingDebitsNum, rejectedDebitsNum);
     }
 
 }

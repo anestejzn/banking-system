@@ -9,13 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReportResponse {
 
-    private int numOfActive;
+    private Long numOfActive;
 
-    private int numOfPending;
+    private Long numOfPending;
 
-    private int numOfRejected;
+    private Long numOfRejected;
 
-    public ReportResponse(int numOfActive, int numOfPending, int numOfRejected) {
+    public ReportResponse(Long numOfActive, Long numOfPending, Long numOfRejected) {
         this.numOfActive = numOfActive;
         this.numOfPending = numOfPending;
         this.numOfRejected = numOfRejected;
